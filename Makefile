@@ -5,13 +5,14 @@ ALL  = $(dir $(shell find -mindepth 2 -name 'Makefile'))
 all: 
 	make kernel || exit 1
 	#make modules || exit 1
-	make clean
 
 	-rm initrfs.tar
 	cd initrfs; tar -cWf ../bin/initrfs.tar *
 
 	-rm bin/kernel.objdump
-	i586-elf-objdump -dS bin/kernel > bin/kernel.objdump
+	objdump -dS bin/kernel > bin/kernel.objdump
+	
+	make clean
 	
 .PHONY: kernel
 kernel:
