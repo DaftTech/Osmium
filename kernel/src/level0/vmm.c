@@ -13,7 +13,7 @@ PHYSICAL vmm_create() {
 	pagedir_ptr[1023] = phys_pagedir | PD_PRESENT | PD_WRITE;
 	uint32_t paddr, i, i2;
 
-	for (i = 0; i < 1024; i++) {
+	for (i = 0; i < 1023; i++) {
 		if (i < KERNEL_TABLES) {
 			pagedir_ptr[i] = kernel_pagetables[i] | PD_PRESENT | PD_WRITE;
 		}
@@ -157,7 +157,7 @@ PHYSICAL vmm_init(void) {
 
 		for(uint32_t i2 = 0; i2 < 1023; i2++) {
 			uint32_t* kptAccess = (void*) (kernel_pagetables[i] & 0xFFFFF000);
-			kptAccess[1023] = (uint32_t)kptAccess | PT_PRESENT;
+			//kptAccess[1023] = (uint32_t)kptAccess | PT_PRESENT | PT_WRITE;
 
 			PHYSICAL addr = (i << 22) + (i2 << 12);
 			PHYSICAL written_addr = 0;
@@ -183,7 +183,7 @@ PHYSICAL vmm_init(void) {
 	pagedir_ptr[1023] = phys_pagedir | PD_PRESENT | PD_WRITE;
 	uint32_t paddr, i, i2;
 
-	for (i = 0; i < 1024; i++) {
+	for (i = 0; i < 1023; i++) {
 		if (i < KERNEL_TABLES) {
 			pagedir_ptr[i] = kernel_pagetables[i] | PD_PRESENT | PD_WRITE;
 		}

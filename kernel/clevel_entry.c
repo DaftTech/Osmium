@@ -46,7 +46,7 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	kprintf("VMM ALLOC TEST ");
 	void* pointer = vmm_alloc(0);
 	setclr(C_SUCCESS);
-	kprintf("DONE!\n");
+	kprintf("DONE! (pointer address is %x)\n", (uint32_t)pointer);
 
 
 }
