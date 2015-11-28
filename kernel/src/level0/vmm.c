@@ -130,11 +130,11 @@ static void* vmm_alloc_in_range(uint32_t low, uint32_t high, uint32_t* retpaddr,
 }
 
 void* vmm_alloc_ucont(uint32_t cont) {
-	return vmm_alloc_in_range(USERSPACE_BOTTOM, 0xFFFFF000, 0, cont);
+	return vmm_alloc_in_range(USERSPACE_BOTTOM, 0xFFC00000, 0, cont);
 }
 
 void* vmm_alloc_user(uint32_t* retpaddr) {
-	return vmm_alloc_in_range(USERSPACE_BOTTOM, 0xFFFFF000, retpaddr, 1);
+	return vmm_alloc_in_range(USERSPACE_BOTTOM, 0xFFC00000, retpaddr, 1);
 }
 
 void* vmm_alloc_cont(uint32_t cont) {
@@ -157,6 +157,7 @@ PHYSICAL vmm_init(void) {
 
 		for(uint32_t i2 = 0; i2 < 1023; i2++) {
 			uint32_t* kptAccess = (void*) (kernel_pagetables[i] & 0xFFFFF000);
+			kptAccess[1023] = (uint32_t)kptAccess | PT_PRESENT;
 
 			PHYSICAL addr = (i << 22) + (i2 << 12);
 			PHYSICAL written_addr = 0;

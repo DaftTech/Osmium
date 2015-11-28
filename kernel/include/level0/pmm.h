@@ -1,7 +1,7 @@
 #ifndef PMM_H
 #define PMM_H
 
-#include "../stdmem.h"
+#include "stdmem.h"
 #include "stdint.h"
 #include "multiboot.h"
 #include "types.h"
