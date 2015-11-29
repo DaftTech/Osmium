@@ -53,4 +53,10 @@ void show_dump(struct cpu_state* cpu) {
     asm volatile("mov %%cr2, %0" : "=r" (cr2));
 
     kprintf("CR2: %x \n", cr2);
+
+    uint32_t* stack = (uint32_t*)cpu->esp;
+
+    for(int i = 0; i < 20; i++) {
+    	//kprintf("esp[%d] = %x\n", i, stack[i]);
+    }
 }

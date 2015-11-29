@@ -27,7 +27,6 @@ void* unpack_elf(void* elf) {
         }
 
         for (uint32_t offset = 0; offset < ph->mem_size; offset += 0x1000) {
-        	kprintf("Extracted %x from ELF\n", dest+offset);
             vmm_free(dest + offset);
             vmm_alloc_addr(dest + offset, 0);
         }

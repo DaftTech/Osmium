@@ -1,8 +1,26 @@
 #include "process.h"
+#include "rpc.h"
 
 extern int main(void* args);
 
+static void testRPC() {
+	struct regstate state = {
+			.eax = 0x101,
+			.ebx = 0,
+			.ecx = 0, .edx = 0,
+			.esi = 0, .edi = 0 };
+
+	syscall(&state);
+}
+
 void _start() {
+	rpc_init();
+
+	testRPC();
+	testRPC();
+	testRPC();
+	testRPC();
+
 	int result = main(getargsptr());
 
 	exit(result);
@@ -31,14 +49,4 @@ void* getargsptr() {
 	syscall(&state);
 
 	return (void*) state.eax;
-}
-
-void tempputs(char* string) {
-	struct regstate state = {
-			.eax = 0x100,
-			.ebx = (uint32_t) string,
-			.ecx = 0, .edx = 0,
-			.esi = 0, .edi = 0 };
-
-	syscall(&state);
 }

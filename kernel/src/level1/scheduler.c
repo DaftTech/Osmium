@@ -136,16 +136,14 @@ struct thread* create_thread(struct environment* environment, void* entry) {
 }
 
 struct cpu_state* save_cpu_state(struct cpu_state* cpu) {
-	memcpy(current_thread->cpuState, cpu, sizeof(struct cpu_state));
+	if(current_thread->active_rpc != 0 && current_thread->active_rpc->state == RPC_STATE_EXECUTING) {
+		memcpy(&current_thread->active_rpc->cpuState, cpu, sizeof(struct cpu_state));
+	}
+	else
+	{
+		memcpy(current_thread->cpuState, cpu, sizeof(struct cpu_state));
+	}
 	return current_thread->cpuState;
-}
-
-struct cpu_state* schedule_to_task(struct thread* dest) {
-    current_thread = dest;
-
-    vmm_activate_pagedir(dest->environment->phys_pdir);
-
-	return dest->cpuState;
 }
 
 static int blocked(struct thread* t) {
@@ -159,6 +157,7 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
             vmm_activate_pagedir(current_thread->environment->phys_pdir);
             return current_thread->cpuState;
         }
+        save_cpu_state(cpu);
 
     	struct thread* next = current_thread;
 
@@ -169,9 +168,44 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 			}
         } while(blocked(next));
 
-        save_cpu_state(cpu);
+        current_thread = next;
+        vmm_activate_pagedir(next->environment->phys_pdir);
 
-        return schedule_to_task(next);
+        if(next->active_rpc) {
+			if(next->active_rpc->state == RPC_STATE_RETURNED)
+			{
+				kprintf("Closed returned RPC thread\n");
+
+				void* ptr = next->active_rpc;
+				next->active_rpc = next->active_rpc->next;
+				free(ptr);
+			}
+        }
+
+        if(next->active_rpc) {
+        	if(next->active_rpc->state == RPC_STATE_EXECUTING) {
+        		return &(next->active_rpc->cpuState);
+        	}
+        	else if(next->active_rpc->state == RPC_STATE_AWAITING) {
+        	    struct cpu_state nstate = { .eax = 0, .ebx = 0, .ecx = 0, .edx = 0,
+        	            .esi = 0, .edi = 0, .ebp = 0, .esp = next->cpuState->esp - 4,
+        				.eip = (uint32_t) next->rpc_handler_address,
+
+        	            // Ring-3-Segmentregister
+        	            .cs = 0x18 | 0x03, .ss = 0x20 | 0x03,
+
+        	            .eflags = 0x200, };
+
+        	    memcpy(&(next->active_rpc->cpuState), &nstate, sizeof(struct cpu_state));
+        	    next->active_rpc->state = RPC_STATE_EXECUTING;
+
+        		return &(next->active_rpc->cpuState);
+        	}
+        }
+        else
+        {
+        	return next->cpuState;
+        }
     }
     return cpu;
 }

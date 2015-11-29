@@ -13,14 +13,9 @@
 #define PMID_STDIN   2
 #define PMID_STDERR  3
 
-#define RPCT_IRQ     0
-#define RPCT_KERNEL  1
-#define RPCT_U2U     2
-
-#define RPCE_OK      0
-#define RPCE_UNKNOWN 1
-#define RPCE_NODEST  2
-#define RPCE_NOFUNC  3
+#define RPC_STATE_AWAITING 0
+#define RPC_STATE_EXECUTING 1
+#define RPC_STATE_RETURNED 2
 
 #define THREAD_STACK_SIZE 0x10000
 
@@ -36,11 +31,30 @@ struct thread {
 	void* argsptr;
 
 	ADDRESS user_stack_bottom;
+	ADDRESS rpc_handler_address;
 
+	struct rpc* active_rpc;
 
 	struct thread* next; //Threads are organized as a double linked list
 	struct thread* prev;
 };
+
+struct rpc {
+	uint32_t rpcID;
+	PHYSICAL data;
+	void* mapped;
+
+	uint32_t state;
+	int resultCode;
+
+	struct cpu_state cpuState;
+
+	struct rpc* next;
+};
+
+struct rpc*         init_rpc(struct thread* t, uint32_t rpcID, PHYSICAL data);
+void 				return_rpc(int resultCode);
+void*               rpc_map(void);
 
 
 struct environment* create_env(PHYSICAL root);

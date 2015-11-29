@@ -1,7 +1,9 @@
 #include "process.h"
+#include "console.h"
 
 int main(void* initrfsPtr) {
-	while(1) tempputs((char*)initrfsPtr);
+	kprintf("%s", "Hello World\n");
+	while(1);
 
 	return initrfsPtr;
 }

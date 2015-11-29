@@ -7,6 +7,4 @@ void     _start();
 void     exit(int returncode);
 void*    getargsptr();
 
-void     tempputs(char* string);
-
 #endif

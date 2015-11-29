@@ -92,9 +92,6 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	kprintf("Push userspace address of initrfs BLOB...\n");
 	setargsptr(zero, "Zero");
 
-	struct thread* one = create_thread(rootEnv, entryPoint);
-	setargsptr(one, "One");
-
 	kprintf("Setting PIT interval...\n");
 	outb(0x43, 0b00110100);
 	outb(0x40, 0x00);
