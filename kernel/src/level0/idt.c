@@ -4,6 +4,7 @@
 #include "level0/gdt.h"
 #include "level0/catofdeath.h"
 #include "level1/scheduler.h"
+#include "level1/syscall.h"
 
 #define IDT_ENTRIES 64
 
@@ -185,8 +186,9 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu) {
 
         outb(0x20, 0x20);
 	} else if (cpu->intr == 0x30) {
-		//new_cpu = syscall(new_cpu);
+		new_cpu = syscall(new_cpu);
 	} else {
+		kprintf("Handling syscall...\n");
 		show_cod(cpu, "Unknown Interrupt!");
 	}
 

@@ -1,3 +1,3 @@
-void _start(void* initrfsPtr) {
-	while(1);
+int main(void* initrfsPtr) {
+	return 1337;
 }

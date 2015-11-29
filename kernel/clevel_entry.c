@@ -78,14 +78,18 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	}
 
 	kprintf("Unpacking ELF...\n");
-	unpack_elf(&initELF[1]);
+	void* entryPoint = unpack_elf(&initELF[1]);
+
+	if(entryPoint == (void*)0) {
+		show_cod(0, "init was not a valid ELF...\n");
+	}
 
 	kprintf("Copying initrfs BLOB into userspace (for init)...\n");
 	void* dest = vmm_alloc_ucont(((initrfsSize - 1) / 0x1000) + 1);
     memcpy(dest, initrfs, initrfsSize);
 
 	kprintf("Creating thread zero...\n");
-	struct thread* zero = create_thread(rootEnv, (void*)USERSPACE_BOTTOM);
+	struct thread* zero = create_thread(rootEnv, entryPoint);
 
 	kprintf("Push userspace address of initrfs BLOB...\n");
 	push(zero, (uint32_t)dest);

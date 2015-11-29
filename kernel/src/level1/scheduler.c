@@ -52,7 +52,8 @@ struct cpu_state* terminate_current(struct cpu_state* cpu) {
     struct thread* prev = current_thread->prev;
     struct thread* old = current_thread;
 
-    vmm_destroy();
+    //vmm_destroy();
+    //FIXME: Destroy environment if it has no more threads.
 
     if (current_thread == first_thread) {
         first_thread = current_thread->next;
@@ -121,7 +122,7 @@ struct thread* create_thread(struct environment* environment, void* entry) {
     }
 
     struct cpu_state nstate = { .eax = 0, .ebx = 0, .ecx = 0, .edx = 0,
-            .esi = 0, .edi = 0, .ebp = 0, .esp = 0xFFC00000,
+            .esi = 0, .edi = 0, .ebp = 0, .esp = 0xFFC00000 - 4,
 			.eip = (uint32_t) entry,
 
             // Ring-3-Segmentregister

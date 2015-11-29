@@ -33,6 +33,6 @@ struct elf_program_header {
     uint32_t alignment;
 }__attribute__((packed));
 
-void unpack_elf(void* elf);
+void* unpack_elf(void* elf);
 
 #endif

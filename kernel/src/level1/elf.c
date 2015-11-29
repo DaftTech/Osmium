@@ -3,14 +3,14 @@
 #include "level0/console.h"
 #include "level0/vmm.h"
 
-void unpack_elf(void* elf) {
+void* unpack_elf(void* elf) {
 	struct elf_header* header = elf;
     struct elf_program_header* ph;
 
     /* Ist es ueberhaupt eine ELF-Datei? */
     if (header->magic != ELF_MAGIC) {
     	show_cod(0, "No ELF");
-        return;
+        return 0;
     }
 
     void* elf_mod_entry = (void*) (header->entry);
@@ -34,4 +34,6 @@ void unpack_elf(void* elf) {
 
         memcpy(dest, src, ph->file_size);
     }
+
+    return elf_mod_entry;
 }
