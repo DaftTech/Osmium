@@ -3,6 +3,7 @@
 #include "level0/ports.h"
 #include "level0/gdt.h"
 #include "level0/catofdeath.h"
+#include "level1/scheduler.h"
 
 #define IDT_ENTRIES 64
 
@@ -11,10 +12,6 @@ extern uint8_t* interrupt_stack;
 static uint32_t tss[32] = { 0, (uint32_t) &interrupt_stack, 0x10 };
 
 static uint64_t idt[IDT_ENTRIES];
-static void (*handlers[IDT_ENTRIES])();
-static int handler_set[IDT_ENTRIES];
-
-static int irq_rpcs[IDT_ENTRIES];
 
 extern void intr_stub_0(void);
 extern void intr_stub_1(void);
@@ -71,11 +68,6 @@ void init_idt() {
 			idt, };
 
 	int i = 0;
-
-	for (i = 0; i < IDT_ENTRIES; i++) {
-		handler_set[i] = 0;
-		irq_rpcs[i] = 0;
-	}
 
 	outb(0x20, 0x11); // Initialisierungsbefehl fuer den PIC
 	outb(0x21, 0x20); // Interruptnummer fuer IRQ 0
@@ -165,8 +157,7 @@ void init_idt() {
 	idt_set_entry(48, intr_stub_48, 0x8,
 			IDT_FLAG_INTERRUPT_GATE | IDT_FLAG_RING3 | IDT_FLAG_PRESENT);
 
-	set_gdt_entry(5, (uint32_t) tss, sizeof(tss),
-			GDT_FLAG_TSS | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
+	set_gdt_entry(5, (uint32_t) tss, sizeof(tss), GDT_FLAG_TSS | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
 
 	asm volatile("ltr %%ax" : : "a" (5 << 3));
 
@@ -185,16 +176,11 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu) {
 		}
 
 		if (cpu->intr == 0x20) {
-			//new_cpu = schedule(cpu);
+			new_cpu = schedule(cpu);
 		}
 		else
 		{
-            if (handler_set[cpu->intr]) {
-                handlers[cpu->intr]();
-            }
-            if(irq_rpcs[cpu->intr] > 0) {
 
-            }
 		}
 
         outb(0x20, 0x20);

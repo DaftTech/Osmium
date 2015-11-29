@@ -30,8 +30,10 @@ void show_cod(struct cpu_state* cpu, char* fstr) {
 
     setclr(0x04);
     kprintf(fstr);
-    kprintf("\n\nException I:%x E:%x, Kernel halt!\n", cpu->intr, cpu->error);
-    show_dump(cpu);
+    if(cpu != 0) {
+    	kprintf("\n\nException I:%x E:%x, Kernel halt!\n", cpu->intr, cpu->error);
+    	show_dump(cpu);
+    }
 
     while (1) {
         asm volatile("cli; hlt");

@@ -10,5 +10,6 @@
 #endif
 
 typedef uint32_t size_t;
+typedef uint32_t ADDRESS;
 
 #endif

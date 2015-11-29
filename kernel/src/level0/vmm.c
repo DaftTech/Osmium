@@ -14,18 +14,23 @@ PHYSICAL vmm_create() {
 	uint32_t paddr, i, i2;
 
 	for (i = 0; i < 1023; i++) {
-		if (i < KERNEL_TABLES) {
+		if (i < KERNEL_COMBINED_TABLES) {
 			pagedir_ptr[i] = kernel_pagetables[i] | PD_PRESENT | PD_WRITE;
 		} else {
-			pagedir_ptr[i] =
-					(PHYSICAL) pmm_alloc() | PD_PRESENT | PD_WRITE | PD_PUBLIC;
+			PHYSICAL phys = 0;
+			uint32_t* c = vmm_alloc(&phys);
+			pagedir_ptr[i] = phys  | PD_PRESENT | PD_WRITE | PD_PUBLIC;
+			for(i2 = 0; i2 < 1024; i2++) {
+				c[i2] = PD_WRITE | PD_PUBLIC;
+			}
+			vmm_unmap(c);
 		}
 	}
 	return phys_pagedir;
 }
 
 PHYSICAL vmm_get_current_physical(void) {
-	return (active_pagetables[1023] && 0xFFFFF) << 10;
+	return (active_pagetables[0xFFFFF] & 0xFFFFF000);
 }
 
 PHYSICAL vmm_resolve(void* vaddr) {
@@ -51,6 +56,12 @@ void vmm_map_address(void* vaddrr, PHYSICAL paddr, uint32_t flags) {
 			| (active_pagetables[vaddr >> 12] & (PT_PUBLIC | PT_ALLOCATED));
 
 	asm volatile("invlpg %0" : : "m" (*(char*)vaddr));
+}
+
+void vmm_destroy(void) {
+	for (uint32_t i = USERSPACE_BOTTOM; i < 0xFFFFF000; i += 0x1000) {
+		vmm_free((void*)i);
+	}
 }
 
 void vmm_free(void* p_vaddr) {
@@ -179,11 +190,13 @@ PHYSICAL vmm_init(void) {
 	uint32_t paddr, i, i2;
 
 	for (i = 0; i < 1023; i++) {
-		if (i < KERNEL_TABLES) {
+		if (i < KERNEL_COMBINED_TABLES) {
 			pagedir_ptr[i] = kernel_pagetables[i] | PD_PRESENT | PD_WRITE;
 		} else {
-			pagedir_ptr[i] =
-					(PHYSICAL) pmm_alloc() | PD_PRESENT | PD_WRITE | PD_PUBLIC;
+			pagedir_ptr[i] = (PHYSICAL) pmm_alloc() | PD_PRESENT | PD_WRITE | PD_PUBLIC;
+			for(i2 = 0; i2 < 1024; i2++) {
+				((uint32_t*)pagedir_ptr[i])[i2] = PD_WRITE | PD_PUBLIC;
+			}
 		}
 	}
 

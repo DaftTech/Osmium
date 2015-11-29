@@ -14,6 +14,7 @@
 #define GDT_FLAG_32_BIT  0x400
 
 void init_gdt(void);
+void load_gdt(void);
 void set_gdt_entry(int i, unsigned int base, unsigned int limit, int flags);
 
 #endif

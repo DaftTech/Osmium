@@ -43,18 +43,24 @@ typedef uint32_t PHYSICAL;
 
 PHYSICAL vmm_init(void);
 PHYSICAL vmm_create(void);
+void     vmm_destroy(void);
+
 void vmm_activate_pagedir(uint32_t context);
+
 void vmm_free(void* vaddr);
 void vmm_unmap(void* vaddr);
+
 void vmm_map_range(void* vaddr, PHYSICAL paddr, uint32_t length, uint32_t flags);
+void vmm_map_address(void* vaddr, uint32_t paddr, uint32_t flags);
+
 void* vmm_alloc(uint32_t* retpaddr);
 void* vmm_alloc_cont(uint32_t cont);
 void* vmm_alloc_user(uint32_t* retpaddr);
 void* vmm_alloc_ucont(uint32_t cont);
 void* vmm_alloc_addr(void* vaddr, uint32_t* paddr);
+
 uint32_t vmm_resolve(void* vaddr);
-uint32_t vmm_resolve_ppd(uint32_t pdir, void* vaddr);
+
 uint32_t vmm_get_current_physical(void);
-void vmm_map_address(void* vaddr, uint32_t paddr, uint32_t flags);
 
 #endif
