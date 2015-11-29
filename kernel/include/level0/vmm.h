@@ -28,7 +28,7 @@
 #define PT_USER1   (1 << 10)
 #define PT_USER2   (1 << 11)
 
-#define PT_ALLOCATABLE PT_USER0
+#define PT_ALLOCATED PT_USER0
 
 #define KERNEL_TABLES 64 		//256MB hard kernel space
 #define KERNEL_ALLOC_TABLES 64	//256MB allocatable kernel space

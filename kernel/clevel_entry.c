@@ -4,6 +4,7 @@
 #include "level0/vmm.h"
 #include "level0/idt.h"
 
+#include "stdlib.h"
 #include "multiboot.h"
 
 void clevel_entry(struct multiboot_info* mb_info) {
@@ -21,7 +22,7 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	pmm_init(mb_info);
 	setclr(C_SUCCESS);
 	kprintf("DONE!\n");
-
+	setclr(C_DEFAULT);
 	kprintf("IDT INIT ");
 	init_idt();
 	setclr(C_SUCCESS);
@@ -38,15 +39,6 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	PHYSICAL root = vmm_init();
 	setclr(C_SUCCESS);
 	kprintf("DONE! (root=%x)\n", root);
-
-	setclr(COLOR(SCLR_BLACK, SCLR_YELLOW));
-	pmm_print_stats();
-	setclr(C_DEFAULT);
-
-	kprintf("VMM ALLOC TEST ");
-	void* pointer = vmm_alloc(0);
-	setclr(C_SUCCESS);
-	kprintf("DONE! (pointer address is %x)\n", (uint32_t)pointer);
 
 
 }
