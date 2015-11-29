@@ -15,6 +15,6 @@ struct tar_header
     char typeflag[1];
 };
 
-size_t tar_extract_to_userspace_bottom(void* tarball, const char* name);
+void* tar_extract(void* tarball, const char* name);
 
 #endif /* TAR_H_ */

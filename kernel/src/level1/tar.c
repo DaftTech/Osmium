@@ -1,6 +1,7 @@
 #include "level1/tar.h"
 #include "level0/console.h"
 #include "level0/vmm.h"
+#include "stdlib.h"
 #include "string.h"
 
 static uint32_t tar_parse_number(const char *in)
@@ -15,7 +16,7 @@ static uint32_t tar_parse_number(const char *in)
     return size;
 }
 
-size_t tar_extract_to_userspace_bottom(void* tarball, const char* path) {
+void* tar_extract(void* tarball, const char* path) {
     void* address = tarball;
 
     uint32_t i;
@@ -36,9 +37,10 @@ size_t tar_extract_to_userspace_bottom(void* tarball, const char* path) {
         if(size != 0 && !strcmp(header->name, path)) {
             kprintf("FOUND! Extracting %s (%d bytes)\n", header->name, size);
 
-            void* dest = vmm_alloc_ucont(((size - 1) / 0x1000) + 1); //FIXME: Assumption that vmm_alloc_ucont will begin at USERSPACE_BOTTOM
-            memcpy(dest, address, size);
-            return size;
+            uint32_t* dest = malloc(size + 4);
+            dest[0] = size;
+            memcpy(&dest[1], address, size);
+            return dest;
         }
 
         address += (size / 512) * 512;

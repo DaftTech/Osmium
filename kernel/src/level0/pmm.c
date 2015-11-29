@@ -22,7 +22,7 @@ void* pmm_alloc() {
 }
 
 void pmm_print_stats() {
-	kprintf("Running mikrOS with %dMB/%dMB (%dkB/%dkB) available memory!\n",
+	kprintf("Running Osmium with %dMB/%dMB (%dkB/%dkB) available memory!\n",
 			pmm_get_free_space(1024 * 1024), upper_limit / (1024 * 1024),
 			pmm_get_free_space(1024), upper_limit / 1024);
 }

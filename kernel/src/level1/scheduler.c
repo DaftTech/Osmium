@@ -13,6 +13,9 @@ int nextPID = 1; //FIXME int.max_value overflow
 
 void enableScheduling(void) {
     schedulingEnabled = 1;
+
+	while (1) {
+	}
 }
 
 uint32_t isSchedulingEnabled(void) {

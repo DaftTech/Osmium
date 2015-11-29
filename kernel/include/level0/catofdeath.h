@@ -1,7 +1,7 @@
 #ifndef CATOFDEATH_H
 #define CATOFDEATH_H
 
-#define SCREEN_COD
+//#define SCREEN_COD
 
 #include "console.h"
 #include "idt.h"

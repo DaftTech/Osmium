@@ -4,7 +4,7 @@ ALL  = $(dir $(shell find -mindepth 2 -name 'Makefile'))
 .PHONY: all
 all: 
 	make kernel || exit 1
-	#make modules || exit 1
+	make modules || exit 1
 
 	-rm initrfs.tar
 	cd initrfs; tar -cWf ../bin/initrfs.tar *
@@ -17,6 +17,7 @@ all:
 .PHONY: kernel
 kernel:
 	make -C kernel/ -B || exit 1
+	make -C lib-osmium/ -B || exit 1
 	
 .PHONY: modules
 modules: $(MODS)
