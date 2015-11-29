@@ -9,11 +9,18 @@
 
 void clevel_entry(struct multiboot_info* mb_info) {
 	clrscr();
-	setclr(C_DEFAULT);
+	setclr(COLOR(SCLR_BLACK, SCLR_CYAN));
 	kprintf("LEVEL0 ENTRY\n");
 
+	setclr(C_DEFAULT);
 	kprintf("GDT INIT ");
 	init_gdt();
+	setclr(C_SUCCESS);
+	kprintf("DONE!\n");
+	setclr(C_DEFAULT);
+
+	kprintf("IDT INIT ");
+	init_idt();
 	setclr(C_SUCCESS);
 	kprintf("DONE!\n");
 	setclr(C_DEFAULT);
@@ -23,22 +30,16 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	setclr(C_SUCCESS);
 	kprintf("DONE!\n");
 	setclr(C_DEFAULT);
-	kprintf("IDT INIT ");
-	init_idt();
-	setclr(C_SUCCESS);
-	kprintf("DONE!\n");
-	setclr(C_DEFAULT);
-
 
 	setclr(COLOR(SCLR_BLACK, SCLR_YELLOW));
 	pmm_print_stats();
-	kprintf("\n");
-
 	setclr(C_DEFAULT);
+
 	kprintf("VMM/PAGING INIT ");
 	PHYSICAL root = vmm_init();
 	setclr(C_SUCCESS);
 	kprintf("DONE! (root=%x)\n", root);
+	setclr(C_DEFAULT);
 
 
 }

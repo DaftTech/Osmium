@@ -65,7 +65,7 @@ void pmm_init(struct multiboot_info* mb_info) {
 
 	memset(allocatable, 0, sizeof(allocatable));
 
-	kprintf("Mem-Bitmap: %x to %x\n", allocatable, &(allocatable[BITMAP_SIZE]));
+	kprintf("BITMAP: %x to %x ", allocatable, &(allocatable[BITMAP_SIZE-1]));
 
 	while (mmap < mmap_end) {
 		if (mmap->mm_type == 1) {
