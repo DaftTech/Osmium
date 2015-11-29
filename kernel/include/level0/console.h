@@ -27,6 +27,11 @@
 
 void clrscr(void);
 void setclr(char color);
+
+void kputc(char c);
+void kputs(const char* s);
+void kputn(unsigned long x, int base);
+
 int kprintf(const char* fmt, ...);
 
 #endif

@@ -4,6 +4,7 @@ SRCS += $(shell find -name '*.cpp')
 OBJS = $(addsuffix .o,$(basename $(SRCS)))
 
 CC = i586-elf-gcc -std=gnu99 -fno-leading-underscore
+CPPC = i586-elf-gcc -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore
 LD = i586-elf-ld
 
 ASFLAGS = -m32
@@ -14,7 +15,7 @@ LDFLAGS = -melf_i386 -T kernel.ld
 	$(LD) $(LDFLAGS) -o $@ $^
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c -o $@ $^
+	$(CPPC) $(CFLAGS) -c -o $@ $^
 	
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $^

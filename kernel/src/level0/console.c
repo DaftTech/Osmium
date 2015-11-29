@@ -7,7 +7,7 @@ static char color = 0x07;
 
 static char* video = (char*) 0xb8000;
 
-static void kputc(char c) {
+void kputc(char c) {
 	//TODO: Insert userspace/logfile writing here
 
     if ((c == '\n') || (x > 79)) {
@@ -38,13 +38,13 @@ static void kputc(char c) {
     kprintf_res++;
 }
 
-static void kputs(const char* s) {
+void kputs(const char* s) {
     while (*s) {
         kputc(*s++);
     }
 }
 
-static void kputn(unsigned long x, int base) {
+void kputn(unsigned long x, int base) {
     char buf[65];
     const char* digits = "0123456789abcdefghijklmnopqrstuvwxyz";
     char* p;

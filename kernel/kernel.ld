@@ -24,6 +24,9 @@ SECTIONS
 		*(.text)
 	}
 	.data ALIGN(4096) : {
+	    start_ctors = .;
+	    KEEP(*( .init_array ));
+	    end_ctors = .;
 		*(.data)
 	}
 	.rodata ALIGN(4096) : {
@@ -33,6 +36,8 @@ SECTIONS
 		*(.bss)
 	}
 
+  	/DISCARD/ : { *(.fini_array*) *(.comment) }
+  	
 	. = ALIGN(4096);
 	kernel_end = .;
 }
