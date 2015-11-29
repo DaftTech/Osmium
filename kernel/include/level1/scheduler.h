@@ -22,15 +22,20 @@
 #define RPCE_NODEST  2
 #define RPCE_NOFUNC  3
 
+#define THREAD_STACK_SIZE 0x10000
+
 struct environment {
 	PHYSICAL phys_pdir;
+	ADDRESS currentNewStackBottom;
 };
 
 struct thread {
 	struct cpu_state* cpuState;
 	struct environment* environment;
 
-	void* user_stack_bottom;
+	void* argsptr;
+
+	ADDRESS user_stack_bottom;
 
 
 	struct thread* next; //Threads are organized as a double linked list
@@ -38,11 +43,12 @@ struct thread {
 };
 
 
+struct environment* create_env(PHYSICAL root);
 struct thread* 		create_thread(struct environment* environment, void* entry);
 struct thread*    	get_current_thread(void);
 struct thread*    	get_task_by_pid(int pid);
 
-void				push(struct thread* t, uint32_t value);
+void				setargsptr(struct thread* t, void* value);
 
 struct cpu_state* 	terminate_current(struct cpu_state* cpu);
 struct cpu_state* 	schedule_exception(struct cpu_state* cpu);

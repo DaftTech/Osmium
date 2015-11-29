@@ -1,3 +1,7 @@
+#include "process.h"
+
 int main(void* initrfsPtr) {
-	return 1337;
+	while(1) tempputs((char*)initrfsPtr);
+
+	return initrfsPtr;
 }

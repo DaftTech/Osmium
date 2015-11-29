@@ -9,8 +9,6 @@ uint32_t schedulingEnabled = 0;
 struct thread* first_thread = 0;
 struct thread* current_thread = 0;
 
-int nextPID = 1; //FIXME int.max_value overflow
-
 void enableScheduling(void) {
     schedulingEnabled = 1;
 
@@ -85,17 +83,16 @@ struct cpu_state* terminate_current(struct cpu_state* cpu) {
 }
 
 
-void push(struct thread* t, uint32_t value) {
-    PHYSICAL rest_pdir = vmm_get_current_physical();
-    vmm_activate_pagedir(t->environment->phys_pdir);
+void setargsptr(struct thread* t, void* value) {
+    t->argsptr = value;
+}
 
-    t->cpuState->esp -= 4;
+struct environment* create_env(PHYSICAL root) {
+	struct environment* rootEnv = malloc(sizeof(struct environment));
+	rootEnv->phys_pdir = root;
+	rootEnv->currentNewStackBottom = 0xFFC00000 - THREAD_STACK_SIZE;
 
-    uint32_t* espAcc = (uint32_t*)t->cpuState->esp;
-
-    *espAcc = value;
-
-    vmm_activate_pagedir(rest_pdir);
+	return rootEnv;
 }
 
 struct thread* create_thread(struct environment* environment, void* entry) {
@@ -103,7 +100,8 @@ struct thread* create_thread(struct environment* environment, void* entry) {
     nthread->cpuState = calloc(1, sizeof(struct cpu_state));
 
     nthread->environment = environment;
-    nthread->user_stack_bottom = (void*) 0xFFBFF000; //0xFFC00000 - 4KB
+    nthread->user_stack_bottom = environment->currentNewStackBottom; //0xFFC00000 - 4KB
+    environment->currentNewStackBottom -= THREAD_STACK_SIZE;
 
     nthread->next = (void*) first_thread;
     nthread->prev = (void*) 0;
@@ -117,12 +115,12 @@ struct thread* create_thread(struct environment* environment, void* entry) {
     PHYSICAL rest_pdir = vmm_get_current_physical();
     vmm_activate_pagedir(environment->phys_pdir);
 
-    for(uint8_t* addr = nthread->user_stack_bottom; (uint32_t)addr < 0xFFC00000; addr += 0x1000) {
-        vmm_alloc_addr(addr, 0);
+    for(ADDRESS addr = nthread->user_stack_bottom; (uint32_t)addr < nthread->user_stack_bottom + THREAD_STACK_SIZE; addr += 0x1000) {
+        vmm_alloc_addr((void*)addr, 0);
     }
 
     struct cpu_state nstate = { .eax = 0, .ebx = 0, .ecx = 0, .edx = 0,
-            .esi = 0, .edi = 0, .ebp = 0, .esp = 0xFFC00000 - 4,
+            .esi = 0, .edi = 0, .ebp = 0, .esp = nthread->user_stack_bottom + THREAD_STACK_SIZE - 4,
 			.eip = (uint32_t) entry,
 
             // Ring-3-Segmentregister
@@ -150,8 +148,8 @@ struct cpu_state* schedule_to_task(struct thread* dest) {
 	return dest->cpuState;
 }
 
-static int canExecute(struct thread* t) {
-	return 1;
+static int blocked(struct thread* t) {
+	return 0;
 }
 
 struct cpu_state* schedule(struct cpu_state* cpu) {
@@ -169,7 +167,7 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 			if (next == 0) {
 				next = first_thread;
 			}
-        } while(!canExecute(next));
+        } while(blocked(next));
 
         save_cpu_state(cpu);
 

@@ -51,9 +51,7 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	setclr(C_DEFAULT);
 
 	kprintf("Creating environment...\n");
-
-	struct environment* rootEnv = malloc(sizeof(struct environment));
-	rootEnv->phys_pdir = root;
+	struct environment* rootEnv = create_env(root);
 
 	kprintf("Mapping multiboot...\n");
 
@@ -92,7 +90,10 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	struct thread* zero = create_thread(rootEnv, entryPoint);
 
 	kprintf("Push userspace address of initrfs BLOB...\n");
-	push(zero, (uint32_t)dest);
+	setargsptr(zero, "Zero");
+
+	struct thread* one = create_thread(rootEnv, entryPoint);
+	setargsptr(one, "One");
 
 	kprintf("Setting PIT interval...\n");
 	outb(0x43, 0b00110100);
