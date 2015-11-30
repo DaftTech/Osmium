@@ -34,7 +34,7 @@ PHYSICAL vmm_get_current_physical(void) {
 }
 
 PHYSICAL vmm_resolve(void* vaddr) {
-	return active_pagetables[(uint32_t) vaddr >> 12] & 0xFFFFF000;
+	return active_pagetables[(uint32_t)vaddr >> 12] & 0xFFFFF000;
 }
 
 void vmm_map_range(void* vaddr, PHYSICAL paddr, uint32_t length, uint32_t flags) {
@@ -55,7 +55,7 @@ void vmm_map_address(void* vaddrr, PHYSICAL paddr, uint32_t flags) {
 			| PT_WRITE | (flags & 0xFFF)
 			| (active_pagetables[vaddr >> 12] & (PT_PUBLIC | PT_ALLOCATED));
 
-	asm volatile("invlpg %0" : : "m" (*(char*)vaddr));
+	asm volatile("invlpg %0" : : "m" ((char*)vaddr));
 }
 
 void vmm_destroy(void) {

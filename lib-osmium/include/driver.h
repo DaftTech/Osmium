@@ -15,7 +15,7 @@ struct driver_data {
 
 FUTURE fCreate(char* path);
 FUTURE fRemove(char* path);
-FUTURE fWrite (char* path, uint64_t pos, uint32_t length, void* output);
-FUTURE fRead  (char* path, uint64_t pos, uint32_t length, void* input);
+FUTURE fWrite (char* path, uint64_t pos, uint32_t length, struct driver_data** drvData);
+FUTURE fRead  (char* path, uint64_t pos, uint32_t length, struct driver_data** drvData);
 
 #endif

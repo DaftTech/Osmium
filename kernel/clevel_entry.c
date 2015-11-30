@@ -97,9 +97,11 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	setargsptr(zero, dest);
 
 	kprintf("Setting PIT interval...\n");
-	outb(0x43, 0b00110100);
-	outb(0x40, 0x00);
-	outb(0x40, 0x08);
+
+	int counter = 1193182 / 1;
+	outb(0x43, 0x34);
+	outb(0x40,counter & 0xFF);
+	outb(0x40,counter >> 8);
 
 	kprintf("Enabling scheduler...\n");
 	enableScheduling();

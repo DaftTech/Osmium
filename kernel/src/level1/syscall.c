@@ -19,7 +19,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 	case 0x100:
-		setclr(COLOR(SCLR_BLACK, SCLR_BLUE));
+		setclr(COLOR(SCLR_BLACK, SCLR_LCYAN));
 		kputc((char)in->ebx);
 		setclr(C_DEFAULT);
 		break;
@@ -125,6 +125,11 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		struct fs_node* node = fstree_find_path(path);
 		if(node != 0) {
 			struct driver* d = node->sub;
+
+			uint32_t* test = vmm_alloc(0);
+			vmm_free(test);
+			vmm_map_address(test, vmm_resolve((void*)in->ecx), 0);
+
 			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_read, node->resourceID, vmm_resolve((void*)in->ecx));
 		}
 		else

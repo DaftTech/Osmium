@@ -40,6 +40,8 @@ struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, 
 		} while(tr->next != r);
 	}
 
+	kprintf("[initrpc] with driver physdata = %x\n", data);
+
 	r->data = data;
 	r->mapped = 0;
 	r->rpcID = rpcID;
