@@ -23,7 +23,7 @@ char* strcpy(char* dest, const char* src) {
     return dest;
 }
 
-char* strclone(char* str) {
+char* strclone(const char* str) {
     char* ret = malloc(sizeof(char) * strlen(str) + 1);
     strcpy(ret, str);
 

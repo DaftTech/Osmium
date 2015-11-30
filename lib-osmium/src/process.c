@@ -16,11 +16,6 @@ static void testRPC() {
 void _start() {
 	rpc_init();
 
-	testRPC();
-	testRPC();
-	testRPC();
-	testRPC();
-
 	int result = main(getargsptr());
 
 	exit(result);

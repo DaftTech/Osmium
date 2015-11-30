@@ -2,6 +2,10 @@
 #include "syscall.h"
 #include "console.h"
 
+#define RPC_HANDLERS 1024
+
+static int(*rpcHandlers[RPC_HANDLERS])(void*);
+
 void rpc_return(int returnCode) {
 	struct regstate state = {
 			.eax = 0x201,
@@ -15,6 +19,10 @@ void rpc_return(int returnCode) {
 }
 
 void rpc_init() {
+	for(int i = 0; i < RPC_HANDLERS; i++) {
+		rpcHandlers[i] = (int(*)(void*))0;
+	}
+
 	struct regstate state = {
 			.eax = 0x202,
 			.ebx = (uint32_t)&rpc_handler,
@@ -37,12 +45,25 @@ void* rpc_map(uint32_t* rpcID) {
 	return (void*) state.eax;
 }
 
+int rpc_register_handler(int(*fptr)(void*)) {
+	for(int i = 0; i < RPC_HANDLERS; i++) {
+		if(rpcHandlers[i] == (int(*)(void*))0) {
+			rpcHandlers[i] = fptr;
+			return i;
+		}
+	}
+	return -1;
+}
 
 void rpc_handler() {
 	uint32_t rpcID;
 	void* rpcData = rpc_map(&rpcID);
 
-	kprintf("RPC with id %d\n", rpcID);
+	int returnValue = -1;
 
-	rpc_return(0);
+	if(rpcID < RPC_HANDLERS && rpcHandlers[rpcID] != 0) {
+		returnValue = rpcHandlers[rpcID](rpcData);
+	}
+
+	rpc_return(returnValue);
 }

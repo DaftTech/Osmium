@@ -1,6 +1,7 @@
 #include "level1/syscall.h"
 #include "level0/console.h"
 #include "level1/scheduler.h"
+#include "level1/fstree.h"
 
 struct cpu_state* syscall(struct cpu_state* in) {
 	struct cpu_state* new = in;
@@ -36,6 +37,10 @@ struct cpu_state* syscall(struct cpu_state* in) {
 
 	case 0x202: //RPC Register Handler
 		get_current_thread()->rpc_handler_address = in->ebx;
+		break;
+
+	case 0x300: //Register driver
+		new->eax = fstree_register_driver(in->ebx, in->ecx, in->edx, in->edi, in->esi);
 		break;
 
 	default:

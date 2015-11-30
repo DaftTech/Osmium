@@ -8,6 +8,7 @@
 #include "level1/scheduler.h"
 #include "level1/tar.h"
 #include "level1/elf.h"
+#include "level1/fstree.h"
 
 #include "stdlib.h"
 #include "multiboot.h"
@@ -53,6 +54,9 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	kprintf("Creating environment...\n");
 	struct environment* rootEnv = create_env(root);
 
+	kprintf("Initializing fstree...\n");
+	fstree_init();
+
 	kprintf("Mapping multiboot...\n");
 
 	vmm_map_address(mb_info, (uint32_t) mb_info, 0);
@@ -90,7 +94,7 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	struct thread* zero = create_thread(rootEnv, entryPoint);
 
 	kprintf("Push userspace address of initrfs BLOB...\n");
-	setargsptr(zero, "Zero");
+	setargsptr(zero, dest);
 
 	kprintf("Setting PIT interval...\n");
 	outb(0x43, 0b00110100);
