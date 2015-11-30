@@ -30,11 +30,11 @@ int register_path(char* path, int driverID, int resourceID) {
 	return state.eax;
 }
 
-FUTURE fCreate(char* path) {
+FUTURE fCreate(char* path, struct driver_data* drvData) {
 	struct regstate state = {
 			.eax = 0x302,
 			.ebx = (uint32_t)path,
-			.ecx = 0,
+			.ecx = (uint32_t)drvData,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
@@ -44,11 +44,11 @@ FUTURE fCreate(char* path) {
 	return state.eax;
 }
 
-FUTURE fRemove(char* path) {
+FUTURE fRemove(char* path, struct driver_data* drvData) {
 	struct regstate state = {
 			.eax = 0x303,
 			.ebx = (uint32_t)path,
-			.ecx = 0,
+			.ecx = (uint32_t)drvData,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
@@ -58,16 +58,11 @@ FUTURE fRemove(char* path) {
 	return state.eax;
 }
 
-FUTURE fWrite(char* path, uint64_t pos, uint32_t length, struct driver_data** drvData) {
-	*drvData = palloc();
-
-	(*drvData)->pos = pos;
-	(*drvData)->length = length;
-
+FUTURE fWrite(char* path, struct driver_data* drvData) {
 	struct regstate state = {
 			.eax = 0x304,
 			.ebx = (uint32_t)path,
-			.ecx = (uint32_t)*drvData,
+			.ecx = (uint32_t)drvData,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
@@ -77,16 +72,11 @@ FUTURE fWrite(char* path, uint64_t pos, uint32_t length, struct driver_data** dr
 	return state.eax;
 }
 
-FUTURE fRead(char* path, uint64_t pos, uint32_t length, struct driver_data** drvData) {
-	*drvData = palloc();
-
-	(*drvData)->pos = pos;
-	(*drvData)->length = length;
-
+FUTURE fRead(char* path, struct driver_data* drvData) {
 	struct regstate state = {
 			.eax = 0x305,
 			.ebx = (uint32_t)path,
-			.ecx = (uint32_t)*drvData,
+			.ecx = (uint32_t)drvData,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };

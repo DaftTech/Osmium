@@ -16,6 +16,8 @@ void* pcalloc(uint32_t pages) {
 
 	syscall(&state);
 
+	memset((void*)state.eax, 0, pages * 0x1000);
+
 	return (void*)state.eax;
 }
 

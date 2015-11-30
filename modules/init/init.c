@@ -16,22 +16,32 @@ struct file {
 static struct file* files[INITRFS_MAX_FILE_COUNT];
 
 int dCreate(int arg0, void* data) {
+	struct driver_data* drvData = data;
 
+	drvData->result = E_ERROR;
 	return 0;
 }
 
 int dRemove(int arg0, void* data) {
+	struct driver_data* drvData = data;
 
+	drvData->result = E_ERROR;
 	return 0;
 }
 
 int dRead(int arg0, void* data) {
 	struct driver_data* drvData = data;
 
-	if(drvData->pos + drvData->length <= files[arg0]->size) {
-		memcpy(drvData->data, &(files[arg0]->content) + drvData->pos, drvData->length);
-		kprintf("[Driver] Copied %d bytes to %x", drvData->length, drvData->data);
+	if(drvData->pos >= files[arg0]->size) {
+		drvData->result = E_ERROR;
+		drvData->bytesDone = 0;
+		return 0;
 	}
+
+	drvData->bytesDone = (drvData->pos + drvData->length <= files[arg0]->size) ? drvData->length : (files[arg0]->size - drvData->pos);
+
+	memcpy(drvData->data, &(files[arg0]->content) + drvData->pos, drvData->bytesDone);
+	drvData->result = S_OK;
 
 	return 0;
 }
@@ -39,6 +49,7 @@ int dRead(int arg0, void* data) {
 int dWrite(int arg0, void* data) {
 	struct driver_data* drvData = data;
 
+	drvData->result = E_ERROR;
 	return 0;
 }
 
@@ -52,23 +63,20 @@ int main(void* initrfsPtr) {
 
 	kprintf("Init registered driver %d (%d, %d, %d, %d)\n", driverID, dCreateID, dRemoveID, dReadID, dWriteID);
 
-	tar_extract(initrfsPtr, files, driverID);
+	tar_extract(initrfsPtr, (uint32_t**)files, driverID);
 
-	struct driver_data* drvData[8];
 
-	for(int i = 0; i < 8; i++) {
-		fRead("/test/print", i*3, 3, &(drvData[i]));
-	}
+	struct driver_data* driverData = palloc();
 
-	for(int i = 0; i < 8; i++) {
-		kprintf("File read (before wait): %s\n", drvData[i]->data);
-	}
+	driverData->length = 128;
 
-	while(rpc_check_future(0));
-
-	for(int i = 0; i < 8; i++) {
-		kprintf("File read (after wait): %s\n", drvData[i]->data);
-	}
+	do {
+		FUTURE f = fRead("test/print", driverData);
+		while(rpc_check_future(f));
+		driverData->data[driverData->bytesDone] = 0;
+		kprintf("%s", driverData->data);
+		driverData->pos += driverData->bytesDone;
+	} while(driverData->bytesDone != 0);
 
 
 	while(1);

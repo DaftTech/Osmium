@@ -170,8 +170,6 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 			if(next->active_rpc) {
 				if(next->active_rpc->state == RPC_STATE_RETURNED)
 				{
-					kprintf("Closed returned RPC thread\n");
-
 					next->active_rpc->fullfills->state = FSTATE_RETURNED;
 					next->active_rpc->fullfills->returnCode = next->active_rpc->returnCode;
 
@@ -203,8 +201,6 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 
 				while(bCheck != 0) {
 					if(bCheck->state == FSTATE_RETURNED) {
-						kprintf("[SCHEDTO] RPC block-release...\n");
-
 						void* bptr = bCheck;
 
 						*previous = bCheck->next;
