@@ -1,9 +1,10 @@
 #include "process.h"
 #include "rpc.h"
+#include "console.h"
 
 extern int main(void* args);
 
-static void testRPC() {
+static FUTURE testRPC() {
 	struct regstate state = {
 			.eax = 0x101,
 			.ebx = 0,
@@ -11,10 +12,18 @@ static void testRPC() {
 			.esi = 0, .edi = 0 };
 
 	syscall(&state);
+
+	return state.eax;
 }
 
 void _start() {
 	rpc_init();
+
+	FUTURE fut = testRPC();
+
+	while(rpc_check_future(fut)) {
+		kprintf("Awaiting future %x...\n", fut);
+	}
 
 	int result = main(getargsptr());
 

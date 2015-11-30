@@ -45,6 +45,19 @@ void* rpc_map(uint32_t* rpcID) {
 	return (void*) state.eax;
 }
 
+
+int rpc_check_future(FUTURE fut) {
+	struct regstate state = {
+			.eax = 0x203,
+			.ebx = fut,
+			.ecx = 0, .edx = 0,
+			.esi = 0, .edi = 0 };
+
+	syscall(&state);
+
+	return state.eax;
+}
+
 int rpc_register_handler(int(*fptr)(void*)) {
 	for(int i = 0; i < RPC_HANDLERS; i++) {
 		if(rpcHandlers[i] == (int(*)(void*))0) {
@@ -58,6 +71,8 @@ int rpc_register_handler(int(*fptr)(void*)) {
 void rpc_handler() {
 	uint32_t rpcID;
 	void* rpcData = rpc_map(&rpcID);
+
+	kprintf("HANDLED RPC!\n");
 
 	int returnValue = -1;
 

@@ -18,11 +18,13 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 	case 0x100:
+		setclr(COLOR(SCLR_BLACK, SCLR_BLUE));
 		kputc((char)in->ebx);
+		setclr(C_DEFAULT);
 		break;
 
 	case 0x101:
-		init_rpc(get_current_thread(), 0, 0);
+		new->eax = (uint32_t)init_rpc(get_current_thread(), 0, 0);
 		break;
 
 	case 0x200: //RPC Map
@@ -38,6 +40,29 @@ struct cpu_state* syscall(struct cpu_state* in) {
 	case 0x202: //RPC Register Handler
 		get_current_thread()->rpc_handler_address = in->ebx;
 		break;
+
+	case 0x203: //RPC rpc_check_future
+		;
+		uint32_t ebx = in->ebx;
+
+		struct thread* c = get_current_thread();
+		struct rpc_future* bCheck = (c->active_rpc && c->active_rpc->state != RPC_STATE_AWAITING) ? c->active_rpc->blockedBy : c->blockedBy;
+
+		uint32_t anyBlock = 0;
+
+		while(bCheck != 0) {
+			anyBlock |= bCheck->state;
+			if((uint32_t)bCheck == ebx) {
+				anyBlock = bCheck->state;
+				break;
+			}
+
+			bCheck = bCheck->next;
+		}
+
+		new->eax = anyBlock;
+		break;
+
 
 	case 0x300: //Register driver
 		new->eax = fstree_register_driver(in->ebx, in->ecx, in->edx, in->edi, in->esi);

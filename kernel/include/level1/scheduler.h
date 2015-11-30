@@ -19,6 +19,11 @@
 
 #define THREAD_STACK_SIZE 0x10000
 
+#define FSTATE_RETURNED 0
+#define FSTATE_RUNNING 1
+
+typedef uint32_t FUTURE_STATE;
+
 struct environment {
 	PHYSICAL phys_pdir;
 	ADDRESS currentNewStackBottom;
@@ -34,9 +39,17 @@ struct thread {
 	ADDRESS rpc_handler_address;
 
 	struct rpc* active_rpc;
+	struct rpc_future* blockedBy;
 
 	struct thread* next; //Threads are organized as a double linked list
 	struct thread* prev;
+};
+
+struct rpc_future {
+	int returnCode;
+	FUTURE_STATE state;
+
+	struct rpc_future* next;
 };
 
 struct rpc {
@@ -45,17 +58,19 @@ struct rpc {
 	void* mapped;
 
 	uint32_t state;
-	int resultCode;
+	int returnCode;
 
 	struct cpu_state cpuState;
+
+	struct rpc_future* fullfills;
+	struct rpc_future* blockedBy;
 
 	struct rpc* next;
 };
 
-struct rpc*         init_rpc(struct thread* t, uint32_t rpcID, PHYSICAL data);
+struct rpc_future*  init_rpc(struct thread* t, uint32_t rpcID, PHYSICAL data);
 void 				return_rpc(int resultCode);
 void*               rpc_map(void);
-
 
 struct environment* create_env(PHYSICAL root);
 struct thread* 		create_thread(struct environment* environment, void* entry);
