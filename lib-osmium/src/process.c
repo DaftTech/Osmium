@@ -19,12 +19,6 @@ static FUTURE testRPC() {
 void _start() {
 	rpc_init();
 
-	FUTURE fut = testRPC();
-
-	while(rpc_check_future(fut)) {
-		kprintf("Awaiting future %x...\n", fut);
-	}
-
 	int result = main(getargsptr());
 
 	exit(result);

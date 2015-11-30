@@ -229,8 +229,6 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 
 				while(bCheck != 0) {
 					if(bCheck->state == FSTATE_RETURNED) {
-						kprintf("[SCHEDTO] THREAD block-release...\n");
-
 						void* bptr = bCheck;
 
 						*previous = bCheck->next;
