@@ -1,5 +1,6 @@
 #include "level1/syscall.h"
 #include "level0/console.h"
+#include "level0/catofdeath.h"
 #include "level1/scheduler.h"
 #include "level1/fstree.h"
 
@@ -24,12 +25,13 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 	case 0x101:
-		new->eax = (uint32_t)init_rpc(get_current_thread(), 0, 0);
+		new->eax = (uint32_t)init_rpc(get_current_thread(), 0, 0, 0);
 		break;
 
 	case 0x200: //RPC Map
 		new->eax = (uint32_t)rpc_map();
 		new->ebx = get_current_thread()->active_rpc->rpcID;
+		new->ecx = get_current_thread()->active_rpc->rpcARG0;
 		break;
 
 	case 0x201: //RPC Return
@@ -65,7 +67,81 @@ struct cpu_state* syscall(struct cpu_state* in) {
 
 
 	case 0x300: //Register driver
-		new->eax = fstree_register_driver(in->ebx, in->ecx, in->edx, in->edi, in->esi);
+		new->eax = fstree_register_driver(in->ebx, in->ecx, in->edx, in->esi);
+		break;
+
+	case 0x301: //Register path
+		new->eax = fstree_register_path((char*)in->ebx, in->ecx, in->edx);
+		break;
+
+	case 0x302: //DRVCall create
+	{
+		char* path = (char*)in->ebx;
+		struct fs_node* node = fstree_find_path(path);
+		if(node != 0) {
+			struct driver* d = node->sub;
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_create, node->resourceID, 0);
+		}
+		else
+		{
+			new->eax = 0;
+		}
+	}
+		break;
+
+	case 0x303: //DRVCall remove
+	{
+		char* path = (char*)in->ebx;
+		struct fs_node* node = fstree_find_path(path);
+		if(node != 0) {
+			struct driver* d = node->sub;
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_remove, node->resourceID, 0);
+		}
+		else
+		{
+			new->eax = 0;
+		}
+	}
+		break;
+
+	case 0x304: //DRVCall write
+	{
+		char* path = (char*)in->ebx;
+		struct fs_node* node = fstree_find_path(path);
+		if(node != 0) {
+			struct driver* d = node->sub;
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_write, node->resourceID, vmm_resolve((void*)in->ecx));
+		}
+		else
+		{
+			new->eax = 0;
+		}
+	}
+		break;
+
+	case 0x305: //DRVCall read
+	{
+		char* path = (char*)in->ebx;
+		struct fs_node* node = fstree_find_path(path);
+		if(node != 0) {
+			struct driver* d = node->sub;
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_read, node->resourceID, vmm_resolve((void*)in->ecx));
+		}
+		else
+		{
+			new->eax = 0;
+		}
+	}
+		break;
+
+
+	case 0x400: //VMM ucont alloc
+		new->eax = (uint32_t) vmm_alloc_ucont(in->ebx);
+		break;
+
+	case 0x401: //VMM free
+		if(in->ebx < USERSPACE_BOTTOM) show_cod(in, "Userspace program tried to free kernel memory.");
+		vmm_free((void*)in->ebx);
 		break;
 
 	default:

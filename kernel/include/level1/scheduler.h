@@ -54,6 +54,7 @@ struct rpc_future {
 
 struct rpc {
 	uint32_t rpcID;
+	uint32_t rpcARG0;
 	PHYSICAL data;
 	void* mapped;
 
@@ -68,7 +69,7 @@ struct rpc {
 	struct rpc* next;
 };
 
-struct rpc_future*  init_rpc(struct thread* t, uint32_t rpcID, PHYSICAL data);
+struct rpc_future*  init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, PHYSICAL data);
 void 				return_rpc(int resultCode);
 void*               rpc_map(void);
 

@@ -1,7 +1,7 @@
 #include "level1/scheduler.h"
 #include "level0/catofdeath.h"
 
-struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, PHYSICAL data) {
+struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, PHYSICAL data) {
 	if(t == get_current_thread() && get_current_thread()->active_rpc != 0 && get_current_thread()->active_rpc->state != RPC_STATE_AWAITING) {
 		show_cod(get_current_thread()->cpuState, "[DEADLOCK] THREAD-RPC caused SELF-RPC.");
 	}
@@ -43,6 +43,7 @@ struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, PHYSICAL data) {
 	r->data = data;
 	r->mapped = 0;
 	r->rpcID = rpcID;
+	r->rpcARG0 = rpcARG0;
 
 	future->returnCode = 0;
 	future->state = FSTATE_RUNNING;

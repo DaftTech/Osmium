@@ -10,8 +10,10 @@ void kputc(char c) {
 	struct regstate state = {
 			.eax = 0x100,
 			.ebx = (uint32_t) c,
-			.ecx = 0, .edx = 0,
-			.esi = 0, .edi = 0 };
+			.ecx = 0,
+			.edx = 0,
+			.esi = 0,
+			.edi = 0 };
 
 	syscall(&state);
 }
