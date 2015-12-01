@@ -29,13 +29,15 @@ enum driver_result {
 	E_USER15
 };
 
+#define MAX_IO_BUFFER 3800
+
 struct driver_data {
 	uint64_t pos;
 	uint32_t length;
 	uint32_t bytesDone;
 	enum driver_result result;
 
-	uint8_t data[2048];
+	uint8_t data[MAX_IO_BUFFER];
 };
 
 FUTURE fCreate(char* path, struct driver_data* drvData);

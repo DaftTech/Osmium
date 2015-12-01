@@ -56,7 +56,7 @@ void show_dump(struct cpu_state* cpu) {
 
     uint32_t* stack = (uint32_t*)cpu->esp;
 
-    for(int i = 0; i < 20; i++) {
-    	//kprintf("esp[%d] = %x\n", i, stack[i]);
+    for(int i = 0; i < 10; i++) {
+    	kprintf("esp[%d] = %x\n", i, stack[i]);
     }
 }

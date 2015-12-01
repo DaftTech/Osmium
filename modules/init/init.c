@@ -53,7 +53,7 @@ int dWrite(int arg0, void* data) {
 	return 0;
 }
 
-int main(void* initrfsPtr) {
+void createDriver(void* initrfsPtr) {
 	int dCreateID = rpc_register_handler(&dCreate);
 	int dRemoveID = rpc_register_handler(&dRemove);
 	int dReadID = rpc_register_handler(&dRead);
@@ -65,19 +65,18 @@ int main(void* initrfsPtr) {
 
 	tar_extract(initrfsPtr, (uint32_t**)files, driverID);
 
+	kprintf("Done! (Doener)\n");
+}
 
-	struct driver_data* driverData = palloc();
+int main(void* initrfsPtr) {
+	if(!initrfsPtr) {
+		kprintf("Init called without initrfsptr!\nTerminating...\n");
+		return 0;
+	}
 
-	driverData->length = 128;
+	createDriver(initrfsPtr);
 
-	do {
-		FUTURE f = fRead("test/print", driverData);
-		while(rpc_check_future(f));
-		driverData->data[driverData->bytesDone] = 0;
-		kprintf("%s", driverData->data);
-		driverData->pos += driverData->bytesDone;
-	} while(driverData->bytesDone != 0);
-
+	execpn("init");
 
 	while(1);
 

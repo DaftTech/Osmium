@@ -3,28 +3,29 @@
 #include "level0/catofdeath.h"
 #include "level1/scheduler.h"
 #include "level1/fstree.h"
+#include "level1/elf.h"
 
 struct cpu_state* syscall(struct cpu_state* in) {
 	struct cpu_state* new = in;
 
 	switch(in->eax) {
-	case 0x1:
+	case 0x1: //exit EBX=return code
 		kprintf("Thread ended with %d...\n", in->ebx);
 		new = terminate_current(in);
 		break;
 
-	case 0x2:
+	case 0x2: //get argsptr
 		kprintf("Told %x that argsptr is %x\n", get_current_thread(), get_current_thread()->argsptr);
 		new->eax = (uint32_t)get_current_thread()->argsptr;
 		break;
 
-	case 0x100:
+	case 0x100: //FIXME: kputc
 		setclr(COLOR(SCLR_BLACK, SCLR_LCYAN));
 		kputc((char)in->ebx);
 		setclr(C_DEFAULT);
 		break;
 
-	case 0x101:
+	case 0x101: //FIXME: RPC test, do not use
 		new->eax = (uint32_t)init_rpc(get_current_thread(), 0, 0, 0);
 		break;
 
@@ -34,16 +35,16 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		new->ecx = get_current_thread()->active_rpc->rpcARG0;
 		break;
 
-	case 0x201: //RPC Return
+	case 0x201: //RPC Return EBX=return code
 		return_rpc(in->ebx);
 		new = schedule(in);
 		break;
 
-	case 0x202: //RPC Register Handler
+	case 0x202: //RPC Register Handler EBX=handler function*
 		get_current_thread()->rpc_handler_address = in->ebx;
 		break;
 
-	case 0x203: //RPC rpc_check_future
+	case 0x203: //RPC rpc_check_future EBX=future
 		;
 		uint32_t ebx = in->ebx;
 
@@ -66,21 +67,21 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 
-	case 0x300: //Register driver
+	case 0x300: //Register driver EBX=create ECX=remove EDX=read ESI=write
 		new->eax = fstree_register_driver(in->ebx, in->ecx, in->edx, in->esi);
 		break;
 
-	case 0x301: //Register path
+	case 0x301: //Register path EBX=path char* ECX=driverID EDX=resourceID
 		new->eax = fstree_register_path((char*)in->ebx, in->ecx, in->edx);
 		break;
 
-	case 0x302: //DRVCall create
+	case 0x302: //DRVCall create EBX=path char* ECX=data page*
 	{
 		char* path = (char*)in->ebx;
 		struct fs_node* node = fstree_find_path(path);
 		if(node != 0) {
 			struct driver* d = node->sub;
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_create, node->resourceID, 0);
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_create, node->resourceID, vmm_resolve((void*)in->ecx));
 		}
 		else
 		{
@@ -89,13 +90,13 @@ struct cpu_state* syscall(struct cpu_state* in) {
 	}
 		break;
 
-	case 0x303: //DRVCall remove
+	case 0x303: //DRVCall remove EBX=path char* ECX=data page*
 	{
 		char* path = (char*)in->ebx;
 		struct fs_node* node = fstree_find_path(path);
 		if(node != 0) {
 			struct driver* d = node->sub;
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_remove, node->resourceID, 0);
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_remove, node->resourceID, vmm_resolve((void*)in->ecx));
 		}
 		else
 		{
@@ -104,7 +105,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 	}
 		break;
 
-	case 0x304: //DRVCall write
+	case 0x304: //DRVCall write EBX=path char* ECX=data page*
 	{
 		char* path = (char*)in->ebx;
 		struct fs_node* node = fstree_find_path(path);
@@ -119,17 +120,12 @@ struct cpu_state* syscall(struct cpu_state* in) {
 	}
 		break;
 
-	case 0x305: //DRVCall read
+	case 0x305: //DRVCall read EBX=path char* ECX=data page*
 	{
 		char* path = (char*)in->ebx;
 		struct fs_node* node = fstree_find_path(path);
 		if(node != 0) {
 			struct driver* d = node->sub;
-
-			uint32_t* test = vmm_alloc(0);
-			vmm_free(test);
-			vmm_map_address(test, vmm_resolve((void*)in->ecx), 0);
-
 			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_read, node->resourceID, vmm_resolve((void*)in->ecx));
 		}
 		else
@@ -140,13 +136,57 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 
-	case 0x400: //VMM ucont alloc
+	case 0x400: //VMM ucont alloc EBX=pages
 		new->eax = (uint32_t) vmm_alloc_ucont(in->ebx);
 		break;
 
-	case 0x401: //VMM free
+	case 0x401: //VMM free EBX=address
 		if(in->ebx < USERSPACE_BOTTOM) show_cod(in, "Userspace program tried to free kernel memory.");
 		vmm_free((void*)in->ebx);
+		break;
+
+	case 0x500: //THREAD create EBX=entry_point* ECX=args*
+		new->eax = (uint32_t) create_thread(get_current_thread()->environment, (void*)in->ebx);
+		setargsptr((struct thread*)new->eax, (void*)in->ecx);
+		break;
+
+	case 0x501: //THREAD createNewContext EBX=data source* ECX=data size EDX=elf source* ESI=elf size
+		new->eax = 0;
+		struct environment* newEnv = create_env(vmm_create());
+
+		if(in->edx == 0) break;
+		if(in->esi == 0) break;
+
+		if(in->ebx == 0) in->ecx = 0;
+
+		void* dataKernel = in->ecx ? malloc(in->ecx) : 0;
+		void* elfKernel = malloc(in->esi);
+
+		if(in->ecx) memcpy(dataKernel, (void*)in->ebx, in->ecx);
+		memcpy(elfKernel, (void*)in->edx, in->esi);
+
+		struct environment* oldEnv = get_current_thread()->environment;
+		vmm_activate_pagedir(newEnv->phys_pdir);
+
+		void* entryPoint = unpack_elf(elfKernel);
+		if(entryPoint == 0) goto noLoad;
+
+		void* dataUserspace = 0;
+		if(in->ecx) {
+			dataUserspace = vmm_alloc_ucont(in->ecx / 0x1000);
+			memcpy(dataUserspace, dataKernel, in->ecx);
+		}
+		kprintf("New thread entry: %x \n", entryPoint);
+
+		struct thread* t = create_thread(newEnv, entryPoint);
+		setargsptr(t, dataUserspace);
+
+		new->eax = (uint32_t)t;
+
+		noLoad:
+		free(dataKernel);
+		free(elfKernel);
+		vmm_activate_pagedir(oldEnv->phys_pdir);
 		break;
 
 	default:
