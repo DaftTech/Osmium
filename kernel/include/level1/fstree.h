@@ -10,8 +10,9 @@
 
 struct driver {
 	struct thread* driverThread;
-	int rpc_create;
-	int rpc_remove;
+	char driverName[128];
+	int rpc_modify;
+	int rpc_info;
 	int rpc_read;
 	int rpc_write;
 };
@@ -27,9 +28,10 @@ struct fs_node {
 	struct fs_node* next;
 };
 
-void 	fstree_init();
-int 	fstree_register_driver(int rpc_create, int rpc_remove, int rpc_read, int rpc_write);
-int 	fstree_register_path(char* path, int driverID, int resourceID);
+void 	       fstree_init();
+int 	       fstree_register_driver(int rpc_modify, int rpc_info, int rpc_read, int rpc_write, char* name);
+int 	       fstree_register_path(char* path, int driverID, int resourceID);
+struct driver* fstree_driver_for_name(char* name);
 
 struct fs_node* fstree_find_path(const char* path);
 struct fs_node* fstree_make_path(const char* path, uint32_t subtype, uint32_t resourceID, void* sub);

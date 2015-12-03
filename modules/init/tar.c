@@ -33,8 +33,6 @@ void tar_extract(void* tarball, uint32_t** files, int driverID) {
         address += 512;
 
         if(size != 0) {
-            kprintf("[initrfs] Extracting %s (%d bytes)...\n", header->name, size);
-
             files[i] = malloc(size + 4);
             files[i][0] = size;
             memcpy(&files[i][1], address, size);

@@ -1,5 +1,6 @@
 #include "string.h"
 #include "stdlib.h"
+#include "level0/console.h"
 
 int strcmp(const char* str1, const char* str2) {
     int l1 = strlen(str1);

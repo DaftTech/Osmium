@@ -13,6 +13,10 @@ extern uint8_t* interrupt_stack;
 static uint32_t tss[32] = { 0, (uint32_t) &interrupt_stack, 0x10 };
 
 static uint64_t idt[IDT_ENTRIES];
+static struct rpc_destination {
+	struct thread* thread;
+	uint32_t rpcID;
+} registered[IDT_ENTRIES];
 
 extern void intr_stub_0(void);
 extern void intr_stub_1(void);
@@ -61,6 +65,16 @@ void idt_set_entry(int i, void (*fn)(), uint16_t selector, uint8_t flags) {
 	idt[i] |= ((handler >> 16) & 0xffffLL) << 48;
 }
 
+int register_irq_rpc(uint32_t irqID, uint32_t rpcID) {
+	if(irqID > IDT_ENTRIES) return 1;
+	if(!registered[irqID].thread) {
+		registered[irqID].thread = get_current_thread();
+		registered[irqID].rpcID = rpcID;
+		return 0;
+	}
+	return 2;
+}
+
 void init_idt() {
 	struct {
 		unsigned short int limit;
@@ -68,7 +82,10 @@ void init_idt() {
 	}__attribute__((packed)) idtp = { .limit = IDT_ENTRIES * 8 - 1, .pointer =
 			idt, };
 
-	int i = 0;
+	for(int i = 0; i < IDT_ENTRIES; i++) {
+		idt[i] = 0;
+		registered[i].thread = 0;
+	}
 
 	outb(0x20, 0x11); // Initialisierungsbefehl fuer den PIC
 	outb(0x21, 0x20); // Interruptnummer fuer IRQ 0
@@ -181,14 +198,15 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu) {
 		}
 		else
 		{
-
+			if(registered[cpu->intr].thread != 0) {
+				init_rpc(registered[cpu->intr].thread, registered[cpu->intr].rpcID, cpu->intr, 0); //call IRQ RPC
+			}
 		}
 
         outb(0x20, 0x20);
 	} else if (cpu->intr == 0x30) {
 		new_cpu = syscall(new_cpu);
 	} else {
-		kprintf("Handling syscall...\n");
 		show_cod(cpu, "Unknown Interrupt!");
 	}
 

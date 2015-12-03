@@ -88,23 +88,36 @@ int fstree_register_path(char* path, int driverID, int resourceID) {
 	if(ep) return -1;
 	if(driverID < 0 || driverID >= DRIVER_COUNT) return -2;
 
+	kprintf("REGISTERING %s as %d in %x\n", path, resourceID, registeredDrivers[driverID]);
+
 	fstree_make_path(path, FST_DRIVER, resourceID, registeredDrivers[driverID]);
 	return 0;
 }
 
-int fstree_register_driver(int rpc_create, int rpc_remove, int rpc_read, int rpc_write) {
+struct driver* fstree_driver_for_name(char* name) {
+	for(int i = 0; i < DRIVER_COUNT; i++) {
+		if(registeredDrivers[i] != 0) {
+			if(!strcmp(name, registeredDrivers[i]->driverName)) return registeredDrivers[i];
+		}
+	}
+	return 0;
+}
+
+int fstree_register_driver(int rpc_modify, int rpc_info, int rpc_read, int rpc_write, char* name) {
 	for(int i = 0; i < DRIVER_COUNT; i++) {
 		if(registeredDrivers[i] == 0) {
 			registeredDrivers[i] = calloc(1, sizeof(struct driver));
 
 			kprintf("Set write RPCID=%d\n", rpc_write);
 
-			registeredDrivers[i]->rpc_create = rpc_create;
-			registeredDrivers[i]->rpc_remove = rpc_remove;
+			registeredDrivers[i]->rpc_modify = rpc_modify;
+			registeredDrivers[i]->rpc_info = rpc_info;
 			registeredDrivers[i]->rpc_read   = rpc_read;
 			registeredDrivers[i]->rpc_write  = rpc_write;
 
+			strcpy(registeredDrivers[i]->driverName, name);
 			registeredDrivers[i]->driverThread = get_current_thread();
+			kprintf("Set driver %x thread to %x\n", registeredDrivers[i], get_current_thread());
 			return i;
 		}
 	}

@@ -2,14 +2,14 @@
 #include "syscall.h"
 #include "memory.h"
 
-int register_driver(int dCreateID, int dRemoveID, int dReadID, int dWriteID) {
+int register_driver(int dModifyID, int dInfoID, int dReadID, int dWriteID, char* drvName) {
 	struct regstate state = {
 			.eax = 0x300,
-			.ebx = dCreateID,
-			.ecx = dRemoveID,
+			.ebx = dModifyID,
+			.ecx = dInfoID,
 			.edx = dReadID,
 			.esi = dWriteID,
-			.edi = 0 };
+			.edi = (uint32_t)drvName };
 
 	syscall(&state);
 
@@ -30,7 +30,99 @@ int register_path(char* path, int driverID, int resourceID) {
 	return state.eax;
 }
 
-FUTURE fCreate(char* path, struct driver_data* drvData) {
+int register_irq_rpc(uint32_t irqID, int rpcID) {
+	struct regstate state = {
+			.eax = 0x600,
+			.ebx = irqID,
+			.ecx = rpcID,
+			.edx = 0,
+			.esi = 0,
+			.edi = 0 };
+
+	syscall(&state);
+
+	return state.eax;
+}
+
+void outb(uint16_t port, uint8_t value) {
+	struct regstate state = {
+			.eax = 0x601,
+			.ebx = port,
+			.ecx = value,
+			.edx = 0,
+			.esi = 0,
+			.edi = 0 };
+
+	syscall(&state);
+}
+
+void outw(uint16_t port, uint16_t value) {
+	struct regstate state = {
+			.eax = 0x602,
+			.ebx = port,
+			.ecx = value,
+			.edx = 0,
+			.esi = 0,
+			.edi = 0 };
+
+	syscall(&state);
+}
+
+void outl(uint16_t port, uint32_t value) {
+	struct regstate state = {
+			.eax = 0x603,
+			.ebx = port,
+			.ecx = value,
+			.edx = 0,
+			.esi = 0,
+			.edi = 0 };
+
+	syscall(&state);
+}
+
+uint8_t inb(uint16_t port) {
+	struct regstate state = {
+			.eax = 0x604,
+			.ebx = port,
+			.ecx = 0,
+			.edx = 0,
+			.esi = 0,
+			.edi = 0 };
+
+	syscall(&state);
+
+	return state.eax;
+}
+
+uint16_t inw(uint16_t port) {
+	struct regstate state = {
+			.eax = 0x605,
+			.ebx = port,
+			.ecx = 0,
+			.edx = 0,
+			.esi = 0,
+			.edi = 0 };
+
+	syscall(&state);
+
+	return state.eax;
+}
+
+uint32_t inl(uint16_t port) {
+	struct regstate state = {
+			.eax = 0x606,
+			.ebx = port,
+			.ecx = 0,
+			.edx = 0,
+			.esi = 0,
+			.edi = 0 };
+
+	syscall(&state);
+
+	return state.eax;
+}
+
+FUTURE fModify(char* path, struct driver_data* drvData) {
 	struct regstate state = {
 			.eax = 0x302,
 			.ebx = (uint32_t)path,
@@ -44,12 +136,12 @@ FUTURE fCreate(char* path, struct driver_data* drvData) {
 	return state.eax;
 }
 
-FUTURE fRemove(char* path, struct driver_data* drvData) {
+FUTURE fCall(char* driverName, int callID, struct driver_data* drvData) {
 	struct regstate state = {
 			.eax = 0x303,
-			.ebx = (uint32_t)path,
+			.ebx = (uint32_t)driverName,
 			.ecx = (uint32_t)drvData,
-			.edx = 0,
+			.edx = callID,
 			.esi = 0,
 			.edi = 0 };
 

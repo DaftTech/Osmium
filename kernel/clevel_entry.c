@@ -98,7 +98,7 @@ void clevel_entry(struct multiboot_info* mb_info) {
 
 	kprintf("Setting PIT interval...\n");
 
-	int counter = 1193182 / 1;
+	int counter = 1193182 / 1000;
 	outb(0x43, 0x34);
 	outb(0x40,counter & 0xFF);
 	outb(0x40,counter >> 8);

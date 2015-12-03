@@ -4,8 +4,19 @@
 #include "stdint.h"
 #include "rpc.h"
 
-int register_driver(int dCreateID, int dRemoveID, int dReadID, int dWriteID);
-int register_path(char* path, int driverID, int resourceID);
+#define CALL_CREATE 0x100
+
+int  register_driver(int dModifyID, int dInfoID, int dReadID, int dWriteID, char* drvName);
+int  register_path(char* path, int driverID, int resourceID);
+int  register_irq_rpc(uint32_t irqID, int rpcID);
+
+void outb(uint16_t port, uint8_t value);
+void outw(uint16_t port, uint16_t value);
+void outl(uint16_t port, uint32_t value);
+
+uint8_t inb(uint16_t port);
+uint16_t inw(uint16_t port);
+uint32_t inl(uint16_t port);
 
 enum driver_result {
 	S_OK = 0,
@@ -40,8 +51,8 @@ struct driver_data {
 	uint8_t data[MAX_IO_BUFFER];
 };
 
-FUTURE fCreate(char* path, struct driver_data* drvData);
-FUTURE fRemove(char* path, struct driver_data* drvData);
+FUTURE fCall  (char* driverName, int callID, struct driver_data* drvData);
+FUTURE fModify(char* path, struct driver_data* drvData);
 FUTURE fWrite (char* path, struct driver_data* drvData);
 FUTURE fRead  (char* path, struct driver_data* drvData);
 

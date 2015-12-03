@@ -1,6 +1,7 @@
 #include "level1/syscall.h"
 #include "level0/console.h"
 #include "level0/catofdeath.h"
+#include "level0/ports.h"
 #include "level1/scheduler.h"
 #include "level1/fstree.h"
 #include "level1/elf.h"
@@ -67,21 +68,21 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 
-	case 0x300: //Register driver EBX=create ECX=remove EDX=read ESI=write
-		new->eax = fstree_register_driver(in->ebx, in->ecx, in->edx, in->esi);
+	case 0x300: //Register driver EBX=modify ECX=info EDX=read ESI=write
+		new->eax = fstree_register_driver(in->ebx, in->ecx, in->edx, in->esi, (char*)in->edi);
 		break;
 
 	case 0x301: //Register path EBX=path char* ECX=driverID EDX=resourceID
 		new->eax = fstree_register_path((char*)in->ebx, in->ecx, in->edx);
 		break;
 
-	case 0x302: //DRVCall create EBX=path char* ECX=data page*
+	case 0x302: //DRVCall modify EBX=path char* ECX=data page*
 	{
 		char* path = (char*)in->ebx;
 		struct fs_node* node = fstree_find_path(path);
 		if(node != 0) {
 			struct driver* d = node->sub;
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_create, node->resourceID, vmm_resolve((void*)in->ecx));
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_modify, node->resourceID, vmm_resolve((void*)in->ecx));
 		}
 		else
 		{
@@ -90,13 +91,13 @@ struct cpu_state* syscall(struct cpu_state* in) {
 	}
 		break;
 
-	case 0x303: //DRVCall remove EBX=path char* ECX=data page*
+	case 0x303: //DRVCall call EBX=name char* ECX=data page* EDX=callID
 	{
-		char* path = (char*)in->ebx;
-		struct fs_node* node = fstree_find_path(path);
-		if(node != 0) {
-			struct driver* d = node->sub;
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_remove, node->resourceID, vmm_resolve((void*)in->ecx));
+		char* name = (char*)in->ebx;
+		kprintf("BLUB %s\n", name);
+		struct driver* d = fstree_driver_for_name(name);
+		if(d != 0) {
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_info, in->edx, vmm_resolve((void*)in->ecx));
 		}
 		else
 		{
@@ -109,7 +110,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 	{
 		char* path = (char*)in->ebx;
 		struct fs_node* node = fstree_find_path(path);
-		if(node != 0) {
+		if(node != 0 && node->subtype == FST_DRIVER) {
 			struct driver* d = node->sub;
 			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_write, node->resourceID, vmm_resolve((void*)in->ecx));
 		}
@@ -124,7 +125,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 	{
 		char* path = (char*)in->ebx;
 		struct fs_node* node = fstree_find_path(path);
-		if(node != 0) {
+		if(node != 0 && node->subtype == FST_DRIVER) {
 			struct driver* d = node->sub;
 			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_read, node->resourceID, vmm_resolve((void*)in->ecx));
 		}
@@ -187,6 +188,35 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		free(dataKernel);
 		free(elfKernel);
 		vmm_activate_pagedir(oldEnv->phys_pdir);
+		break;
+
+	case 0x600: //Register IRQ-RPC EBX=irqID ECX=rpcID
+		new->eax = register_irq_rpc(in->ebx, in->ecx);
+		break;
+
+		//FIXME: PORT RESTRICTIONS!
+	case 0x601: //OUTB EBX=port ECX=value
+		outb(in->ebx, in->ecx);
+		break;
+
+	case 0x602: //OUTW EBX=port ECX=value
+		outw(in->ebx, in->ecx);
+		break;
+
+	case 0x603: //OUTL EBX=port ECX=value
+		outl(in->ebx, in->ecx);
+		break;
+
+	case 0x604: //INB EBX=port
+		new->eax = inb(in->ebx);
+		break;
+
+	case 0x605: //INW EBX=port
+		new->eax = inw(in->ebx);
+		break;
+
+	case 0x606: //INL EBX=port
+		new->eax = inl(in->ebx);
 		break;
 
 	default:

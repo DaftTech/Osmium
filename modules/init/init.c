@@ -4,6 +4,7 @@
 #include "rpc.h"
 #include "driver.h"
 #include "stdint.h"
+#include "string.h"
 #include "tar.h"
 
 #define INITRFS_MAX_FILE_COUNT 65536
@@ -13,59 +14,52 @@ struct file {
 	uint8_t content;
 };
 
+static uint32_t state;
+
 static struct file* files[INITRFS_MAX_FILE_COUNT];
 
-int dCreate(int arg0, void* data) {
-	struct driver_data* drvData = data;
-
-	drvData->result = E_ERROR;
+int dModify(int resourceID, void* data) {
+	kprintf("initrfs driver modify");
 	return 0;
 }
 
-int dRemove(int arg0, void* data) {
-	struct driver_data* drvData = data;
-
-	drvData->result = E_ERROR;
+int dCall(int arg0, void* data) {
+	state = 0;
+	kprintf("initrfs driver call");
 	return 0;
 }
 
-int dRead(int arg0, void* data) {
-	struct driver_data* drvData = data;
+int dWrite(int resourceID, void* data) {
+	return 0;
+}
 
-	if(drvData->pos >= files[arg0]->size) {
+int dRead(int resourceID, void* data) {
+	struct driver_data* drvData = data;
+	if(drvData == 0) return 0;
+
+	if(drvData->pos >= files[resourceID]->size) {
 		drvData->result = E_ERROR;
 		drvData->bytesDone = 0;
 		return 0;
 	}
 
-	drvData->bytesDone = (drvData->pos + drvData->length <= files[arg0]->size) ? drvData->length : (files[arg0]->size - drvData->pos);
+	drvData->bytesDone = (drvData->pos + drvData->length <= files[resourceID]->size) ? drvData->length : (files[resourceID]->size - drvData->pos);
 
-	memcpy(drvData->data, &(files[arg0]->content) + drvData->pos, drvData->bytesDone);
+	memcpy(drvData->data, &(files[resourceID]->content) + drvData->pos, drvData->bytesDone);
 	drvData->result = S_OK;
 
 	return 0;
 }
 
-int dWrite(int arg0, void* data) {
-	struct driver_data* drvData = data;
-
-	drvData->result = E_ERROR;
-	return 0;
-}
-
 void createDriver(void* initrfsPtr) {
-	int dCreateID = rpc_register_handler(&dCreate);
-	int dRemoveID = rpc_register_handler(&dRemove);
+	int dModifyID = rpc_register_handler(&dModify);
+	int dCallID = rpc_register_handler(&dCall);
 	int dReadID = rpc_register_handler(&dRead);
 	int dWriteID = rpc_register_handler(&dWrite);
 
-	int driverID = register_driver(dCreateID, dRemoveID, dReadID, dWriteID);
-
-	kprintf("Init registered driver %d (%d, %d, %d, %d)\n", driverID, dCreateID, dRemoveID, dReadID, dWriteID);
+	int driverID = register_driver(dModifyID, dCallID, dReadID, dWriteID, "initrfs");
 
 	tar_extract(initrfsPtr, (uint32_t**)files, driverID);
-
-	kprintf("Done! (Doener)\n");
 }
 
 int main(void* initrfsPtr) {
@@ -76,9 +70,31 @@ int main(void* initrfsPtr) {
 
 	createDriver(initrfsPtr);
 
-	execpn("init");
+	state = 5;
+	execpn("drivers/fifo");
+	while(state); //wait for backcall
 
-	while(1);
+	struct driver_data* dd = palloc();
 
-	return initrfsPtr;
+	strcpy(dd->data, "testfile");
+
+	FUTURE fut = fCall("fifo", CALL_CREATE, dd);
+	while(rpc_check_future(fut));
+
+	for(int i = 0; i < 100; i++) {
+		strcpy(dd->data, "INPUT");
+		dd->length = strlen(dd->data);
+		fWrite("testfile", dd);
+	}
+
+	while(rpc_check_future(0));
+
+	while(1) {
+		dd->length = 25;
+		fut = fRead("testfile", dd);
+		while(rpc_check_future(fut));
+		kprintf("Read: %s\n", dd->data);
+	}
+
+	return 0;
 }
