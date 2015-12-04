@@ -108,8 +108,6 @@ int fstree_register_driver(int rpc_modify, int rpc_info, int rpc_read, int rpc_w
 		if(registeredDrivers[i] == 0) {
 			registeredDrivers[i] = calloc(1, sizeof(struct driver));
 
-			kprintf("Set write RPCID=%d\n", rpc_write);
-
 			registeredDrivers[i]->rpc_modify = rpc_modify;
 			registeredDrivers[i]->rpc_info = rpc_info;
 			registeredDrivers[i]->rpc_read   = rpc_read;
@@ -117,7 +115,6 @@ int fstree_register_driver(int rpc_modify, int rpc_info, int rpc_read, int rpc_w
 
 			strcpy(registeredDrivers[i]->driverName, name);
 			registeredDrivers[i]->driverThread = get_current_thread();
-			kprintf("Set driver %x thread to %x\n", registeredDrivers[i], get_current_thread());
 			return i;
 		}
 	}

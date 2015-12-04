@@ -17,7 +17,9 @@ void rpc_return(int returnCode) {
 
 	syscall(&state);
 
-	while(1);
+	while(1) {
+		kprintf("RET NO WORK\n");
+	}
 }
 
 void rpc_init() {

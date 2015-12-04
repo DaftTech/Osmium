@@ -183,6 +183,7 @@ void free(void* ptr) {
 
 	while (cur != NULL) {
 		if (cur->address == (uint32_t) ptr) {
+			memset(ptr, 0, cur->size);
 			malloced -= cur->size;
 
 			merge_into_frees(cur);

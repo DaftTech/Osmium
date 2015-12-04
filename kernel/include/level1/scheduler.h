@@ -39,7 +39,7 @@ struct thread {
 	ADDRESS rpc_handler_address;
 
 	struct rpc* active_rpc;
-	struct rpc_future* blockedBy;
+	struct rpc_future* runningFutures;
 
 	struct thread* next; //Threads are organized as a double linked list
 	struct thread* prev;
@@ -64,7 +64,7 @@ struct rpc {
 	struct cpu_state cpuState;
 
 	struct rpc_future* fullfills;
-	struct rpc_future* blockedBy;
+	struct rpc_future* runningFutures;
 
 	struct rpc* next;
 };
@@ -82,7 +82,7 @@ void				setargsptr(struct thread* t, void* value);
 
 struct cpu_state* 	terminate_current(struct cpu_state* cpu);
 struct cpu_state* 	schedule_exception(struct cpu_state* cpu);
-struct cpu_state* 	schedule_to_task(struct thread* task);
+struct cpu_state*   schedule_to(struct thread* next, struct cpu_state* cpu);
 struct cpu_state* 	schedule(struct cpu_state* cpu);
 struct cpu_state* 	save_cpu_state(struct cpu_state* cpu);
 

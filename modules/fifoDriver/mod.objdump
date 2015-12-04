@@ -7,27 +7,27 @@ start address 0x200006d8
 
 Program Header:
     LOAD off    0x00001000 vaddr 0x20000000 paddr 0x20000000 align 2**12
-         filesz 0x00001175 memsz 0x00001175 flags r-x
+         filesz 0x00001195 memsz 0x00001195 flags r-x
     LOAD off    0x00003000 vaddr 0x20002000 paddr 0x20002000 align 2**12
-         filesz 0x000010e7 memsz 0x00043014 flags rw-
+         filesz 0x000010f4 memsz 0x00043014 flags rw-
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00001175  20000000  20000000  00001000  2**2
+  0 .text         00001195  20000000  20000000  00001000  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   1 .data         00000005  20002000  20002000  00003000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
   2 .rodata       00000094  20003000  20003000  00004000  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .rodata.str1.1 00000053  20003094  20003094  00004094  2**0
+  3 .rodata.str1.1 00000060  20003094  20003094  00004094  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  4 .bss          00041014  20004000  20004000  000040e7  2**5
+  4 .bss          00041014  20004000  20004000  000040f4  2**5
                   ALLOC
-  5 .stab         00004020  00000000  00000000  000040e8  2**2
+  5 .stab         00004050  00000000  00000000  000040f4  2**2
                   CONTENTS, READONLY, DEBUGGING
-  6 .comment      00000090  00000000  00000000  00008108  2**0
+  6 .comment      00000090  00000000  00000000  00008144  2**0
                   CONTENTS, READONLY
-  7 .stabstr      00001a4c  00000000  00000000  00008198  2**0
+  7 .stabstr      00001a58  00000000  00000000  000081d4  2**0
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 20000000 l    d  .text	00000000 .text
@@ -52,20 +52,20 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 driver.c
 00000000 l    df *ABS*	00000000 memory.c
 00000000 l    df *ABS*	00000000 stdlib.c
-20000f70 l     F .text	00000069 pop_unused_node
-20000bb3 g     F .text	0000003e inb
-20000d21 g     F .text	00000039 register_driver
+20000f8e l     F .text	00000069 pop_unused_node
+20000bbf g     F .text	0000003e inb
+20000d2d g     F .text	00000039 register_driver
 2000075d g     F .text	0000003e kputc
-20000afb g     F .text	0000003c fModify
+20000b07 g     F .text	0000003c fModify
 20000700 g     F .text	00000050 syscall
 2000097f g     F .text	00000042 rpc_init
 20000750 g     F .text	0000000d setclr
-20000d78 g     F .text	00000026 memcpy
+20000d84 g     F .text	00000026 memcpy
 2000012e g     F .text	00000167 dRead
-20000e22 g     F .text	00000057 pcalloc
-20000de5 g     F .text	0000003d pfree
-20000fd9 g     F .text	00000108 malloc
-20000caa g     F .text	0000003c register_irq_rpc
+20000e2e g     F .text	00000057 pcalloc
+20000df1 g     F .text	0000003d pfree
+20000ff7 g     F .text	00000108 malloc
+20000cb6 g     F .text	0000003c register_irq_rpc
 2000050a g     F .text	00000017 execn
 20000521 g     F .text	0000003c thread
 200003e8 g     F .text	000000ba createDriver
@@ -74,38 +74,38 @@ SYMBOL TABLE:
 2004500c g     O .bss	00000004 first_free
 20000000 g     F .text	0000002a dModify
 200008cc g     F .text	00000028 rpc_register_handler
-20000b75 g     F .text	0000003e inw
+20000b81 g     F .text	0000003e inw
 20045010 g     O .bss	00000004 malloced
-20001141 g     F .text	00000034 calloc
+20001161 g     F .text	00000034 calloc
 2000002a g     F .text	00000104 dCall
 2000055d g     F .text	0000003e getargsptr
-20000a84 g     F .text	0000003c fWrite
+20000a90 g     F .text	0000003c fWrite
 200004d0 g     F .text	0000003a exec
 200005d8 g     F .text	000000ec execp
 200006d8 g     F .text	00000026 _start
-20000b37 g     F .text	0000003e inl
-200010e1 g     F .text	00000060 realloc
-20000d9e g     F .text	00000047 memcmp
-20000e79 g     F .text	0000000f palloc
-20000c6c g     F .text	0000003e outb
+20000b43 g     F .text	0000003e inl
+200010ff g     F .text	00000062 realloc
+20000daa g     F .text	00000047 memcmp
+20000e85 g     F .text	0000000f palloc
+20000c78 g     F .text	0000003e outb
 20045004 g     O .bss	00000004 first_unused
-20000d5c g     F .text	0000001c memset
+20000d68 g     F .text	0000001c memset
 200004a2 g     F .text	0000002c main
-200009fe g     F .text	0000004a rpc_handler
+20000a07 g     F .text	0000004a rpc_handler
 200007c2 g     F .text	0000003b kputn
-20000ac0 g     F .text	0000003b fCall
+20000acc g     F .text	0000003b fCall
 2000079b g     F .text	00000027 kputs
 20045008 g     O .bss	00000004 first_used
-20000c2e g     F .text	0000003e outw
-200009c1 g     F .text	0000003d rpc_return
-20000bf1 g     F .text	0000003d outl
+20000c3a g     F .text	0000003e outw
+200009c1 g     F .text	00000046 rpc_return
+20000bfd g     F .text	0000003d outl
 200007fd g     F .text	000000ce kprintf
 2000059b g     F .text	0000003d exit
 200006c4 g     F .text	00000014 execpn
-20000a48 g     F .text	0000003c fRead
+20000a54 g     F .text	0000003c fRead
 20000295 g     F .text	00000153 dWrite
-20000ce6 g     F .text	0000003b register_path
-20000e88 g     F .text	000000e8 free
+20000cf2 g     F .text	0000003b register_path
+20000e94 g     F .text	000000fa free
 
 
 
@@ -196,7 +196,7 @@ int dCall(int callID, void* data) {
 200000a6:	83 ec 08             	sub    $0x8,%esp
 200000a9:	68 e0 0e 00 00       	push   $0xee0
 200000ae:	6a 01                	push   $0x1
-200000b0:	e8 8c 10 00 00       	call   20001141 <calloc>
+200000b0:	e8 ac 10 00 00       	call   20001161 <calloc>
 200000b5:	83 c4 10             	add    $0x10,%esp
 200000b8:	89 04 9d 00 40 00 20 	mov    %eax,0x20004000(,%ebx,4)
 				break;
@@ -236,7 +236,7 @@ int dCall(int callID, void* data) {
 20000100:	ff 75 ec             	pushl  -0x14(%ebp)
 20000103:	52                   	push   %edx
 20000104:	50                   	push   %eax
-20000105:	e8 dc 0b 00 00       	call   20000ce6 <register_path>
+20000105:	e8 e8 0b 00 00       	call   20000cf2 <register_path>
 2000010a:	83 c4 10             	add    $0x10,%esp
 2000010d:	89 45 f0             	mov    %eax,-0x10(%ebp)
 		drvData->result = r ? E_ERROR : S_OK;
@@ -356,7 +356,7 @@ int dRead(int resourceID, void* data) {
 2000020e:	68 d8 0e 00 00       	push   $0xed8
 20000213:	6a 00                	push   $0x0
 20000215:	50                   	push   %eax
-20000216:	e8 41 0b 00 00       	call   20000d5c <memset>
+20000216:	e8 4d 0b 00 00       	call   20000d68 <memset>
 2000021b:	83 c4 10             	add    $0x10,%esp
 	memcpy(drvData->data, (file->content + file->readPos), readA);
 2000021e:	8b 45 f0             	mov    -0x10(%ebp),%eax
@@ -371,7 +371,7 @@ int dRead(int resourceID, void* data) {
 20000238:	50                   	push   %eax
 20000239:	51                   	push   %ecx
 2000023a:	52                   	push   %edx
-2000023b:	e8 38 0b 00 00       	call   20000d78 <memcpy>
+2000023b:	e8 44 0b 00 00       	call   20000d84 <memcpy>
 20000240:	83 c4 10             	add    $0x10,%esp
 	if(readB) memcpy(drvData->data + file->readPos, file->content, readB);
 20000243:	83 7d f4 00          	cmpl   $0x0,-0xc(%ebp)
@@ -388,7 +388,7 @@ int dRead(int resourceID, void* data) {
 20000264:	50                   	push   %eax
 20000265:	51                   	push   %ecx
 20000266:	52                   	push   %edx
-20000267:	e8 0c 0b 00 00       	call   20000d78 <memcpy>
+20000267:	e8 18 0b 00 00       	call   20000d84 <memcpy>
 2000026c:	83 c4 10             	add    $0x10,%esp
 
 	file->readPos = endPos;
@@ -525,7 +525,7 @@ int dWrite(int resourceID, void* data) {
 200003a3:	50                   	push   %eax
 200003a4:	51                   	push   %ecx
 200003a5:	52                   	push   %edx
-200003a6:	e8 cd 09 00 00       	call   20000d78 <memcpy>
+200003a6:	e8 d9 09 00 00       	call   20000d84 <memcpy>
 200003ab:	83 c4 10             	add    $0x10,%esp
 	if(writeB) memcpy(file->content, drvData->data + writeA, writeB);
 200003ae:	83 7d f4 00          	cmpl   $0x0,-0xc(%ebp)
@@ -541,7 +541,7 @@ int dWrite(int resourceID, void* data) {
 200003cb:	50                   	push   %eax
 200003cc:	51                   	push   %ecx
 200003cd:	52                   	push   %edx
-200003ce:	e8 a5 09 00 00       	call   20000d78 <memcpy>
+200003ce:	e8 b1 09 00 00       	call   20000d84 <memcpy>
 200003d3:	83 c4 10             	add    $0x10,%esp
 
 	file->writePos = endPos;
@@ -613,7 +613,7 @@ void createDriver() {
 20000468:	ff 75 ec             	pushl  -0x14(%ebp)
 2000046b:	ff 75 e8             	pushl  -0x18(%ebp)
 2000046e:	ff 75 e4             	pushl  -0x1c(%ebp)
-20000471:	e8 ab 08 00 00       	call   20000d21 <register_driver>
+20000471:	e8 b7 08 00 00       	call   20000d2d <register_driver>
 20000476:	83 c4 20             	add    $0x20,%esp
 20000479:	a3 00 20 00 20       	mov    %eax,0x20002000
 
@@ -650,7 +650,7 @@ int main(void* initrfsPtr) {
 200004bb:	6a 00                	push   $0x0
 200004bd:	6a 00                	push   $0x0
 200004bf:	68 74 30 00 20       	push   $0x20003074
-200004c4:	e8 f7 05 00 00       	call   20000ac0 <fCall>
+200004c4:	e8 03 06 00 00       	call   20000acc <fCall>
 200004c9:	83 c4 10             	add    $0x10,%esp
 	while(1);
 200004cc:	eb fe                	jmp    200004cc <main+0x2a>
@@ -879,7 +879,7 @@ THREAD execp(char* path, void* data, uint32_t datasize) {
 
 THREAD execp(char* path, void* data, uint32_t datasize) {
 	struct driver_data* driverData = palloc();
-200005e6:	e8 8e 08 00 00       	call   20000e79 <palloc>
+200005e6:	e8 9a 08 00 00       	call   20000e85 <palloc>
 
 	uint32_t elfsize = MAX_IO_BUFFER;
 	void* elf = malloc(elfsize); //256KB for init load
@@ -895,7 +895,7 @@ THREAD execp(char* path, void* data, uint32_t datasize) {
 	uint32_t elfsize = MAX_IO_BUFFER;
 	void* elf = malloc(elfsize); //256KB for init load
 200005f0:	68 d8 0e 00 00       	push   $0xed8
-200005f5:	e8 df 09 00 00       	call   20000fd9 <malloc>
+200005f5:	e8 fd 09 00 00       	call   20000ff7 <malloc>
 
 	driverData->length = MAX_IO_BUFFER;
 200005fa:	c7 43 08 d8 0e 00 00 	movl   $0xed8,0x8(%ebx)
@@ -931,7 +931,7 @@ THREAD execp(char* path, void* data, uint32_t datasize) {
 20000619:	50                   	push   %eax
 2000061a:	53                   	push   %ebx
 2000061b:	ff 75 08             	pushl  0x8(%ebp)
-2000061e:	e8 25 04 00 00       	call   20000a48 <fRead>
+2000061e:	e8 31 04 00 00       	call   20000a54 <fRead>
 20000623:	83 c4 10             	add    $0x10,%esp
 20000626:	89 c2                	mov    %eax,%edx
 		while(rpc_check_future(f));
@@ -960,7 +960,7 @@ THREAD execp(char* path, void* data, uint32_t datasize) {
 20000654:	51                   	push   %ecx
 20000655:	57                   	push   %edi
 20000656:	56                   	push   %esi
-20000657:	e8 85 0a 00 00       	call   200010e1 <realloc>
+20000657:	e8 a3 0a 00 00       	call   200010ff <realloc>
 2000065c:	83 c4 10             	add    $0x10,%esp
 2000065f:	89 c6                	mov    %eax,%esi
 		}
@@ -975,7 +975,7 @@ THREAD execp(char* path, void* data, uint32_t datasize) {
 2000066d:	8b 03                	mov    (%ebx),%eax
 2000066f:	01 f0                	add    %esi,%eax
 20000671:	50                   	push   %eax
-20000672:	e8 01 07 00 00       	call   20000d78 <memcpy>
+20000672:	e8 0d 07 00 00       	call   20000d84 <memcpy>
 20000677:	83 c4 10             	add    $0x10,%esp
 
 		driverData->pos += driverData->bytesDone;
@@ -1002,10 +1002,10 @@ THREAD execp(char* path, void* data, uint32_t datasize) {
 200006a5:	83 c4 14             	add    $0x14,%esp
 200006a8:	89 45 e0             	mov    %eax,-0x20(%ebp)
 200006ab:	53                   	push   %ebx
-200006ac:	e8 34 07 00 00       	call   20000de5 <pfree>
+200006ac:	e8 40 07 00 00       	call   20000df1 <pfree>
 	free(elf);
 200006b1:	89 34 24             	mov    %esi,(%esp)
-200006b4:	e8 cf 07 00 00       	call   20000e88 <free>
+200006b4:	e8 db 07 00 00       	call   20000e94 <free>
 
 	return ret;
 }
@@ -1556,9 +1556,9 @@ void* rpc_map(uint32_t* rpcID, uint32_t* rpcARG0) {
 2000097e:	c3                   	ret    
 
 2000097f <rpc_init>:
-	syscall(&state);
-
-	while(1);
+	while(1) {
+		kprintf("RET NO WORK\n");
+	}
 }
 
 void rpc_init() {
@@ -1572,8 +1572,8 @@ void rpc_init() {
 		rpcHandlers[i] = (int(*)(int, void*))0;
 20000989:	c7 04 85 04 40 04 20 	movl   $0x0,0x20044004(,%eax,4)
 20000990:	00 00 00 00 
-
-	while(1);
+		kprintf("RET NO WORK\n");
+	}
 }
 
 void rpc_init() {
@@ -1635,1735 +1635,1743 @@ void rpc_return(int returnCode) {
 
 	syscall(&state);
 200009d4:	8d 45 e0             	lea    -0x20(%ebp),%eax
-200009d7:	50                   	push   %eax
 			.eax = 0x201,
 			.ebx = returnCode,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-200009d8:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
-200009df:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-200009e6:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-200009ed:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+200009d7:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
+200009de:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+200009e5:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+200009ec:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
+200009f3:	50                   	push   %eax
 200009f4:	e8 07 fd ff ff       	call   20000700 <syscall>
-200009f9:	83 c4 10             	add    $0x10,%esp
-200009fc:	eb fe                	jmp    200009fc <rpc_return+0x3b>
 
-200009fe <rpc_handler>:
+	while(1) {
+		kprintf("RET NO WORK\n");
+200009f9:	c7 04 24 e7 30 00 20 	movl   $0x200030e7,(%esp)
+20000a00:	e8 f8 fd ff ff       	call   200007fd <kprintf>
+20000a05:	eb f2                	jmp    200009f9 <rpc_return+0x38>
+
+20000a07 <rpc_handler>:
 		}
 	}
 	return -1;
 }
 
 void rpc_handler() {
-200009fe:	55                   	push   %ebp
-200009ff:	89 e5                	mov    %esp,%ebp
-20000a01:	83 ec 20             	sub    $0x20,%esp
+20000a07:	55                   	push   %ebp
+20000a08:	89 e5                	mov    %esp,%ebp
+20000a0a:	83 ec 20             	sub    $0x20,%esp
 	uint32_t rpcID;
 	uint32_t rpcARG0;
 	void* rpcData = rpc_map(&rpcID, &rpcARG0);
-20000a04:	8d 45 f0             	lea    -0x10(%ebp),%eax
-20000a07:	50                   	push   %eax
-20000a08:	8d 45 f4             	lea    -0xc(%ebp),%eax
-20000a0b:	50                   	push   %eax
-20000a0c:	e8 20 ff ff ff       	call   20000931 <rpc_map>
+20000a0d:	8d 45 f0             	lea    -0x10(%ebp),%eax
+20000a10:	50                   	push   %eax
+20000a11:	8d 45 f4             	lea    -0xc(%ebp),%eax
+20000a14:	50                   	push   %eax
+20000a15:	e8 17 ff ff ff       	call   20000931 <rpc_map>
 
 	int returnValue = -1;
 
 	if(rpcID < RPC_HANDLERS && rpcHandlers[rpcID] != 0) {
-20000a11:	8b 55 f4             	mov    -0xc(%ebp),%edx
-20000a14:	83 c4 10             	add    $0x10,%esp
-20000a17:	81 fa ff 03 00 00    	cmp    $0x3ff,%edx
-20000a1d:	77 18                	ja     20000a37 <rpc_handler+0x39>
-20000a1f:	8b 14 95 04 40 04 20 	mov    0x20044004(,%edx,4),%edx
-20000a26:	85 d2                	test   %edx,%edx
-20000a28:	74 0d                	je     20000a37 <rpc_handler+0x39>
+20000a1a:	8b 55 f4             	mov    -0xc(%ebp),%edx
+20000a1d:	83 c4 10             	add    $0x10,%esp
+20000a20:	81 fa ff 03 00 00    	cmp    $0x3ff,%edx
+20000a26:	77 18                	ja     20000a40 <rpc_handler+0x39>
+20000a28:	8b 14 95 04 40 04 20 	mov    0x20044004(,%edx,4),%edx
+20000a2f:	85 d2                	test   %edx,%edx
+20000a31:	74 0d                	je     20000a40 <rpc_handler+0x39>
 		returnValue = rpcHandlers[rpcID](rpcARG0, rpcData);
-20000a2a:	51                   	push   %ecx
-20000a2b:	51                   	push   %ecx
-20000a2c:	50                   	push   %eax
-20000a2d:	ff 75 f0             	pushl  -0x10(%ebp)
-20000a30:	ff d2                	call   *%edx
-20000a32:	83 c4 10             	add    $0x10,%esp
-20000a35:	eb 03                	jmp    20000a3a <rpc_handler+0x3c>
-20000a37:	83 c8 ff             	or     $0xffffffff,%eax
+20000a33:	51                   	push   %ecx
+20000a34:	51                   	push   %ecx
+20000a35:	50                   	push   %eax
+20000a36:	ff 75 f0             	pushl  -0x10(%ebp)
+20000a39:	ff d2                	call   *%edx
+20000a3b:	83 c4 10             	add    $0x10,%esp
+20000a3e:	eb 03                	jmp    20000a43 <rpc_handler+0x3c>
+20000a40:	83 c8 ff             	or     $0xffffffff,%eax
 	}
 
 	rpc_return(returnValue);
-20000a3a:	83 ec 0c             	sub    $0xc,%esp
-20000a3d:	50                   	push   %eax
-20000a3e:	e8 7e ff ff ff       	call   200009c1 <rpc_return>
-20000a43:	83 c4 10             	add    $0x10,%esp
+20000a43:	83 ec 0c             	sub    $0xc,%esp
+20000a46:	50                   	push   %eax
+20000a47:	e8 75 ff ff ff       	call   200009c1 <rpc_return>
+20000a4c:	83 c4 10             	add    $0x10,%esp
 }
-20000a46:	c9                   	leave  
-20000a47:	c3                   	ret    
+20000a4f:	c9                   	leave  
+20000a50:	c3                   	ret    
+20000a51:	00 00                	add    %al,(%eax)
+	...
 
-20000a48 <fRead>:
+20000a54 <fRead>:
 	syscall(&state);
 
 	return state.eax;
 }
 
 FUTURE fRead(char* path, struct driver_data* drvData) {
-20000a48:	55                   	push   %ebp
-20000a49:	89 e5                	mov    %esp,%ebp
-20000a4b:	83 ec 34             	sub    $0x34,%esp
+20000a54:	55                   	push   %ebp
+20000a55:	89 e5                	mov    %esp,%ebp
+20000a57:	83 ec 34             	sub    $0x34,%esp
 			.eax = 0x305,
 			.ebx = (uint32_t)path,
 			.ecx = (uint32_t)drvData,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000a4e:	8b 45 08             	mov    0x8(%ebp),%eax
-20000a51:	c7 45 e0 05 03 00 00 	movl   $0x305,-0x20(%ebp)
-20000a58:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-20000a5b:	8b 45 0c             	mov    0xc(%ebp),%eax
-20000a5e:	89 45 e8             	mov    %eax,-0x18(%ebp)
+20000a5a:	8b 45 08             	mov    0x8(%ebp),%eax
+20000a5d:	c7 45 e0 05 03 00 00 	movl   $0x305,-0x20(%ebp)
+20000a64:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000a67:	8b 45 0c             	mov    0xc(%ebp),%eax
+20000a6a:	89 45 e8             	mov    %eax,-0x18(%ebp)
 
 	syscall(&state);
-20000a61:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000a64:	50                   	push   %eax
+20000a6d:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000a70:	50                   	push   %eax
 			.eax = 0x305,
 			.ebx = (uint32_t)path,
 			.ecx = (uint32_t)drvData,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000a65:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000a6c:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000a73:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000a71:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000a78:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000a7f:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000a7a:	e8 81 fc ff ff       	call   20000700 <syscall>
+20000a86:	e8 75 fc ff ff       	call   20000700 <syscall>
 
 	return state.eax;
 }
-20000a7f:	8b 45 e0             	mov    -0x20(%ebp),%eax
-20000a82:	c9                   	leave  
-20000a83:	c3                   	ret    
+20000a8b:	8b 45 e0             	mov    -0x20(%ebp),%eax
+20000a8e:	c9                   	leave  
+20000a8f:	c3                   	ret    
 
-20000a84 <fWrite>:
+20000a90 <fWrite>:
 	syscall(&state);
 
 	return state.eax;
 }
 
 FUTURE fWrite(char* path, struct driver_data* drvData) {
-20000a84:	55                   	push   %ebp
-20000a85:	89 e5                	mov    %esp,%ebp
-20000a87:	83 ec 34             	sub    $0x34,%esp
+20000a90:	55                   	push   %ebp
+20000a91:	89 e5                	mov    %esp,%ebp
+20000a93:	83 ec 34             	sub    $0x34,%esp
 			.eax = 0x304,
 			.ebx = (uint32_t)path,
 			.ecx = (uint32_t)drvData,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000a8a:	8b 45 08             	mov    0x8(%ebp),%eax
-20000a8d:	c7 45 e0 04 03 00 00 	movl   $0x304,-0x20(%ebp)
-20000a94:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-20000a97:	8b 45 0c             	mov    0xc(%ebp),%eax
-20000a9a:	89 45 e8             	mov    %eax,-0x18(%ebp)
+20000a96:	8b 45 08             	mov    0x8(%ebp),%eax
+20000a99:	c7 45 e0 04 03 00 00 	movl   $0x304,-0x20(%ebp)
+20000aa0:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000aa3:	8b 45 0c             	mov    0xc(%ebp),%eax
+20000aa6:	89 45 e8             	mov    %eax,-0x18(%ebp)
 
 	syscall(&state);
-20000a9d:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000aa0:	50                   	push   %eax
+20000aa9:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000aac:	50                   	push   %eax
 			.eax = 0x304,
 			.ebx = (uint32_t)path,
 			.ecx = (uint32_t)drvData,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000aa1:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000aa8:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000aaf:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000aad:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000ab4:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000abb:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000ab6:	e8 45 fc ff ff       	call   20000700 <syscall>
+20000ac2:	e8 39 fc ff ff       	call   20000700 <syscall>
 
 	return state.eax;
 }
-20000abb:	8b 45 e0             	mov    -0x20(%ebp),%eax
-20000abe:	c9                   	leave  
-20000abf:	c3                   	ret    
+20000ac7:	8b 45 e0             	mov    -0x20(%ebp),%eax
+20000aca:	c9                   	leave  
+20000acb:	c3                   	ret    
 
-20000ac0 <fCall>:
+20000acc <fCall>:
 	syscall(&state);
 
 	return state.eax;
 }
 
 FUTURE fCall(char* driverName, int callID, struct driver_data* drvData) {
-20000ac0:	55                   	push   %ebp
-20000ac1:	89 e5                	mov    %esp,%ebp
-20000ac3:	83 ec 34             	sub    $0x34,%esp
+20000acc:	55                   	push   %ebp
+20000acd:	89 e5                	mov    %esp,%ebp
+20000acf:	83 ec 34             	sub    $0x34,%esp
 			.eax = 0x303,
 			.ebx = (uint32_t)driverName,
 			.ecx = (uint32_t)drvData,
 			.edx = callID,
 			.esi = 0,
 			.edi = 0 };
-20000ac6:	8b 45 08             	mov    0x8(%ebp),%eax
-20000ac9:	c7 45 e0 03 03 00 00 	movl   $0x303,-0x20(%ebp)
-20000ad0:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-20000ad3:	8b 45 10             	mov    0x10(%ebp),%eax
-20000ad6:	89 45 e8             	mov    %eax,-0x18(%ebp)
-20000ad9:	8b 45 0c             	mov    0xc(%ebp),%eax
-20000adc:	89 45 ec             	mov    %eax,-0x14(%ebp)
+20000ad2:	8b 45 08             	mov    0x8(%ebp),%eax
+20000ad5:	c7 45 e0 03 03 00 00 	movl   $0x303,-0x20(%ebp)
+20000adc:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000adf:	8b 45 10             	mov    0x10(%ebp),%eax
+20000ae2:	89 45 e8             	mov    %eax,-0x18(%ebp)
+20000ae5:	8b 45 0c             	mov    0xc(%ebp),%eax
+20000ae8:	89 45 ec             	mov    %eax,-0x14(%ebp)
 
 	syscall(&state);
-20000adf:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000ae2:	50                   	push   %eax
+20000aeb:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000aee:	50                   	push   %eax
 			.eax = 0x303,
 			.ebx = (uint32_t)driverName,
 			.ecx = (uint32_t)drvData,
 			.edx = callID,
 			.esi = 0,
 			.edi = 0 };
-20000ae3:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000aea:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000aef:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000af6:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000af1:	e8 0a fc ff ff       	call   20000700 <syscall>
+20000afd:	e8 fe fb ff ff       	call   20000700 <syscall>
 
 	return state.eax;
 }
-20000af6:	8b 45 e0             	mov    -0x20(%ebp),%eax
-20000af9:	c9                   	leave  
-20000afa:	c3                   	ret    
+20000b02:	8b 45 e0             	mov    -0x20(%ebp),%eax
+20000b05:	c9                   	leave  
+20000b06:	c3                   	ret    
 
-20000afb <fModify>:
+20000b07 <fModify>:
 	syscall(&state);
 
 	return state.eax;
 }
 
 FUTURE fModify(char* path, struct driver_data* drvData) {
-20000afb:	55                   	push   %ebp
-20000afc:	89 e5                	mov    %esp,%ebp
-20000afe:	83 ec 34             	sub    $0x34,%esp
+20000b07:	55                   	push   %ebp
+20000b08:	89 e5                	mov    %esp,%ebp
+20000b0a:	83 ec 34             	sub    $0x34,%esp
 			.eax = 0x302,
 			.ebx = (uint32_t)path,
 			.ecx = (uint32_t)drvData,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000b01:	8b 45 08             	mov    0x8(%ebp),%eax
-20000b04:	c7 45 e0 02 03 00 00 	movl   $0x302,-0x20(%ebp)
-20000b0b:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-20000b0e:	8b 45 0c             	mov    0xc(%ebp),%eax
-20000b11:	89 45 e8             	mov    %eax,-0x18(%ebp)
+20000b0d:	8b 45 08             	mov    0x8(%ebp),%eax
+20000b10:	c7 45 e0 02 03 00 00 	movl   $0x302,-0x20(%ebp)
+20000b17:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000b1a:	8b 45 0c             	mov    0xc(%ebp),%eax
+20000b1d:	89 45 e8             	mov    %eax,-0x18(%ebp)
 
 	syscall(&state);
-20000b14:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000b17:	50                   	push   %eax
+20000b20:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000b23:	50                   	push   %eax
 			.eax = 0x302,
 			.ebx = (uint32_t)path,
 			.ecx = (uint32_t)drvData,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000b18:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000b1f:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000b26:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000b24:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000b2b:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000b32:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000b2d:	e8 ce fb ff ff       	call   20000700 <syscall>
+20000b39:	e8 c2 fb ff ff       	call   20000700 <syscall>
 
 	return state.eax;
 }
-20000b32:	8b 45 e0             	mov    -0x20(%ebp),%eax
-20000b35:	c9                   	leave  
-20000b36:	c3                   	ret    
+20000b3e:	8b 45 e0             	mov    -0x20(%ebp),%eax
+20000b41:	c9                   	leave  
+20000b42:	c3                   	ret    
 
-20000b37 <inl>:
+20000b43 <inl>:
 	syscall(&state);
 
 	return state.eax;
 }
 
 uint32_t inl(uint16_t port) {
-20000b37:	55                   	push   %ebp
-20000b38:	89 e5                	mov    %esp,%ebp
-20000b3a:	83 ec 34             	sub    $0x34,%esp
-20000b3d:	0f b7 45 08          	movzwl 0x8(%ebp),%eax
+20000b43:	55                   	push   %ebp
+20000b44:	89 e5                	mov    %esp,%ebp
+20000b46:	83 ec 34             	sub    $0x34,%esp
+20000b49:	0f b7 45 08          	movzwl 0x8(%ebp),%eax
 			.eax = 0x606,
 			.ebx = port,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000b41:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000b4d:	89 45 e4             	mov    %eax,-0x1c(%ebp)
 
 	syscall(&state);
-20000b44:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000b47:	50                   	push   %eax
+20000b50:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000b53:	50                   	push   %eax
 			.eax = 0x606,
 			.ebx = port,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000b48:	c7 45 e0 06 06 00 00 	movl   $0x606,-0x20(%ebp)
-20000b4f:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
-20000b56:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000b5d:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000b64:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000b54:	c7 45 e0 06 06 00 00 	movl   $0x606,-0x20(%ebp)
+20000b5b:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
+20000b62:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000b69:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000b70:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000b6b:	e8 90 fb ff ff       	call   20000700 <syscall>
+20000b77:	e8 84 fb ff ff       	call   20000700 <syscall>
 
 	return state.eax;
 }
-20000b70:	8b 45 e0             	mov    -0x20(%ebp),%eax
-20000b73:	c9                   	leave  
-20000b74:	c3                   	ret    
+20000b7c:	8b 45 e0             	mov    -0x20(%ebp),%eax
+20000b7f:	c9                   	leave  
+20000b80:	c3                   	ret    
 
-20000b75 <inw>:
+20000b81 <inw>:
 	syscall(&state);
 
 	return state.eax;
 }
 
 uint16_t inw(uint16_t port) {
-20000b75:	55                   	push   %ebp
-20000b76:	89 e5                	mov    %esp,%ebp
-20000b78:	83 ec 34             	sub    $0x34,%esp
-20000b7b:	0f b7 45 08          	movzwl 0x8(%ebp),%eax
+20000b81:	55                   	push   %ebp
+20000b82:	89 e5                	mov    %esp,%ebp
+20000b84:	83 ec 34             	sub    $0x34,%esp
+20000b87:	0f b7 45 08          	movzwl 0x8(%ebp),%eax
 			.eax = 0x605,
 			.ebx = port,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000b7f:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000b8b:	89 45 e4             	mov    %eax,-0x1c(%ebp)
 
 	syscall(&state);
-20000b82:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000b85:	50                   	push   %eax
+20000b8e:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000b91:	50                   	push   %eax
 			.eax = 0x605,
 			.ebx = port,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000b86:	c7 45 e0 05 06 00 00 	movl   $0x605,-0x20(%ebp)
-20000b8d:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
-20000b94:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000b9b:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000ba2:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000b92:	c7 45 e0 05 06 00 00 	movl   $0x605,-0x20(%ebp)
+20000b99:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
+20000ba0:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000ba7:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000bae:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000ba9:	e8 52 fb ff ff       	call   20000700 <syscall>
+20000bb5:	e8 46 fb ff ff       	call   20000700 <syscall>
 
 	return state.eax;
 }
-20000bae:	8b 45 e0             	mov    -0x20(%ebp),%eax
-20000bb1:	c9                   	leave  
-20000bb2:	c3                   	ret    
+20000bba:	8b 45 e0             	mov    -0x20(%ebp),%eax
+20000bbd:	c9                   	leave  
+20000bbe:	c3                   	ret    
 
-20000bb3 <inb>:
+20000bbf <inb>:
 			.edi = 0 };
 
 	syscall(&state);
 }
 
 uint8_t inb(uint16_t port) {
-20000bb3:	55                   	push   %ebp
-20000bb4:	89 e5                	mov    %esp,%ebp
-20000bb6:	83 ec 34             	sub    $0x34,%esp
-20000bb9:	0f b7 45 08          	movzwl 0x8(%ebp),%eax
+20000bbf:	55                   	push   %ebp
+20000bc0:	89 e5                	mov    %esp,%ebp
+20000bc2:	83 ec 34             	sub    $0x34,%esp
+20000bc5:	0f b7 45 08          	movzwl 0x8(%ebp),%eax
 			.eax = 0x604,
 			.ebx = port,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000bbd:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000bc9:	89 45 e4             	mov    %eax,-0x1c(%ebp)
 
 	syscall(&state);
-20000bc0:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000bc3:	50                   	push   %eax
+20000bcc:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000bcf:	50                   	push   %eax
 			.eax = 0x604,
 			.ebx = port,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000bc4:	c7 45 e0 04 06 00 00 	movl   $0x604,-0x20(%ebp)
-20000bcb:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
-20000bd2:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000bd9:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000be0:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000bd0:	c7 45 e0 04 06 00 00 	movl   $0x604,-0x20(%ebp)
+20000bd7:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
+20000bde:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000be5:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000bec:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000be7:	e8 14 fb ff ff       	call   20000700 <syscall>
+20000bf3:	e8 08 fb ff ff       	call   20000700 <syscall>
 
 	return state.eax;
 }
-20000bec:	8a 45 e0             	mov    -0x20(%ebp),%al
-20000bef:	c9                   	leave  
-20000bf0:	c3                   	ret    
+20000bf8:	8a 45 e0             	mov    -0x20(%ebp),%al
+20000bfb:	c9                   	leave  
+20000bfc:	c3                   	ret    
 
-20000bf1 <outl>:
+20000bfd <outl>:
 			.edi = 0 };
 
 	syscall(&state);
 }
 
 void outl(uint16_t port, uint32_t value) {
-20000bf1:	55                   	push   %ebp
-20000bf2:	89 e5                	mov    %esp,%ebp
-20000bf4:	83 ec 34             	sub    $0x34,%esp
-20000bf7:	0f b7 45 08          	movzwl 0x8(%ebp),%eax
+20000bfd:	55                   	push   %ebp
+20000bfe:	89 e5                	mov    %esp,%ebp
+20000c00:	83 ec 34             	sub    $0x34,%esp
+20000c03:	0f b7 45 08          	movzwl 0x8(%ebp),%eax
 			.eax = 0x603,
 			.ebx = port,
 			.ecx = value,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000bfb:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-20000bfe:	8b 45 0c             	mov    0xc(%ebp),%eax
-20000c01:	89 45 e8             	mov    %eax,-0x18(%ebp)
+20000c07:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000c0a:	8b 45 0c             	mov    0xc(%ebp),%eax
+20000c0d:	89 45 e8             	mov    %eax,-0x18(%ebp)
 
 	syscall(&state);
-20000c04:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000c07:	50                   	push   %eax
+20000c10:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000c13:	50                   	push   %eax
 			.eax = 0x603,
 			.ebx = port,
 			.ecx = value,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000c08:	c7 45 e0 03 06 00 00 	movl   $0x603,-0x20(%ebp)
-20000c0f:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000c16:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000c1d:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000c14:	c7 45 e0 03 06 00 00 	movl   $0x603,-0x20(%ebp)
+20000c1b:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000c22:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000c29:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000c24:	e8 d7 fa ff ff       	call   20000700 <syscall>
-20000c29:	83 c4 10             	add    $0x10,%esp
+20000c30:	e8 cb fa ff ff       	call   20000700 <syscall>
+20000c35:	83 c4 10             	add    $0x10,%esp
 }
-20000c2c:	c9                   	leave  
-20000c2d:	c3                   	ret    
+20000c38:	c9                   	leave  
+20000c39:	c3                   	ret    
 
-20000c2e <outw>:
+20000c3a <outw>:
 			.edi = 0 };
 
 	syscall(&state);
 }
 
 void outw(uint16_t port, uint16_t value) {
-20000c2e:	55                   	push   %ebp
-20000c2f:	89 e5                	mov    %esp,%ebp
-20000c31:	83 ec 34             	sub    $0x34,%esp
-20000c34:	0f b7 45 0c          	movzwl 0xc(%ebp),%eax
-20000c38:	0f b7 55 08          	movzwl 0x8(%ebp),%edx
+20000c3a:	55                   	push   %ebp
+20000c3b:	89 e5                	mov    %esp,%ebp
+20000c3d:	83 ec 34             	sub    $0x34,%esp
+20000c40:	0f b7 45 0c          	movzwl 0xc(%ebp),%eax
+20000c44:	0f b7 55 08          	movzwl 0x8(%ebp),%edx
 			.eax = 0x602,
 			.ebx = port,
 			.ecx = value,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000c3c:	89 45 e8             	mov    %eax,-0x18(%ebp)
+20000c48:	89 45 e8             	mov    %eax,-0x18(%ebp)
 
 	syscall(&state);
-20000c3f:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000c42:	50                   	push   %eax
+20000c4b:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000c4e:	50                   	push   %eax
 			.eax = 0x602,
 			.ebx = port,
 			.ecx = value,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000c43:	c7 45 e0 02 06 00 00 	movl   $0x602,-0x20(%ebp)
-20000c4a:	89 55 e4             	mov    %edx,-0x1c(%ebp)
-20000c4d:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000c54:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000c5b:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000c4f:	c7 45 e0 02 06 00 00 	movl   $0x602,-0x20(%ebp)
+20000c56:	89 55 e4             	mov    %edx,-0x1c(%ebp)
+20000c59:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000c60:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000c67:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000c62:	e8 99 fa ff ff       	call   20000700 <syscall>
-20000c67:	83 c4 10             	add    $0x10,%esp
+20000c6e:	e8 8d fa ff ff       	call   20000700 <syscall>
+20000c73:	83 c4 10             	add    $0x10,%esp
 }
-20000c6a:	c9                   	leave  
-20000c6b:	c3                   	ret    
+20000c76:	c9                   	leave  
+20000c77:	c3                   	ret    
 
-20000c6c <outb>:
+20000c78 <outb>:
 	syscall(&state);
 
 	return state.eax;
 }
 
 void outb(uint16_t port, uint8_t value) {
-20000c6c:	55                   	push   %ebp
-20000c6d:	89 e5                	mov    %esp,%ebp
-20000c6f:	83 ec 34             	sub    $0x34,%esp
-20000c72:	0f b7 45 08          	movzwl 0x8(%ebp),%eax
+20000c78:	55                   	push   %ebp
+20000c79:	89 e5                	mov    %esp,%ebp
+20000c7b:	83 ec 34             	sub    $0x34,%esp
+20000c7e:	0f b7 45 08          	movzwl 0x8(%ebp),%eax
 			.eax = 0x601,
 			.ebx = port,
 			.ecx = value,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000c76:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-20000c79:	c7 45 e0 01 06 00 00 	movl   $0x601,-0x20(%ebp)
-20000c80:	0f b6 45 0c          	movzbl 0xc(%ebp),%eax
-20000c84:	89 45 e8             	mov    %eax,-0x18(%ebp)
+20000c82:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000c85:	c7 45 e0 01 06 00 00 	movl   $0x601,-0x20(%ebp)
+20000c8c:	0f b6 45 0c          	movzbl 0xc(%ebp),%eax
+20000c90:	89 45 e8             	mov    %eax,-0x18(%ebp)
 
 	syscall(&state);
-20000c87:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000c8a:	50                   	push   %eax
+20000c93:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000c96:	50                   	push   %eax
 			.eax = 0x601,
 			.ebx = port,
 			.ecx = value,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000c8b:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000c92:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000c99:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000c97:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000c9e:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000ca5:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000ca0:	e8 5b fa ff ff       	call   20000700 <syscall>
-20000ca5:	83 c4 10             	add    $0x10,%esp
+20000cac:	e8 4f fa ff ff       	call   20000700 <syscall>
+20000cb1:	83 c4 10             	add    $0x10,%esp
 }
-20000ca8:	c9                   	leave  
-20000ca9:	c3                   	ret    
+20000cb4:	c9                   	leave  
+20000cb5:	c3                   	ret    
 
-20000caa <register_irq_rpc>:
+20000cb6 <register_irq_rpc>:
 	syscall(&state);
 
 	return state.eax;
 }
 
 int register_irq_rpc(uint32_t irqID, int rpcID) {
-20000caa:	55                   	push   %ebp
-20000cab:	89 e5                	mov    %esp,%ebp
-20000cad:	83 ec 34             	sub    $0x34,%esp
+20000cb6:	55                   	push   %ebp
+20000cb7:	89 e5                	mov    %esp,%ebp
+20000cb9:	83 ec 34             	sub    $0x34,%esp
 			.eax = 0x600,
 			.ebx = irqID,
 			.ecx = rpcID,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000cb0:	8b 45 08             	mov    0x8(%ebp),%eax
-20000cb3:	c7 45 e0 00 06 00 00 	movl   $0x600,-0x20(%ebp)
-20000cba:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-20000cbd:	8b 45 0c             	mov    0xc(%ebp),%eax
-20000cc0:	89 45 e8             	mov    %eax,-0x18(%ebp)
+20000cbc:	8b 45 08             	mov    0x8(%ebp),%eax
+20000cbf:	c7 45 e0 00 06 00 00 	movl   $0x600,-0x20(%ebp)
+20000cc6:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000cc9:	8b 45 0c             	mov    0xc(%ebp),%eax
+20000ccc:	89 45 e8             	mov    %eax,-0x18(%ebp)
 
 	syscall(&state);
-20000cc3:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000cc6:	50                   	push   %eax
+20000ccf:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000cd2:	50                   	push   %eax
 			.eax = 0x600,
 			.ebx = irqID,
 			.ecx = rpcID,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000cc7:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000cce:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000cd5:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000cd3:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000cda:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000ce1:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000cdc:	e8 1f fa ff ff       	call   20000700 <syscall>
+20000ce8:	e8 13 fa ff ff       	call   20000700 <syscall>
 
 	return state.eax;
 }
-20000ce1:	8b 45 e0             	mov    -0x20(%ebp),%eax
-20000ce4:	c9                   	leave  
-20000ce5:	c3                   	ret    
+20000ced:	8b 45 e0             	mov    -0x20(%ebp),%eax
+20000cf0:	c9                   	leave  
+20000cf1:	c3                   	ret    
 
-20000ce6 <register_path>:
+20000cf2 <register_path>:
 	syscall(&state);
 
 	return state.eax;
 }
 
 int register_path(char* path, int driverID, int resourceID) {
-20000ce6:	55                   	push   %ebp
-20000ce7:	89 e5                	mov    %esp,%ebp
-20000ce9:	83 ec 34             	sub    $0x34,%esp
+20000cf2:	55                   	push   %ebp
+20000cf3:	89 e5                	mov    %esp,%ebp
+20000cf5:	83 ec 34             	sub    $0x34,%esp
 			.eax = 0x301,
 			.ebx = (uint32_t)path,
 			.ecx = driverID,
 			.edx = resourceID,
 			.esi = 0,
 			.edi = 0 };
-20000cec:	8b 45 08             	mov    0x8(%ebp),%eax
-20000cef:	c7 45 e0 01 03 00 00 	movl   $0x301,-0x20(%ebp)
-20000cf6:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-20000cf9:	8b 45 0c             	mov    0xc(%ebp),%eax
-20000cfc:	89 45 e8             	mov    %eax,-0x18(%ebp)
-20000cff:	8b 45 10             	mov    0x10(%ebp),%eax
-20000d02:	89 45 ec             	mov    %eax,-0x14(%ebp)
+20000cf8:	8b 45 08             	mov    0x8(%ebp),%eax
+20000cfb:	c7 45 e0 01 03 00 00 	movl   $0x301,-0x20(%ebp)
+20000d02:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000d05:	8b 45 0c             	mov    0xc(%ebp),%eax
+20000d08:	89 45 e8             	mov    %eax,-0x18(%ebp)
+20000d0b:	8b 45 10             	mov    0x10(%ebp),%eax
+20000d0e:	89 45 ec             	mov    %eax,-0x14(%ebp)
 
 	syscall(&state);
-20000d05:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000d08:	50                   	push   %eax
+20000d11:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000d14:	50                   	push   %eax
 			.eax = 0x301,
 			.ebx = (uint32_t)path,
 			.ecx = driverID,
 			.edx = resourceID,
 			.esi = 0,
 			.edi = 0 };
-20000d09:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000d10:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000d15:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000d1c:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000d17:	e8 e4 f9 ff ff       	call   20000700 <syscall>
+20000d23:	e8 d8 f9 ff ff       	call   20000700 <syscall>
 
 	return state.eax;
 }
-20000d1c:	8b 45 e0             	mov    -0x20(%ebp),%eax
-20000d1f:	c9                   	leave  
-20000d20:	c3                   	ret    
+20000d28:	8b 45 e0             	mov    -0x20(%ebp),%eax
+20000d2b:	c9                   	leave  
+20000d2c:	c3                   	ret    
 
-20000d21 <register_driver>:
+20000d2d <register_driver>:
 #include "driver.h"
 #include "syscall.h"
 #include "memory.h"
 
 int register_driver(int dModifyID, int dInfoID, int dReadID, int dWriteID, char* drvName) {
-20000d21:	55                   	push   %ebp
-20000d22:	89 e5                	mov    %esp,%ebp
-20000d24:	83 ec 34             	sub    $0x34,%esp
+20000d2d:	55                   	push   %ebp
+20000d2e:	89 e5                	mov    %esp,%ebp
+20000d30:	83 ec 34             	sub    $0x34,%esp
 			.eax = 0x300,
 			.ebx = dModifyID,
 			.ecx = dInfoID,
 			.edx = dReadID,
 			.esi = dWriteID,
 			.edi = (uint32_t)drvName };
-20000d27:	8b 45 08             	mov    0x8(%ebp),%eax
-20000d2a:	c7 45 e0 00 03 00 00 	movl   $0x300,-0x20(%ebp)
-20000d31:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-20000d34:	8b 45 0c             	mov    0xc(%ebp),%eax
-20000d37:	89 45 e8             	mov    %eax,-0x18(%ebp)
-20000d3a:	8b 45 10             	mov    0x10(%ebp),%eax
-20000d3d:	89 45 ec             	mov    %eax,-0x14(%ebp)
-20000d40:	8b 45 14             	mov    0x14(%ebp),%eax
-20000d43:	89 45 f0             	mov    %eax,-0x10(%ebp)
-20000d46:	8b 45 18             	mov    0x18(%ebp),%eax
-20000d49:	89 45 f4             	mov    %eax,-0xc(%ebp)
+20000d33:	8b 45 08             	mov    0x8(%ebp),%eax
+20000d36:	c7 45 e0 00 03 00 00 	movl   $0x300,-0x20(%ebp)
+20000d3d:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000d40:	8b 45 0c             	mov    0xc(%ebp),%eax
+20000d43:	89 45 e8             	mov    %eax,-0x18(%ebp)
+20000d46:	8b 45 10             	mov    0x10(%ebp),%eax
+20000d49:	89 45 ec             	mov    %eax,-0x14(%ebp)
+20000d4c:	8b 45 14             	mov    0x14(%ebp),%eax
+20000d4f:	89 45 f0             	mov    %eax,-0x10(%ebp)
+20000d52:	8b 45 18             	mov    0x18(%ebp),%eax
+20000d55:	89 45 f4             	mov    %eax,-0xc(%ebp)
 
 	syscall(&state);
-20000d4c:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000d4f:	50                   	push   %eax
-20000d50:	e8 ab f9 ff ff       	call   20000700 <syscall>
+20000d58:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000d5b:	50                   	push   %eax
+20000d5c:	e8 9f f9 ff ff       	call   20000700 <syscall>
 
 	return state.eax;
 }
-20000d55:	8b 45 e0             	mov    -0x20(%ebp),%eax
-20000d58:	c9                   	leave  
-20000d59:	c3                   	ret    
+20000d61:	8b 45 e0             	mov    -0x20(%ebp),%eax
+20000d64:	c9                   	leave  
+20000d65:	c3                   	ret    
 	...
 
-20000d5c <memset>:
+20000d68 <memset>:
 			.edi = 0 };
 
 	syscall(&state);
 }
 
 void* memset(void* buf, int c, uint32_t n) {
-20000d5c:	55                   	push   %ebp
-20000d5d:	89 e5                	mov    %esp,%ebp
-20000d5f:	53                   	push   %ebx
-20000d60:	8b 45 08             	mov    0x8(%ebp),%eax
-20000d63:	8b 5d 0c             	mov    0xc(%ebp),%ebx
-20000d66:	8b 4d 10             	mov    0x10(%ebp),%ecx
+20000d68:	55                   	push   %ebp
+20000d69:	89 e5                	mov    %esp,%ebp
+20000d6b:	53                   	push   %ebx
+20000d6c:	8b 45 08             	mov    0x8(%ebp),%eax
+20000d6f:	8b 5d 0c             	mov    0xc(%ebp),%ebx
+20000d72:	8b 4d 10             	mov    0x10(%ebp),%ecx
 	unsigned char* p = buf;
-20000d69:	89 c2                	mov    %eax,%edx
+20000d75:	89 c2                	mov    %eax,%edx
 
 	while (n--) {
-20000d6b:	eb 04                	jmp    20000d71 <memset+0x15>
+20000d77:	eb 04                	jmp    20000d7d <memset+0x15>
 		*p++ = c;
-20000d6d:	88 1a                	mov    %bl,(%edx)
-20000d6f:	49                   	dec    %ecx
-20000d70:	42                   	inc    %edx
+20000d79:	88 1a                	mov    %bl,(%edx)
+20000d7b:	49                   	dec    %ecx
+20000d7c:	42                   	inc    %edx
 }
 
 void* memset(void* buf, int c, uint32_t n) {
 	unsigned char* p = buf;
 
 	while (n--) {
-20000d71:	85 c9                	test   %ecx,%ecx
-20000d73:	75 f8                	jne    20000d6d <memset+0x11>
+20000d7d:	85 c9                	test   %ecx,%ecx
+20000d7f:	75 f8                	jne    20000d79 <memset+0x11>
 		*p++ = c;
 	}
 
 	return buf;
 }
-20000d75:	5b                   	pop    %ebx
-20000d76:	5d                   	pop    %ebp
-20000d77:	c3                   	ret    
+20000d81:	5b                   	pop    %ebx
+20000d82:	5d                   	pop    %ebp
+20000d83:	c3                   	ret    
 
-20000d78 <memcpy>:
+20000d84 <memcpy>:
 
 void* memcpy(void* dest, const void* src, uint32_t n) {
-20000d78:	55                   	push   %ebp
+20000d84:	55                   	push   %ebp
 	unsigned char* d = dest;
 	const unsigned char* s = src;
 
 	if (n == 0)
-20000d79:	31 c9                	xor    %ecx,%ecx
+20000d85:	31 c9                	xor    %ecx,%ecx
 	}
 
 	return buf;
 }
 
 void* memcpy(void* dest, const void* src, uint32_t n) {
-20000d7b:	89 e5                	mov    %esp,%ebp
-20000d7d:	56                   	push   %esi
-20000d7e:	53                   	push   %ebx
-20000d7f:	8b 75 10             	mov    0x10(%ebp),%esi
-20000d82:	8b 45 08             	mov    0x8(%ebp),%eax
-20000d85:	8b 5d 0c             	mov    0xc(%ebp),%ebx
+20000d87:	89 e5                	mov    %esp,%ebp
+20000d89:	56                   	push   %esi
+20000d8a:	53                   	push   %ebx
+20000d8b:	8b 75 10             	mov    0x10(%ebp),%esi
+20000d8e:	8b 45 08             	mov    0x8(%ebp),%eax
+20000d91:	8b 5d 0c             	mov    0xc(%ebp),%ebx
 	unsigned char* d = dest;
 	const unsigned char* s = src;
 
 	if (n == 0)
-20000d88:	85 f6                	test   %esi,%esi
-20000d8a:	75 04                	jne    20000d90 <memcpy+0x18>
-20000d8c:	31 c0                	xor    %eax,%eax
-20000d8e:	eb 0a                	jmp    20000d9a <memcpy+0x22>
+20000d94:	85 f6                	test   %esi,%esi
+20000d96:	75 04                	jne    20000d9c <memcpy+0x18>
+20000d98:	31 c0                	xor    %eax,%eax
+20000d9a:	eb 0a                	jmp    20000da6 <memcpy+0x22>
 		return 0;
 
 	while (n--) {
 		*(d++) = *(s++);
-20000d90:	8a 14 0b             	mov    (%ebx,%ecx,1),%dl
-20000d93:	88 14 08             	mov    %dl,(%eax,%ecx,1)
-20000d96:	41                   	inc    %ecx
+20000d9c:	8a 14 0b             	mov    (%ebx,%ecx,1),%dl
+20000d9f:	88 14 08             	mov    %dl,(%eax,%ecx,1)
+20000da2:	41                   	inc    %ecx
 	const unsigned char* s = src;
 
 	if (n == 0)
 		return 0;
 
 	while (n--) {
-20000d97:	4e                   	dec    %esi
-20000d98:	75 f6                	jne    20000d90 <memcpy+0x18>
+20000da3:	4e                   	dec    %esi
+20000da4:	75 f6                	jne    20000d9c <memcpy+0x18>
 		*(d++) = *(s++);
 	}
 
 	return dest;
 }
-20000d9a:	5b                   	pop    %ebx
-20000d9b:	5e                   	pop    %esi
-20000d9c:	5d                   	pop    %ebp
-20000d9d:	c3                   	ret    
+20000da6:	5b                   	pop    %ebx
+20000da7:	5e                   	pop    %esi
+20000da8:	5d                   	pop    %ebp
+20000da9:	c3                   	ret    
 
-20000d9e <memcmp>:
+20000daa <memcmp>:
 
 int memcmp(const void* ptr1, const void* ptr2, uint32_t num) {
-20000d9e:	55                   	push   %ebp
+20000daa:	55                   	push   %ebp
 	if (ptr1 == 0)
-20000d9f:	83 c8 ff             	or     $0xffffffff,%eax
+20000dab:	83 c8 ff             	or     $0xffffffff,%eax
 	}
 
 	return dest;
 }
 
 int memcmp(const void* ptr1, const void* ptr2, uint32_t num) {
-20000da2:	89 e5                	mov    %esp,%ebp
-20000da4:	57                   	push   %edi
-20000da5:	56                   	push   %esi
-20000da6:	53                   	push   %ebx
-20000da7:	8b 75 08             	mov    0x8(%ebp),%esi
-20000daa:	8b 7d 0c             	mov    0xc(%ebp),%edi
-20000dad:	8b 5d 10             	mov    0x10(%ebp),%ebx
+20000dae:	89 e5                	mov    %esp,%ebp
+20000db0:	57                   	push   %edi
+20000db1:	56                   	push   %esi
+20000db2:	53                   	push   %ebx
+20000db3:	8b 75 08             	mov    0x8(%ebp),%esi
+20000db6:	8b 7d 0c             	mov    0xc(%ebp),%edi
+20000db9:	8b 5d 10             	mov    0x10(%ebp),%ebx
 	if (ptr1 == 0)
-20000db0:	85 f6                	test   %esi,%esi
-20000db2:	74 2c                	je     20000de0 <memcmp+0x42>
+20000dbc:	85 f6                	test   %esi,%esi
+20000dbe:	74 2c                	je     20000dec <memcmp+0x42>
 		return -1;
 	if (ptr2 == 0)
-20000db4:	b8 01 00 00 00       	mov    $0x1,%eax
-20000db9:	85 ff                	test   %edi,%edi
-20000dbb:	74 23                	je     20000de0 <memcmp+0x42>
+20000dc0:	b8 01 00 00 00       	mov    $0x1,%eax
+20000dc5:	85 ff                	test   %edi,%edi
+20000dc7:	74 23                	je     20000dec <memcmp+0x42>
 		return 1;
 	if (num == 0)
-20000dbd:	31 d2                	xor    %edx,%edx
-20000dbf:	85 db                	test   %ebx,%ebx
-20000dc1:	75 17                	jne    20000dda <memcmp+0x3c>
-20000dc3:	eb 19                	jmp    20000dde <memcmp+0x40>
+20000dc9:	31 d2                	xor    %edx,%edx
+20000dcb:	85 db                	test   %ebx,%ebx
+20000dcd:	75 17                	jne    20000de6 <memcmp+0x3c>
+20000dcf:	eb 19                	jmp    20000dea <memcmp+0x40>
 
 	const uint8_t* pa = ptr1;
 	const uint8_t* pb = ptr2;
 
 	for (uint32_t i = 0; i < num; i++) {
 		if (pa[i] != pb[i]) {
-20000dc5:	8a 04 16             	mov    (%esi,%edx,1),%al
-20000dc8:	8a 0c 17             	mov    (%edi,%edx,1),%cl
-20000dcb:	38 c8                	cmp    %cl,%al
-20000dcd:	74 0a                	je     20000dd9 <memcmp+0x3b>
+20000dd1:	8a 04 16             	mov    (%esi,%edx,1),%al
+20000dd4:	8a 0c 17             	mov    (%edi,%edx,1),%cl
+20000dd7:	38 c8                	cmp    %cl,%al
+20000dd9:	74 0a                	je     20000de5 <memcmp+0x3b>
 			return pa[i] - pb[i];
-20000dcf:	0f b6 c0             	movzbl %al,%eax
-20000dd2:	0f b6 c9             	movzbl %cl,%ecx
-20000dd5:	29 c8                	sub    %ecx,%eax
-20000dd7:	eb 07                	jmp    20000de0 <memcmp+0x42>
+20000ddb:	0f b6 c0             	movzbl %al,%eax
+20000dde:	0f b6 c9             	movzbl %cl,%ecx
+20000de1:	29 c8                	sub    %ecx,%eax
+20000de3:	eb 07                	jmp    20000dec <memcmp+0x42>
 		return 0;
 
 	const uint8_t* pa = ptr1;
 	const uint8_t* pb = ptr2;
 
 	for (uint32_t i = 0; i < num; i++) {
-20000dd9:	42                   	inc    %edx
-20000dda:	39 da                	cmp    %ebx,%edx
-20000ddc:	72 e7                	jb     20000dc5 <memcmp+0x27>
-20000dde:	31 c0                	xor    %eax,%eax
+20000de5:	42                   	inc    %edx
+20000de6:	39 da                	cmp    %ebx,%edx
+20000de8:	72 e7                	jb     20000dd1 <memcmp+0x27>
+20000dea:	31 c0                	xor    %eax,%eax
 		if (pa[i] != pb[i]) {
 			return pa[i] - pb[i];
 		}
 	}
 	return 0;
 }
-20000de0:	5b                   	pop    %ebx
-20000de1:	5e                   	pop    %esi
-20000de2:	5f                   	pop    %edi
-20000de3:	5d                   	pop    %ebp
-20000de4:	c3                   	ret    
+20000dec:	5b                   	pop    %ebx
+20000ded:	5e                   	pop    %esi
+20000dee:	5f                   	pop    %edi
+20000def:	5d                   	pop    %ebp
+20000df0:	c3                   	ret    
 
-20000de5 <pfree>:
+20000df1 <pfree>:
 	memset((void*)state.eax, 0, pages * 0x1000);
 
 	return (void*)state.eax;
 }
 
 void pfree(void* page) {
-20000de5:	55                   	push   %ebp
-20000de6:	89 e5                	mov    %esp,%ebp
-20000de8:	83 ec 34             	sub    $0x34,%esp
+20000df1:	55                   	push   %ebp
+20000df2:	89 e5                	mov    %esp,%ebp
+20000df4:	83 ec 34             	sub    $0x34,%esp
 			.eax = 0x401,
 			.ebx = (uint32_t)page,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000deb:	8b 45 08             	mov    0x8(%ebp),%eax
-20000dee:	c7 45 e0 01 04 00 00 	movl   $0x401,-0x20(%ebp)
-20000df5:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+20000df7:	8b 45 08             	mov    0x8(%ebp),%eax
+20000dfa:	c7 45 e0 01 04 00 00 	movl   $0x401,-0x20(%ebp)
+20000e01:	89 45 e4             	mov    %eax,-0x1c(%ebp)
 
 	syscall(&state);
-20000df8:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000dfb:	50                   	push   %eax
+20000e04:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000e07:	50                   	push   %eax
 			.eax = 0x401,
 			.ebx = (uint32_t)page,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000dfc:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
-20000e03:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000e0a:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000e11:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000e08:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
+20000e0f:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000e16:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000e1d:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000e18:	e8 e3 f8 ff ff       	call   20000700 <syscall>
-20000e1d:	83 c4 10             	add    $0x10,%esp
+20000e24:	e8 d7 f8 ff ff       	call   20000700 <syscall>
+20000e29:	83 c4 10             	add    $0x10,%esp
 }
-20000e20:	c9                   	leave  
-20000e21:	c3                   	ret    
+20000e2c:	c9                   	leave  
+20000e2d:	c3                   	ret    
 
-20000e22 <pcalloc>:
+20000e2e <pcalloc>:
 
 void* palloc() {
 	return pcalloc(1);
 }
 
 void* pcalloc(uint32_t pages) {
-20000e22:	55                   	push   %ebp
-20000e23:	89 e5                	mov    %esp,%ebp
-20000e25:	53                   	push   %ebx
-20000e26:	83 ec 30             	sub    $0x30,%esp
-20000e29:	8b 5d 08             	mov    0x8(%ebp),%ebx
+20000e2e:	55                   	push   %ebp
+20000e2f:	89 e5                	mov    %esp,%ebp
+20000e31:	53                   	push   %ebx
+20000e32:	83 ec 30             	sub    $0x30,%esp
+20000e35:	8b 5d 08             	mov    0x8(%ebp),%ebx
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
 
 	syscall(&state);
-20000e2c:	8d 45 e0             	lea    -0x20(%ebp),%eax
-20000e2f:	50                   	push   %eax
+20000e38:	8d 45 e0             	lea    -0x20(%ebp),%eax
+20000e3b:	50                   	push   %eax
 			.eax = 0x400,
 			.ebx = pages,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-20000e30:	c7 45 e0 00 04 00 00 	movl   $0x400,-0x20(%ebp)
-20000e37:	89 5d e4             	mov    %ebx,-0x1c(%ebp)
-20000e3a:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
-20000e41:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-20000e48:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-20000e4f:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+20000e3c:	c7 45 e0 00 04 00 00 	movl   $0x400,-0x20(%ebp)
+20000e43:	89 5d e4             	mov    %ebx,-0x1c(%ebp)
+20000e46:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
+20000e4d:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+20000e54:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+20000e5b:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-20000e56:	e8 a5 f8 ff ff       	call   20000700 <syscall>
+20000e62:	e8 99 f8 ff ff       	call   20000700 <syscall>
 
 	memset((void*)state.eax, 0, pages * 0x1000);
-20000e5b:	89 da                	mov    %ebx,%edx
+20000e67:	89 da                	mov    %ebx,%edx
 
 	syscall(&state);
 }
 
 void* memset(void* buf, int c, uint32_t n) {
 	unsigned char* p = buf;
-20000e5d:	8b 45 e0             	mov    -0x20(%ebp),%eax
+20000e69:	8b 45 e0             	mov    -0x20(%ebp),%eax
 			.esi = 0,
 			.edi = 0 };
 
 	syscall(&state);
 
 	memset((void*)state.eax, 0, pages * 0x1000);
-20000e60:	c1 e2 0c             	shl    $0xc,%edx
+20000e6c:	c1 e2 0c             	shl    $0xc,%edx
 
 	syscall(&state);
 }
 
 void* memset(void* buf, int c, uint32_t n) {
 	unsigned char* p = buf;
-20000e63:	83 c4 10             	add    $0x10,%esp
-20000e66:	eb 05                	jmp    20000e6d <pcalloc+0x4b>
+20000e6f:	83 c4 10             	add    $0x10,%esp
+20000e72:	eb 05                	jmp    20000e79 <pcalloc+0x4b>
 
 	while (n--) {
 		*p++ = c;
-20000e68:	c6 00 00             	movb   $0x0,(%eax)
-20000e6b:	4a                   	dec    %edx
-20000e6c:	40                   	inc    %eax
+20000e74:	c6 00 00             	movb   $0x0,(%eax)
+20000e77:	4a                   	dec    %edx
+20000e78:	40                   	inc    %eax
 }
 
 void* memset(void* buf, int c, uint32_t n) {
 	unsigned char* p = buf;
 
 	while (n--) {
-20000e6d:	85 d2                	test   %edx,%edx
-20000e6f:	75 f7                	jne    20000e68 <pcalloc+0x46>
+20000e79:	85 d2                	test   %edx,%edx
+20000e7b:	75 f7                	jne    20000e74 <pcalloc+0x46>
 	syscall(&state);
 
 	memset((void*)state.eax, 0, pages * 0x1000);
 
 	return (void*)state.eax;
 }
-20000e71:	8b 45 e0             	mov    -0x20(%ebp),%eax
-20000e74:	8b 5d fc             	mov    -0x4(%ebp),%ebx
-20000e77:	c9                   	leave  
-20000e78:	c3                   	ret    
+20000e7d:	8b 45 e0             	mov    -0x20(%ebp),%eax
+20000e80:	8b 5d fc             	mov    -0x4(%ebp),%ebx
+20000e83:	c9                   	leave  
+20000e84:	c3                   	ret    
 
-20000e79 <palloc>:
+20000e85 <palloc>:
 #include "memory.h"
 #include "syscall.h"
 
 void* palloc() {
-20000e79:	55                   	push   %ebp
-20000e7a:	89 e5                	mov    %esp,%ebp
-20000e7c:	83 ec 14             	sub    $0x14,%esp
+20000e85:	55                   	push   %ebp
+20000e86:	89 e5                	mov    %esp,%ebp
+20000e88:	83 ec 14             	sub    $0x14,%esp
 	return pcalloc(1);
-20000e7f:	6a 01                	push   $0x1
-20000e81:	e8 9c ff ff ff       	call   20000e22 <pcalloc>
+20000e8b:	6a 01                	push   $0x1
+20000e8d:	e8 9c ff ff ff       	call   20000e2e <pcalloc>
 }
-20000e86:	c9                   	leave  
-20000e87:	c3                   	ret    
+20000e92:	c9                   	leave  
+20000e93:	c3                   	ret    
 
-20000e88 <free>:
+20000e94 <free>:
 		cur = cur->next;
 	}
 	return NULL;
 }
 
 void free(void* ptr) {
-20000e88:	55                   	push   %ebp
-20000e89:	89 e5                	mov    %esp,%ebp
-20000e8b:	57                   	push   %edi
-20000e8c:	56                   	push   %esi
-20000e8d:	53                   	push   %ebx
-20000e8e:	83 ec 08             	sub    $0x8,%esp
+20000e94:	55                   	push   %ebp
+20000e95:	89 e5                	mov    %esp,%ebp
+20000e97:	57                   	push   %edi
+20000e98:	56                   	push   %esi
+20000e99:	53                   	push   %ebx
+20000e9a:	83 ec 2c             	sub    $0x2c,%esp
+20000e9d:	8b 45 08             	mov    0x8(%ebp),%eax
 	struct memory_node* cur = first_used;
-20000e91:	8b 15 08 50 04 20    	mov    0x20045008,%edx
-		cur = cur->next;
-	}
-	return NULL;
-}
-
-void free(void* ptr) {
-20000e97:	8b 4d 08             	mov    0x8(%ebp),%ecx
-	struct memory_node* cur = first_used;
-20000e9a:	89 d0                	mov    %edx,%eax
+20000ea0:	8b 1d 08 50 04 20    	mov    0x20045008,%ebx
 
 	while (cur != NULL) {
-20000e9c:	e9 c0 00 00 00       	jmp    20000f61 <free+0xd9>
+20000ea6:	e9 d3 00 00 00       	jmp    20000f7e <free+0xea>
 		if (cur->address == (uint32_t) ptr) {
-20000ea1:	3b 48 04             	cmp    0x4(%eax),%ecx
-20000ea4:	0f 85 b4 00 00 00    	jne    20000f5e <free+0xd6>
+20000eab:	3b 43 04             	cmp    0x4(%ebx),%eax
+20000eae:	0f 85 c7 00 00 00    	jne    20000f7b <free+0xe7>
+			memset(ptr, 0, cur->size);
+20000eb4:	52                   	push   %edx
+20000eb5:	ff 33                	pushl  (%ebx)
+20000eb7:	6a 00                	push   $0x0
+20000eb9:	50                   	push   %eax
+20000eba:	e8 a9 fe ff ff       	call   20000d68 <memset>
 			malloced -= cur->size;
-20000eaa:	8b 08                	mov    (%eax),%ecx
-20000eac:	29 0d 10 50 04 20    	sub    %ecx,0x20045010
-20000eb2:	31 c9                	xor    %ecx,%ecx
-20000eb4:	eb 23                	jmp    20000ed9 <free+0x51>
+20000ebf:	8b 03                	mov    (%ebx),%eax
+20000ec1:	29 05 10 50 04 20    	sub    %eax,0x20045010
+struct memory_node* first_used = 0;
+struct memory_node* first_free = 0;
+
 static void remove_from_list(struct memory_node** root, struct memory_node* element) {
 	struct memory_node* last = 0;
 	struct memory_node* cur = *root;
+20000ec7:	31 d2                	xor    %edx,%edx
+20000ec9:	a1 08 50 04 20       	mov    0x20045008,%eax
+20000ece:	83 c4 10             	add    $0x10,%esp
+20000ed1:	eb 22                	jmp    20000ef5 <free+0x61>
 
 	while (cur != NULL) {
 		if (cur == element) {
-20000eb6:	39 c2                	cmp    %eax,%edx
-20000eb8:	75 1a                	jne    20000ed4 <free+0x4c>
+20000ed3:	39 d8                	cmp    %ebx,%eax
+20000ed5:	75 19                	jne    20000ef0 <free+0x5c>
 			if (last == NULL) {
-20000eba:	85 c9                	test   %ecx,%ecx
-20000ebc:	8b 50 08             	mov    0x8(%eax),%edx
-20000ebf:	75 0e                	jne    20000ecf <free+0x47>
+20000ed7:	85 d2                	test   %edx,%edx
+20000ed9:	8b 43 08             	mov    0x8(%ebx),%eax
+20000edc:	75 0d                	jne    20000eeb <free+0x57>
 				*root = cur->next;
-20000ec1:	89 15 08 50 04 20    	mov    %edx,0x20045008
-20000ec7:	8b 0d 0c 50 04 20    	mov    0x2004500c,%ecx
-20000ecd:	eb 10                	jmp    20000edf <free+0x57>
+20000ede:	a3 08 50 04 20       	mov    %eax,0x20045008
+20000ee3:	8b 15 0c 50 04 20    	mov    0x2004500c,%edx
+20000ee9:	eb 10                	jmp    20000efb <free+0x67>
 				return;
 			} else {
 				last->next = cur->next;
-20000ecf:	89 51 08             	mov    %edx,0x8(%ecx)
-20000ed2:	eb f3                	jmp    20000ec7 <free+0x3f>
+20000eeb:	89 42 08             	mov    %eax,0x8(%edx)
+20000eee:	eb f3                	jmp    20000ee3 <free+0x4f>
 				return;
 			}
 		}
 		last = cur;
 		cur = cur->next;
-20000ed4:	89 d1                	mov    %edx,%ecx
-20000ed6:	8b 52 08             	mov    0x8(%edx),%edx
+20000ef0:	89 c2                	mov    %eax,%edx
+20000ef2:	8b 40 08             	mov    0x8(%eax),%eax
 
 static void remove_from_list(struct memory_node** root, struct memory_node* element) {
 	struct memory_node* last = 0;
 	struct memory_node* cur = *root;
 
 	while (cur != NULL) {
-20000ed9:	85 d2                	test   %edx,%edx
-20000edb:	75 d9                	jne    20000eb6 <free+0x2e>
-20000edd:	eb e8                	jmp    20000ec7 <free+0x3f>
-20000edf:	89 ca                	mov    %ecx,%edx
-20000ee1:	eb 6d                	jmp    20000f50 <free+0xc8>
+20000ef5:	85 c0                	test   %eax,%eax
+20000ef7:	75 da                	jne    20000ed3 <free+0x3f>
+20000ef9:	eb e8                	jmp    20000ee3 <free+0x4f>
+20000efb:	89 d0                	mov    %edx,%eax
+20000efd:	eb 6d                	jmp    20000f6c <free+0xd8>
 	struct memory_node* cur;
 
 	editedList: cur = first_free;
 
 	while (cur != NULL) {
 		if (cur->address + cur->size == tf->address) {
-20000ee3:	8b 5a 04             	mov    0x4(%edx),%ebx
-20000ee6:	8b 32                	mov    (%edx),%esi
-20000ee8:	8b 78 04             	mov    0x4(%eax),%edi
-20000eeb:	89 7d ec             	mov    %edi,-0x14(%ebp)
-20000eee:	8d 3c 1e             	lea    (%esi,%ebx,1),%edi
-20000ef1:	89 7d f0             	mov    %edi,-0x10(%ebp)
-20000ef4:	8b 7d ec             	mov    -0x14(%ebp),%edi
-20000ef7:	39 7d f0             	cmp    %edi,-0x10(%ebp)
-20000efa:	75 18                	jne    20000f14 <free+0x8c>
+20000eff:	8b 48 04             	mov    0x4(%eax),%ecx
+20000f02:	8b 30                	mov    (%eax),%esi
+20000f04:	8b 7b 04             	mov    0x4(%ebx),%edi
+20000f07:	89 7d d4             	mov    %edi,-0x2c(%ebp)
+20000f0a:	8d 3c 0e             	lea    (%esi,%ecx,1),%edi
+20000f0d:	89 7d e4             	mov    %edi,-0x1c(%ebp)
+20000f10:	8b 7d d4             	mov    -0x2c(%ebp),%edi
+20000f13:	39 7d e4             	cmp    %edi,-0x1c(%ebp)
+20000f16:	75 18                	jne    20000f30 <free+0x9c>
 			tf->address = cur->address;
-20000efc:	89 58 04             	mov    %ebx,0x4(%eax)
-20000eff:	31 f6                	xor    %esi,%esi
-20000f01:	89 cb                	mov    %ecx,%ebx
-20000f03:	eb 09                	jmp    20000f0e <free+0x86>
+20000f18:	89 4b 04             	mov    %ecx,0x4(%ebx)
+20000f1b:	31 f6                	xor    %esi,%esi
+20000f1d:	89 d1                	mov    %edx,%ecx
+20000f1f:	eb 09                	jmp    20000f2a <free+0x96>
 static void remove_from_list(struct memory_node** root, struct memory_node* element) {
 	struct memory_node* last = 0;
 	struct memory_node* cur = *root;
 
 	while (cur != NULL) {
 		if (cur == element) {
-20000f05:	39 d3                	cmp    %edx,%ebx
-20000f07:	74 29                	je     20000f32 <free+0xaa>
+20000f21:	39 c1                	cmp    %eax,%ecx
+20000f23:	74 29                	je     20000f4e <free+0xba>
 				last->next = cur->next;
 				return;
 			}
 		}
 		last = cur;
 		cur = cur->next;
-20000f09:	89 de                	mov    %ebx,%esi
-20000f0b:	8b 5b 08             	mov    0x8(%ebx),%ebx
+20000f25:	89 ce                	mov    %ecx,%esi
+20000f27:	8b 49 08             	mov    0x8(%ecx),%ecx
 
 static void remove_from_list(struct memory_node** root, struct memory_node* element) {
 	struct memory_node* last = 0;
 	struct memory_node* cur = *root;
 
 	while (cur != NULL) {
-20000f0e:	85 db                	test   %ebx,%ebx
-20000f10:	75 f3                	jne    20000f05 <free+0x7d>
-20000f12:	eb cb                	jmp    20000edf <free+0x57>
+20000f2a:	85 c9                	test   %ecx,%ecx
+20000f2c:	75 f3                	jne    20000f21 <free+0x8d>
+20000f2e:	eb cb                	jmp    20000efb <free+0x67>
 			tf->address = cur->address;
 			remove_from_list(&first_free, cur);
 			goto editedList;
 		}
 
 		if (cur->address == tf->address + tf->size) {
-20000f14:	8b 38                	mov    (%eax),%edi
-20000f16:	89 7d f0             	mov    %edi,-0x10(%ebp)
-20000f19:	8b 7d ec             	mov    -0x14(%ebp),%edi
-20000f1c:	03 7d f0             	add    -0x10(%ebp),%edi
-20000f1f:	39 fb                	cmp    %edi,%ebx
-20000f21:	75 2a                	jne    20000f4d <free+0xc5>
+20000f30:	8b 3b                	mov    (%ebx),%edi
+20000f32:	89 7d e4             	mov    %edi,-0x1c(%ebp)
+20000f35:	8b 7d d4             	mov    -0x2c(%ebp),%edi
+20000f38:	03 7d e4             	add    -0x1c(%ebp),%edi
+20000f3b:	39 f9                	cmp    %edi,%ecx
+20000f3d:	75 2a                	jne    20000f69 <free+0xd5>
 			tf->size += cur->size;
-20000f23:	03 75 f0             	add    -0x10(%ebp),%esi
-20000f26:	89 cb                	mov    %ecx,%ebx
-20000f28:	89 30                	mov    %esi,(%eax)
-20000f2a:	31 f6                	xor    %esi,%esi
-20000f2c:	eb 19                	jmp    20000f47 <free+0xbf>
+20000f3f:	03 75 e4             	add    -0x1c(%ebp),%esi
+20000f42:	89 d1                	mov    %edx,%ecx
+20000f44:	89 33                	mov    %esi,(%ebx)
+20000f46:	31 f6                	xor    %esi,%esi
+20000f48:	eb 19                	jmp    20000f63 <free+0xcf>
 static void remove_from_list(struct memory_node** root, struct memory_node* element) {
 	struct memory_node* last = 0;
 	struct memory_node* cur = *root;
 
 	while (cur != NULL) {
 		if (cur == element) {
-20000f2e:	39 d3                	cmp    %edx,%ebx
-20000f30:	75 10                	jne    20000f42 <free+0xba>
+20000f4a:	39 c1                	cmp    %eax,%ecx
+20000f4c:	75 10                	jne    20000f5e <free+0xca>
 			if (last == NULL) {
-20000f32:	85 f6                	test   %esi,%esi
-20000f34:	8b 53 08             	mov    0x8(%ebx),%edx
-20000f37:	75 04                	jne    20000f3d <free+0xb5>
+20000f4e:	85 f6                	test   %esi,%esi
+20000f50:	8b 41 08             	mov    0x8(%ecx),%eax
+20000f53:	75 04                	jne    20000f59 <free+0xc5>
 				*root = cur->next;
-20000f39:	89 d1                	mov    %edx,%ecx
-20000f3b:	eb a2                	jmp    20000edf <free+0x57>
+20000f55:	89 c2                	mov    %eax,%edx
+20000f57:	eb a2                	jmp    20000efb <free+0x67>
 				return;
 			} else {
 				last->next = cur->next;
-20000f3d:	89 56 08             	mov    %edx,0x8(%esi)
-20000f40:	eb 9d                	jmp    20000edf <free+0x57>
+20000f59:	89 46 08             	mov    %eax,0x8(%esi)
+20000f5c:	eb 9d                	jmp    20000efb <free+0x67>
 				return;
 			}
 		}
 		last = cur;
 		cur = cur->next;
-20000f42:	89 de                	mov    %ebx,%esi
-20000f44:	8b 5b 08             	mov    0x8(%ebx),%ebx
+20000f5e:	89 ce                	mov    %ecx,%esi
+20000f60:	8b 49 08             	mov    0x8(%ecx),%ecx
 
 static void remove_from_list(struct memory_node** root, struct memory_node* element) {
 	struct memory_node* last = 0;
 	struct memory_node* cur = *root;
 
 	while (cur != NULL) {
-20000f47:	85 db                	test   %ebx,%ebx
-20000f49:	75 e3                	jne    20000f2e <free+0xa6>
-20000f4b:	eb 92                	jmp    20000edf <free+0x57>
+20000f63:	85 c9                	test   %ecx,%ecx
+20000f65:	75 e3                	jne    20000f4a <free+0xb6>
+20000f67:	eb 92                	jmp    20000efb <free+0x67>
 			tf->size += cur->size;
 			remove_from_list(&first_free, cur);
 			goto editedList;
 		}
 
 		cur = cur->next;
-20000f4d:	8b 52 08             	mov    0x8(%edx),%edx
+20000f69:	8b 40 08             	mov    0x8(%eax),%eax
 
 	struct memory_node* cur;
 
 	editedList: cur = first_free;
 
 	while (cur != NULL) {
-20000f50:	85 d2                	test   %edx,%edx
-20000f52:	75 8f                	jne    20000ee3 <free+0x5b>
+20000f6c:	85 c0                	test   %eax,%eax
+20000f6e:	75 8f                	jne    20000eff <free+0x6b>
 		cur = cur->next;
 	}
 }
 
 static void append_to_list(struct memory_node** root, struct memory_node* element) {
 	element->next = *root;
-20000f54:	89 48 08             	mov    %ecx,0x8(%eax)
+20000f70:	89 53 08             	mov    %edx,0x8(%ebx)
 	*root = element;
-20000f57:	a3 0c 50 04 20       	mov    %eax,0x2004500c
-	while (cur != NULL) {
+20000f73:	89 1d 0c 50 04 20    	mov    %ebx,0x2004500c
 		if (cur->address == (uint32_t) ptr) {
+			memset(ptr, 0, cur->size);
 			malloced -= cur->size;
 
 			merge_into_frees(cur);
 			break;
-20000f5c:	eb 0b                	jmp    20000f69 <free+0xe1>
+20000f79:	eb 0b                	jmp    20000f86 <free+0xf2>
 		}
 		cur = cur->next;
-20000f5e:	8b 40 08             	mov    0x8(%eax),%eax
+20000f7b:	8b 5b 08             	mov    0x8(%ebx),%ebx
 }
 
 void free(void* ptr) {
 	struct memory_node* cur = first_used;
 
 	while (cur != NULL) {
-20000f61:	85 c0                	test   %eax,%eax
-20000f63:	0f 85 38 ff ff ff    	jne    20000ea1 <free+0x19>
+20000f7e:	85 db                	test   %ebx,%ebx
+20000f80:	0f 85 25 ff ff ff    	jne    20000eab <free+0x17>
 			merge_into_frees(cur);
 			break;
 		}
 		cur = cur->next;
 	}
 }
-20000f69:	58                   	pop    %eax
-20000f6a:	5a                   	pop    %edx
-20000f6b:	5b                   	pop    %ebx
-20000f6c:	5e                   	pop    %esi
-20000f6d:	5f                   	pop    %edi
-20000f6e:	5d                   	pop    %ebp
-20000f6f:	c3                   	ret    
+20000f86:	8d 65 f4             	lea    -0xc(%ebp),%esp
+20000f89:	5b                   	pop    %ebx
+20000f8a:	5e                   	pop    %esi
+20000f8b:	5f                   	pop    %edi
+20000f8c:	5d                   	pop    %ebp
+20000f8d:	c3                   	ret    
 
-20000f70 <pop_unused_node>:
+20000f8e <pop_unused_node>:
 	for (uint32_t i = 1; i < (PAGESIZE / sizeof(struct memory_node)); i++) {
 		append_to_list(&first_unused, &(new_nodes[i]));
 	}
 }
 
 static struct memory_node* pop_unused_node() {
-20000f70:	55                   	push   %ebp
-20000f71:	89 e5                	mov    %esp,%ebp
-20000f73:	53                   	push   %ebx
-20000f74:	83 ec 04             	sub    $0x4,%esp
+20000f8e:	55                   	push   %ebp
+20000f8f:	89 e5                	mov    %esp,%ebp
+20000f91:	53                   	push   %ebx
+20000f92:	83 ec 04             	sub    $0x4,%esp
 	element->next = *root;
 	*root = element;
 }
 
 static struct memory_node* pop_from_list(struct memory_node** root) {
 	if (*root == NULL) return NULL;
-20000f77:	a1 04 50 04 20       	mov    0x20045004,%eax
-20000f7c:	eb 45                	jmp    20000fc3 <pop_unused_node+0x53>
+20000f95:	a1 04 50 04 20       	mov    0x20045004,%eax
+20000f9a:	eb 45                	jmp    20000fe1 <pop_unused_node+0x53>
 	remove_from_list(root, pop);
 	return pop;
 }
 
 static void allocate_unused_nodes() {
 	struct memory_node* new_nodes = pcalloc(1);
-20000f7e:	83 ec 0c             	sub    $0xc,%esp
-20000f81:	6a 01                	push   $0x1
-20000f83:	e8 9a fe ff ff       	call   20000e22 <pcalloc>
+20000f9c:	83 ec 0c             	sub    $0xc,%esp
+20000f9f:	6a 01                	push   $0x1
+20000fa1:	e8 88 fe ff ff       	call   20000e2e <pcalloc>
 	memset(new_nodes, 0, PAGESIZE);
-20000f88:	83 c4 0c             	add    $0xc,%esp
+20000fa6:	83 c4 0c             	add    $0xc,%esp
 	remove_from_list(root, pop);
 	return pop;
 }
 
 static void allocate_unused_nodes() {
 	struct memory_node* new_nodes = pcalloc(1);
-20000f8b:	89 c3                	mov    %eax,%ebx
+20000fa9:	89 c3                	mov    %eax,%ebx
 	memset(new_nodes, 0, PAGESIZE);
-20000f8d:	68 00 10 00 00       	push   $0x1000
-20000f92:	6a 00                	push   $0x0
-20000f94:	50                   	push   %eax
-20000f95:	e8 c2 fd ff ff       	call   20000d5c <memset>
-20000f9a:	8b 15 04 50 04 20    	mov    0x20045004,%edx
-20000fa0:	8d 43 0c             	lea    0xc(%ebx),%eax
+20000fab:	68 00 10 00 00       	push   $0x1000
+20000fb0:	6a 00                	push   $0x0
+20000fb2:	50                   	push   %eax
+20000fb3:	e8 b0 fd ff ff       	call   20000d68 <memset>
+20000fb8:	8b 15 04 50 04 20    	mov    0x20045004,%edx
+20000fbe:	8d 43 0c             	lea    0xc(%ebx),%eax
 	for (uint32_t i = 1; i < (PAGESIZE / sizeof(struct memory_node)); i++) {
 		append_to_list(&first_unused, &(new_nodes[i]));
 	}
 }
 
 static struct memory_node* pop_unused_node() {
-20000fa3:	8d 8b fc 0f 00 00    	lea    0xffc(%ebx),%ecx
-20000fa9:	83 c4 10             	add    $0x10,%esp
+20000fc1:	8d 8b fc 0f 00 00    	lea    0xffc(%ebx),%ecx
+20000fc7:	83 c4 10             	add    $0x10,%esp
 		cur = cur->next;
 	}
 }
 
 static void append_to_list(struct memory_node** root, struct memory_node* element) {
 	element->next = *root;
-20000fac:	89 50 08             	mov    %edx,0x8(%eax)
-20000faf:	89 c2                	mov    %eax,%edx
-20000fb1:	83 c0 0c             	add    $0xc,%eax
+20000fca:	89 50 08             	mov    %edx,0x8(%eax)
+20000fcd:	89 c2                	mov    %eax,%edx
+20000fcf:	83 c0 0c             	add    $0xc,%eax
 
 static void allocate_unused_nodes() {
 	struct memory_node* new_nodes = pcalloc(1);
 	memset(new_nodes, 0, PAGESIZE);
 
 	for (uint32_t i = 1; i < (PAGESIZE / sizeof(struct memory_node)); i++) {
-20000fb4:	39 c8                	cmp    %ecx,%eax
-20000fb6:	75 f4                	jne    20000fac <pop_unused_node+0x3c>
-20000fb8:	8d 83 f0 0f 00 00    	lea    0xff0(%ebx),%eax
-20000fbe:	a3 04 50 04 20       	mov    %eax,0x20045004
+20000fd2:	39 c8                	cmp    %ecx,%eax
+20000fd4:	75 f4                	jne    20000fca <pop_unused_node+0x3c>
+20000fd6:	8d 83 f0 0f 00 00    	lea    0xff0(%ebx),%eax
+20000fdc:	a3 04 50 04 20       	mov    %eax,0x20045004
 	element->next = *root;
 	*root = element;
 }
 
 static struct memory_node* pop_from_list(struct memory_node** root) {
 	if (*root == NULL) return NULL;
-20000fc3:	85 c0                	test   %eax,%eax
-20000fc5:	74 b7                	je     20000f7e <pop_unused_node+0xe>
+20000fe1:	85 c0                	test   %eax,%eax
+20000fe3:	74 b7                	je     20000f9c <pop_unused_node+0xe>
 	struct memory_node* cur = *root;
 
 	while (cur != NULL) {
 		if (cur == element) {
 			if (last == NULL) {
 				*root = cur->next;
-20000fc7:	8b 50 08             	mov    0x8(%eax),%edx
+20000fe5:	8b 50 08             	mov    0x8(%eax),%edx
 }
 
 static struct memory_node* pop_unused_node() {
 	struct memory_node* ret = pop_from_list(&first_unused);
 
 	while (ret == NULL) {
-20000fca:	85 c0                	test   %eax,%eax
+20000fe8:	85 c0                	test   %eax,%eax
 	struct memory_node* cur = *root;
 
 	while (cur != NULL) {
 		if (cur == element) {
 			if (last == NULL) {
 				*root = cur->next;
-20000fcc:	89 15 04 50 04 20    	mov    %edx,0x20045004
+20000fea:	89 15 04 50 04 20    	mov    %edx,0x20045004
 }
 
 static struct memory_node* pop_unused_node() {
 	struct memory_node* ret = pop_from_list(&first_unused);
 
 	while (ret == NULL) {
-20000fd2:	74 aa                	je     20000f7e <pop_unused_node+0xe>
+20000ff0:	74 aa                	je     20000f9c <pop_unused_node+0xe>
 		allocate_unused_nodes();
 		ret = pop_from_list(&first_unused);
 	}
 
 	return ret;
 }
-20000fd4:	8b 5d fc             	mov    -0x4(%ebp),%ebx
-20000fd7:	c9                   	leave  
-20000fd8:	c3                   	ret    
+20000ff2:	8b 5d fc             	mov    -0x4(%ebp),%ebx
+20000ff5:	c9                   	leave  
+20000ff6:	c3                   	ret    
 
-20000fd9 <malloc>:
+20000ff7 <malloc>:
 	append_to_list(&first_free, tf);
 }
 
 uint32_t malloced = 0;
 
 void* malloc(size_t size) {
-20000fd9:	55                   	push   %ebp
+20000ff7:	55                   	push   %ebp
 	if (size == 0)
-20000fda:	31 c0                	xor    %eax,%eax
+20000ff8:	31 c0                	xor    %eax,%eax
 	append_to_list(&first_free, tf);
 }
 
 uint32_t malloced = 0;
 
 void* malloc(size_t size) {
-20000fdc:	89 e5                	mov    %esp,%ebp
-20000fde:	57                   	push   %edi
-20000fdf:	56                   	push   %esi
-20000fe0:	53                   	push   %ebx
-20000fe1:	83 ec 1c             	sub    $0x1c,%esp
-20000fe4:	8b 75 08             	mov    0x8(%ebp),%esi
+20000ffa:	89 e5                	mov    %esp,%ebp
+20000ffc:	57                   	push   %edi
+20000ffd:	56                   	push   %esi
+20000ffe:	53                   	push   %ebx
+20000fff:	83 ec 1c             	sub    $0x1c,%esp
+20001002:	8b 75 08             	mov    0x8(%ebp),%esi
 	if (size == 0)
-20000fe7:	85 f6                	test   %esi,%esi
-20000fe9:	0f 84 aa 00 00 00    	je     20001099 <malloc+0xc0>
+20001005:	85 f6                	test   %esi,%esi
+20001007:	0f 84 aa 00 00 00    	je     200010b7 <malloc+0xc0>
 		return NULL;
 
 	malloced += size;
 
 	struct memory_node* cur = first_free;
-20000fef:	a1 0c 50 04 20       	mov    0x2004500c,%eax
+2000100d:	a1 0c 50 04 20       	mov    0x2004500c,%eax
 
 void* malloc(size_t size) {
 	if (size == 0)
 		return NULL;
 
 	malloced += size;
-20000ff4:	01 35 10 50 04 20    	add    %esi,0x20045010
+20001012:	01 35 10 50 04 20    	add    %esi,0x20045010
 
 	struct memory_node* cur = first_free;
-20000ffa:	89 c3                	mov    %eax,%ebx
+20001018:	89 c3                	mov    %eax,%ebx
 
 	while (cur != NULL) {
-20000ffc:	eb 07                	jmp    20001005 <malloc+0x2c>
+2000101a:	eb 07                	jmp    20001023 <malloc+0x2c>
 		if (cur->size >= size) {
-20000ffe:	39 33                	cmp    %esi,(%ebx)
-20001000:	73 0c                	jae    2000100e <malloc+0x35>
+2000101c:	39 33                	cmp    %esi,(%ebx)
+2000101e:	73 0c                	jae    2000102c <malloc+0x35>
 			break;
 		}
 		cur = cur->next;
-20001002:	8b 5b 08             	mov    0x8(%ebx),%ebx
+20001020:	8b 5b 08             	mov    0x8(%ebx),%ebx
 
 	malloced += size;
 
 	struct memory_node* cur = first_free;
 
 	while (cur != NULL) {
-20001005:	85 db                	test   %ebx,%ebx
-20001007:	75 f5                	jne    20000ffe <malloc+0x25>
-20001009:	e9 93 00 00 00       	jmp    200010a1 <malloc+0xc8>
+20001023:	85 db                	test   %ebx,%ebx
+20001025:	75 f5                	jne    2000101c <malloc+0x25>
+20001027:	e9 93 00 00 00       	jmp    200010bf <malloc+0xc8>
 
 		append_to_list(&first_used, fill);
 
 		return (void*) fill->address;
 	} else {
 		uint32_t freesize = cur->size - size;
-2000100e:	8b 3b                	mov    (%ebx),%edi
+2000102c:	8b 3b                	mov    (%ebx),%edi
 
 		cur->size = size;
-20001010:	31 d2                	xor    %edx,%edx
+2000102e:	31 d2                	xor    %edx,%edx
 
 		append_to_list(&first_used, fill);
 
 		return (void*) fill->address;
 	} else {
 		uint32_t freesize = cur->size - size;
-20001012:	29 f7                	sub    %esi,%edi
+20001030:	29 f7                	sub    %esi,%edi
 
 		cur->size = size;
-20001014:	89 33                	mov    %esi,(%ebx)
-20001016:	eb 4b                	jmp    20001063 <malloc+0x8a>
+20001032:	89 33                	mov    %esi,(%ebx)
+20001034:	eb 4b                	jmp    20001081 <malloc+0x8a>
 
 		fill->address = (uint32_t) addr;
 		fill->size = (uint32_t) size;
 
 		if (pgs * PAGESIZE > size) {
 			struct memory_node* free = pop_unused_node();
-20001018:	e8 53 ff ff ff       	call   20000f70 <pop_unused_node>
+20001036:	e8 53 ff ff ff       	call   20000f8e <pop_unused_node>
 
 			free->address = fill->address + fill->size;
-2000101d:	8b 13                	mov    (%ebx),%edx
-2000101f:	03 53 04             	add    0x4(%ebx),%edx
+2000103b:	8b 13                	mov    (%ebx),%edx
+2000103d:	03 53 04             	add    0x4(%ebx),%edx
 			free->size = pgs * PAGESIZE - size;
-20001022:	29 f7                	sub    %esi,%edi
+20001040:	29 f7                	sub    %esi,%edi
 		fill->size = (uint32_t) size;
 
 		if (pgs * PAGESIZE > size) {
 			struct memory_node* free = pop_unused_node();
 
 			free->address = fill->address + fill->size;
-20001024:	89 50 04             	mov    %edx,0x4(%eax)
+20001042:	89 50 04             	mov    %edx,0x4(%eax)
 		cur = cur->next;
 	}
 }
 
 static void append_to_list(struct memory_node** root, struct memory_node* element) {
 	element->next = *root;
-20001027:	8b 15 0c 50 04 20    	mov    0x2004500c,%edx
-2000102d:	89 50 08             	mov    %edx,0x8(%eax)
+20001045:	8b 15 0c 50 04 20    	mov    0x2004500c,%edx
+2000104b:	89 50 08             	mov    %edx,0x8(%eax)
 
 		if (pgs * PAGESIZE > size) {
 			struct memory_node* free = pop_unused_node();
 
 			free->address = fill->address + fill->size;
 			free->size = pgs * PAGESIZE - size;
-20001030:	89 38                	mov    %edi,(%eax)
+2000104e:	89 38                	mov    %edi,(%eax)
 	}
 }
 
 static void append_to_list(struct memory_node** root, struct memory_node* element) {
 	element->next = *root;
 	*root = element;
-20001032:	a3 0c 50 04 20       	mov    %eax,0x2004500c
+20001050:	a3 0c 50 04 20       	mov    %eax,0x2004500c
 		cur = cur->next;
 	}
 }
 
 static void append_to_list(struct memory_node** root, struct memory_node* element) {
 	element->next = *root;
-20001037:	a1 08 50 04 20       	mov    0x20045008,%eax
-2000103c:	89 43 08             	mov    %eax,0x8(%ebx)
+20001055:	a1 08 50 04 20       	mov    0x20045008,%eax
+2000105a:	89 43 08             	mov    %eax,0x8(%ebx)
 	*root = element;
-2000103f:	89 1d 08 50 04 20    	mov    %ebx,0x20045008
-20001045:	eb 4f                	jmp    20001096 <malloc+0xbd>
+2000105d:	89 1d 08 50 04 20    	mov    %ebx,0x20045008
+20001063:	eb 4f                	jmp    200010b4 <malloc+0xbd>
 static void remove_from_list(struct memory_node** root, struct memory_node* element) {
 	struct memory_node* last = 0;
 	struct memory_node* cur = *root;
 
 	while (cur != NULL) {
 		if (cur == element) {
-20001047:	39 d8                	cmp    %ebx,%eax
-20001049:	75 13                	jne    2000105e <malloc+0x85>
+20001065:	39 d8                	cmp    %ebx,%eax
+20001067:	75 13                	jne    2000107c <malloc+0x85>
 			if (last == NULL) {
-2000104b:	85 d2                	test   %edx,%edx
-2000104d:	8b 43 08             	mov    0x8(%ebx),%eax
-20001050:	75 07                	jne    20001059 <malloc+0x80>
+20001069:	85 d2                	test   %edx,%edx
+2000106b:	8b 43 08             	mov    0x8(%ebx),%eax
+2000106e:	75 07                	jne    20001077 <malloc+0x80>
 				*root = cur->next;
-20001052:	a3 0c 50 04 20       	mov    %eax,0x2004500c
-20001057:	eb 0e                	jmp    20001067 <malloc+0x8e>
+20001070:	a3 0c 50 04 20       	mov    %eax,0x2004500c
+20001075:	eb 0e                	jmp    20001085 <malloc+0x8e>
 				return;
 			} else {
 				last->next = cur->next;
-20001059:	89 42 08             	mov    %eax,0x8(%edx)
-2000105c:	eb 09                	jmp    20001067 <malloc+0x8e>
+20001077:	89 42 08             	mov    %eax,0x8(%edx)
+2000107a:	eb 09                	jmp    20001085 <malloc+0x8e>
 				return;
 			}
 		}
 		last = cur;
 		cur = cur->next;
-2000105e:	89 c2                	mov    %eax,%edx
-20001060:	8b 40 08             	mov    0x8(%eax),%eax
+2000107c:	89 c2                	mov    %eax,%edx
+2000107e:	8b 40 08             	mov    0x8(%eax),%eax
 
 static void remove_from_list(struct memory_node** root, struct memory_node* element) {
 	struct memory_node* last = 0;
 	struct memory_node* cur = *root;
 
 	while (cur != NULL) {
-20001063:	85 c0                	test   %eax,%eax
-20001065:	75 e0                	jne    20001047 <malloc+0x6e>
+20001081:	85 c0                	test   %eax,%eax
+20001083:	75 e0                	jne    20001065 <malloc+0x6e>
 		cur = cur->next;
 	}
 }
 
 static void append_to_list(struct memory_node** root, struct memory_node* element) {
 	element->next = *root;
-20001067:	a1 08 50 04 20       	mov    0x20045008,%eax
+20001085:	a1 08 50 04 20       	mov    0x20045008,%eax
 		cur->size = size;
 
 		remove_from_list(&first_free, cur);
 		append_to_list(&first_used, cur);
 
 		if (freesize > 0) {
-2000106c:	85 ff                	test   %edi,%edi
+2000108a:	85 ff                	test   %edi,%edi
 		cur = cur->next;
 	}
 }
 
 static void append_to_list(struct memory_node** root, struct memory_node* element) {
 	element->next = *root;
-2000106e:	89 43 08             	mov    %eax,0x8(%ebx)
+2000108c:	89 43 08             	mov    %eax,0x8(%ebx)
 	*root = element;
-20001071:	89 1d 08 50 04 20    	mov    %ebx,0x20045008
+2000108f:	89 1d 08 50 04 20    	mov    %ebx,0x20045008
 		cur->size = size;
 
 		remove_from_list(&first_free, cur);
 		append_to_list(&first_used, cur);
 
 		if (freesize > 0) {
-20001077:	74 1d                	je     20001096 <malloc+0xbd>
+20001095:	74 1d                	je     200010b4 <malloc+0xbd>
 			struct memory_node* free = pop_unused_node();
-20001079:	e8 f2 fe ff ff       	call   20000f70 <pop_unused_node>
+20001097:	e8 f2 fe ff ff       	call   20000f8e <pop_unused_node>
 
 			free->address = cur->address + cur->size;
-2000107e:	8b 13                	mov    (%ebx),%edx
-20001080:	03 53 04             	add    0x4(%ebx),%edx
-20001083:	89 50 04             	mov    %edx,0x4(%eax)
+2000109c:	8b 13                	mov    (%ebx),%edx
+2000109e:	03 53 04             	add    0x4(%ebx),%edx
+200010a1:	89 50 04             	mov    %edx,0x4(%eax)
 		cur = cur->next;
 	}
 }
 
 static void append_to_list(struct memory_node** root, struct memory_node* element) {
 	element->next = *root;
-20001086:	8b 15 0c 50 04 20    	mov    0x2004500c,%edx
-2000108c:	89 50 08             	mov    %edx,0x8(%eax)
+200010a4:	8b 15 0c 50 04 20    	mov    0x2004500c,%edx
+200010aa:	89 50 08             	mov    %edx,0x8(%eax)
 
 		if (freesize > 0) {
 			struct memory_node* free = pop_unused_node();
 
 			free->address = cur->address + cur->size;
 			free->size = freesize;
-2000108f:	89 38                	mov    %edi,(%eax)
+200010ad:	89 38                	mov    %edi,(%eax)
 	}
 }
 
 static void append_to_list(struct memory_node** root, struct memory_node* element) {
 	element->next = *root;
 	*root = element;
-20001091:	a3 0c 50 04 20       	mov    %eax,0x2004500c
+200010af:	a3 0c 50 04 20       	mov    %eax,0x2004500c
 			free->size = freesize;
 
 			append_to_list(&first_free, free);
 		}
 
 		return (void*) cur->address;
-20001096:	8b 43 04             	mov    0x4(%ebx),%eax
+200010b4:	8b 43 04             	mov    0x4(%ebx),%eax
 	}
 }
-20001099:	8d 65 f4             	lea    -0xc(%ebp),%esp
-2000109c:	5b                   	pop    %ebx
-2000109d:	5e                   	pop    %esi
-2000109e:	5f                   	pop    %edi
-2000109f:	5d                   	pop    %ebp
-200010a0:	c3                   	ret    
+200010b7:	8d 65 f4             	lea    -0xc(%ebp),%esp
+200010ba:	5b                   	pop    %ebx
+200010bb:	5e                   	pop    %esi
+200010bc:	5f                   	pop    %edi
+200010bd:	5d                   	pop    %ebp
+200010be:	c3                   	ret    
 	}
 
 	if (cur == NULL) {
 		uint32_t pgs = size / PAGESIZE;
 
 		if ((size % PAGESIZE) != 0)
-200010a1:	89 f0                	mov    %esi,%eax
+200010bf:	89 f0                	mov    %esi,%eax
 		}
 		cur = cur->next;
 	}
 
 	if (cur == NULL) {
 		uint32_t pgs = size / PAGESIZE;
-200010a3:	89 f7                	mov    %esi,%edi
-200010a5:	c1 ef 0c             	shr    $0xc,%edi
+200010c1:	89 f7                	mov    %esi,%edi
+200010c3:	c1 ef 0c             	shr    $0xc,%edi
 
 		if ((size % PAGESIZE) != 0)
-200010a8:	25 ff 0f 00 00       	and    $0xfff,%eax
+200010c6:	25 ff 0f 00 00       	and    $0xfff,%eax
 			pgs++;
-200010ad:	83 f8 01             	cmp    $0x1,%eax
-200010b0:	83 df ff             	sbb    $0xffffffff,%edi
+200010cb:	83 f8 01             	cmp    $0x1,%eax
+200010ce:	83 df ff             	sbb    $0xffffffff,%edi
 
 		void* addr = pcalloc(pgs);
-200010b3:	83 ec 0c             	sub    $0xc,%esp
-200010b6:	57                   	push   %edi
-200010b7:	e8 66 fd ff ff       	call   20000e22 <pcalloc>
+200010d1:	83 ec 0c             	sub    $0xc,%esp
+200010d4:	57                   	push   %edi
+200010d5:	e8 54 fd ff ff       	call   20000e2e <pcalloc>
 		struct memory_node* fill = pop_unused_node();
 
 		fill->address = (uint32_t) addr;
 		fill->size = (uint32_t) size;
 
 		if (pgs * PAGESIZE > size) {
-200010bc:	c1 e7 0c             	shl    $0xc,%edi
+200010da:	c1 e7 0c             	shl    $0xc,%edi
 		if ((size % PAGESIZE) != 0)
 			pgs++;
 
 		void* addr = pcalloc(pgs);
 
 		struct memory_node* fill = pop_unused_node();
-200010bf:	89 45 e4             	mov    %eax,-0x1c(%ebp)
-200010c2:	e8 a9 fe ff ff       	call   20000f70 <pop_unused_node>
+200010dd:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+200010e0:	e8 a9 fe ff ff       	call   20000f8e <pop_unused_node>
 
 		fill->address = (uint32_t) addr;
-200010c7:	8b 55 e4             	mov    -0x1c(%ebp),%edx
+200010e5:	8b 55 e4             	mov    -0x1c(%ebp),%edx
 		fill->size = (uint32_t) size;
 
 		if (pgs * PAGESIZE > size) {
-200010ca:	83 c4 10             	add    $0x10,%esp
+200010e8:	83 c4 10             	add    $0x10,%esp
 		if ((size % PAGESIZE) != 0)
 			pgs++;
 
 		void* addr = pcalloc(pgs);
 
 		struct memory_node* fill = pop_unused_node();
-200010cd:	89 c3                	mov    %eax,%ebx
+200010eb:	89 c3                	mov    %eax,%ebx
 
 		fill->address = (uint32_t) addr;
-200010cf:	89 50 04             	mov    %edx,0x4(%eax)
+200010ed:	89 50 04             	mov    %edx,0x4(%eax)
 		fill->size = (uint32_t) size;
-200010d2:	89 30                	mov    %esi,(%eax)
+200010f0:	89 30                	mov    %esi,(%eax)
 
 		if (pgs * PAGESIZE > size) {
-200010d4:	39 f7                	cmp    %esi,%edi
-200010d6:	0f 86 5b ff ff ff    	jbe    20001037 <malloc+0x5e>
-200010dc:	e9 37 ff ff ff       	jmp    20001018 <malloc+0x3f>
+200010f2:	39 f7                	cmp    %esi,%edi
+200010f4:	0f 86 5b ff ff ff    	jbe    20001055 <malloc+0x5e>
+200010fa:	e9 37 ff ff ff       	jmp    20001036 <malloc+0x3f>
 
-200010e1 <realloc>:
+200010ff <realloc>:
 	}
 
 	return p;
 }
 
 void* realloc(void* ptr, size_t size) {
-200010e1:	55                   	push   %ebp
-200010e2:	89 e5                	mov    %esp,%ebp
-200010e4:	56                   	push   %esi
-200010e5:	53                   	push   %ebx
+200010ff:	55                   	push   %ebp
+20001100:	89 e5                	mov    %esp,%ebp
+20001102:	56                   	push   %esi
+20001103:	53                   	push   %ebx
 	struct memory_node* cur = first_used;
-200010e6:	8b 1d 08 50 04 20    	mov    0x20045008,%ebx
+20001104:	8b 1d 08 50 04 20    	mov    0x20045008,%ebx
 	}
 
 	return p;
 }
 
 void* realloc(void* ptr, size_t size) {
-200010ec:	8b 55 08             	mov    0x8(%ebp),%edx
-200010ef:	8b 45 0c             	mov    0xc(%ebp),%eax
+2000110a:	8b 55 08             	mov    0x8(%ebp),%edx
+2000110d:	8b 45 0c             	mov    0xc(%ebp),%eax
 	struct memory_node* cur = first_used;
 
 	while (cur != NULL) {
-200010f2:	eb 3e                	jmp    20001132 <realloc+0x51>
+20001110:	eb 40                	jmp    20001152 <realloc+0x53>
 		if (cur->address == (uint32_t) ptr) {
-200010f4:	3b 53 04             	cmp    0x4(%ebx),%edx
-200010f7:	75 36                	jne    2000112f <realloc+0x4e>
+20001112:	3b 53 04             	cmp    0x4(%ebx),%edx
+20001115:	75 38                	jne    2000114f <realloc+0x50>
 			if (size == 0) {
-200010f9:	85 c0                	test   %eax,%eax
-200010fb:	75 0b                	jne    20001108 <realloc+0x27>
+20001117:	85 c0                	test   %eax,%eax
+20001119:	75 0d                	jne    20001128 <realloc+0x29>
 				free(ptr);
-200010fd:	52                   	push   %edx
-200010fe:	31 f6                	xor    %esi,%esi
-20001100:	e8 83 fd ff ff       	call   20000e88 <free>
-				return NULL;
-20001105:	5b                   	pop    %ebx
-20001106:	eb 30                	jmp    20001138 <realloc+0x57>
-			} else {
-				void* new = malloc(size);
-20001108:	83 ec 0c             	sub    $0xc,%esp
-2000110b:	50                   	push   %eax
-2000110c:	e8 c8 fe ff ff       	call   20000fd9 <malloc>
-				memcpy(new, (void*) cur->address, cur->size);
-20001111:	83 c4 0c             	add    $0xc,%esp
-		if (cur->address == (uint32_t) ptr) {
-			if (size == 0) {
-				free(ptr);
+2000111b:	83 ec 0c             	sub    $0xc,%esp
+2000111e:	31 f6                	xor    %esi,%esi
+20001120:	52                   	push   %edx
+20001121:	e8 6e fd ff ff       	call   20000e94 <free>
+20001126:	eb 22                	jmp    2000114a <realloc+0x4b>
 				return NULL;
 			} else {
 				void* new = malloc(size);
-20001114:	89 c6                	mov    %eax,%esi
+20001128:	83 ec 0c             	sub    $0xc,%esp
+2000112b:	50                   	push   %eax
+2000112c:	e8 c6 fe ff ff       	call   20000ff7 <malloc>
 				memcpy(new, (void*) cur->address, cur->size);
-20001116:	ff 33                	pushl  (%ebx)
-20001118:	ff 73 04             	pushl  0x4(%ebx)
-2000111b:	50                   	push   %eax
-2000111c:	e8 57 fc ff ff       	call   20000d78 <memcpy>
+20001131:	83 c4 0c             	add    $0xc,%esp
+		if (cur->address == (uint32_t) ptr) {
+			if (size == 0) {
+				free(ptr);
+				return NULL;
+			} else {
+				void* new = malloc(size);
+20001134:	89 c6                	mov    %eax,%esi
+				memcpy(new, (void*) cur->address, cur->size);
+20001136:	ff 33                	pushl  (%ebx)
+20001138:	ff 73 04             	pushl  0x4(%ebx)
+2000113b:	50                   	push   %eax
+2000113c:	e8 43 fc ff ff       	call   20000d84 <memcpy>
 				free((void*) cur->address);
-20001121:	59                   	pop    %ecx
-20001122:	ff 73 04             	pushl  0x4(%ebx)
-20001125:	e8 5e fd ff ff       	call   20000e88 <free>
+20001141:	59                   	pop    %ecx
+20001142:	ff 73 04             	pushl  0x4(%ebx)
+20001145:	e8 4a fd ff ff       	call   20000e94 <free>
 
 				return new;
-2000112a:	83 c4 10             	add    $0x10,%esp
-2000112d:	eb 09                	jmp    20001138 <realloc+0x57>
+2000114a:	83 c4 10             	add    $0x10,%esp
+2000114d:	eb 09                	jmp    20001158 <realloc+0x59>
 			}
 		}
 		cur = cur->next;
-2000112f:	8b 5b 08             	mov    0x8(%ebx),%ebx
+2000114f:	8b 5b 08             	mov    0x8(%ebx),%ebx
 }
 
 void* realloc(void* ptr, size_t size) {
 	struct memory_node* cur = first_used;
 
 	while (cur != NULL) {
-20001132:	85 db                	test   %ebx,%ebx
-20001134:	75 be                	jne    200010f4 <realloc+0x13>
-20001136:	31 f6                	xor    %esi,%esi
+20001152:	85 db                	test   %ebx,%ebx
+20001154:	75 bc                	jne    20001112 <realloc+0x13>
+20001156:	31 f6                	xor    %esi,%esi
 			}
 		}
 		cur = cur->next;
 	}
 	return NULL;
 }
-20001138:	8d 65 f8             	lea    -0x8(%ebp),%esp
-2000113b:	89 f0                	mov    %esi,%eax
-2000113d:	5b                   	pop    %ebx
-2000113e:	5e                   	pop    %esi
-2000113f:	5d                   	pop    %ebp
-20001140:	c3                   	ret    
+20001158:	8d 65 f8             	lea    -0x8(%ebp),%esp
+2000115b:	89 f0                	mov    %esi,%eax
+2000115d:	5b                   	pop    %ebx
+2000115e:	5e                   	pop    %esi
+2000115f:	5d                   	pop    %ebp
+20001160:	c3                   	ret    
 
-20001141 <calloc>:
+20001161 <calloc>:
 
 		return (void*) cur->address;
 	}
 }
 
 void* calloc(size_t num, size_t size) {
-20001141:	55                   	push   %ebp
-20001142:	89 e5                	mov    %esp,%ebp
-20001144:	56                   	push   %esi
-20001145:	53                   	push   %ebx
-20001146:	8b 5d 0c             	mov    0xc(%ebp),%ebx
+20001161:	55                   	push   %ebp
+20001162:	89 e5                	mov    %esp,%ebp
+20001164:	56                   	push   %esi
+20001165:	53                   	push   %ebx
+20001166:	8b 5d 0c             	mov    0xc(%ebp),%ebx
 	size_t gsize = num * size;
 	void* p = malloc(gsize);
-20001149:	83 ec 0c             	sub    $0xc,%esp
+20001169:	83 ec 0c             	sub    $0xc,%esp
 		return (void*) cur->address;
 	}
 }
 
 void* calloc(size_t num, size_t size) {
 	size_t gsize = num * size;
-2000114c:	0f af 5d 08          	imul   0x8(%ebp),%ebx
+2000116c:	0f af 5d 08          	imul   0x8(%ebp),%ebx
 	void* p = malloc(gsize);
-20001150:	53                   	push   %ebx
-20001151:	e8 83 fe ff ff       	call   20000fd9 <malloc>
+20001170:	53                   	push   %ebx
+20001171:	e8 81 fe ff ff       	call   20000ff7 <malloc>
 
 	if (p != NULL) {
-20001156:	83 c4 10             	add    $0x10,%esp
+20001176:	83 c4 10             	add    $0x10,%esp
 	}
 }
 
 void* calloc(size_t num, size_t size) {
 	size_t gsize = num * size;
 	void* p = malloc(gsize);
-20001159:	89 c6                	mov    %eax,%esi
+20001179:	89 c6                	mov    %eax,%esi
 
 	if (p != NULL) {
-2000115b:	85 c0                	test   %eax,%eax
-2000115d:	74 0d                	je     2000116c <calloc+0x2b>
+2000117b:	85 c0                	test   %eax,%eax
+2000117d:	74 0d                	je     2000118c <calloc+0x2b>
 		memset(p, 0, gsize);
-2000115f:	50                   	push   %eax
-20001160:	53                   	push   %ebx
-20001161:	6a 00                	push   $0x0
-20001163:	56                   	push   %esi
-20001164:	e8 f3 fb ff ff       	call   20000d5c <memset>
-20001169:	83 c4 10             	add    $0x10,%esp
+2000117f:	50                   	push   %eax
+20001180:	53                   	push   %ebx
+20001181:	6a 00                	push   $0x0
+20001183:	56                   	push   %esi
+20001184:	e8 df fb ff ff       	call   20000d68 <memset>
+20001189:	83 c4 10             	add    $0x10,%esp
 	}
 
 	return p;
 }
-2000116c:	8d 65 f8             	lea    -0x8(%ebp),%esp
-2000116f:	89 f0                	mov    %esi,%eax
-20001171:	5b                   	pop    %ebx
-20001172:	5e                   	pop    %esi
-20001173:	5d                   	pop    %ebp
-20001174:	c3                   	ret    
+2000118c:	8d 65 f8             	lea    -0x8(%ebp),%esp
+2000118f:	89 f0                	mov    %esi,%eax
+20001191:	5b                   	pop    %ebx
+20001192:	5e                   	pop    %esi
+20001193:	5d                   	pop    %ebp
+20001194:	c3                   	ret    

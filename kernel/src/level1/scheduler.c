@@ -136,14 +136,96 @@ struct thread* create_thread(struct environment* environment, void* entry) {
 }
 
 struct cpu_state* save_cpu_state(struct cpu_state* cpu) {
-	if(current_thread->active_rpc != 0 && current_thread->active_rpc->state != RPC_STATE_AWAITING) {
+	if(current_thread->active_rpc == 0 || current_thread->active_rpc->state == RPC_STATE_AWAITING) {
+		memcpy(current_thread->cpuState, cpu, sizeof(struct cpu_state));
+	}
+	else if(current_thread->active_rpc->state == RPC_STATE_EXECUTING) {
 		memcpy(&current_thread->active_rpc->cpuState, cpu, sizeof(struct cpu_state));
+	}
+	return cpu;
+}
+
+struct cpu_state* schedule_to(struct thread* next, struct cpu_state* cpu) {
+	save_cpu_state(cpu);
+
+	current_thread = next;
+	vmm_activate_pagedir(next->environment->phys_pdir);
+
+	if(next->active_rpc) {
+		struct rpc_future* bCheck = next->active_rpc->runningFutures;
+		struct rpc_future** previous = &(next->active_rpc->runningFutures);
+
+		while(bCheck != 0) {
+			if(bCheck->state == FSTATE_RETURNED) {
+				void* bptr = bCheck;
+
+				*previous = bCheck->next;
+				previous = &(bCheck->next);
+				bCheck = bCheck->next;
+
+				free(bptr);
+			}
+			else
+			{
+				previous = &(bCheck->next);
+				bCheck = bCheck->next;
+			}
+		}
+
+		if(next->active_rpc->state == RPC_STATE_RETURNED)
+		{
+			next->active_rpc->fullfills->state = FSTATE_RETURNED;
+			next->active_rpc->fullfills->returnCode = next->active_rpc->returnCode;
+
+			void* ptr = next->active_rpc;
+			next->active_rpc = next->active_rpc->next;
+
+			free(ptr);
+		}
+	}
+
+	if(next->active_rpc) {
+		if(next->active_rpc->state == RPC_STATE_AWAITING) {
+			struct cpu_state nstate = {
+					.eax = 0, .ebx = 0, .ecx = 0, .edx = 0,
+					.esi = 0, .edi = 0, .ebp = 0, .esp = next->cpuState->esp - 4,
+					.eip = (uint32_t) next->rpc_handler_address,
+
+					// Ring-3-Segmentregister
+					.cs = 0x18 | 0x03, .ss = 0x20 | 0x03,
+
+					.eflags = 0x200, };
+
+			memcpy(&(next->active_rpc->cpuState), &nstate, sizeof(struct cpu_state));
+			next->active_rpc->state = RPC_STATE_EXECUTING;
+		}
+
+		return &(next->active_rpc->cpuState);
 	}
 	else
 	{
-		memcpy(current_thread->cpuState, cpu, sizeof(struct cpu_state));
+		struct rpc_future* bCheck = next->runningFutures;
+		struct rpc_future** previous = &(next->runningFutures);
+
+		while(bCheck != 0) {
+			if(bCheck->state == FSTATE_RETURNED) {
+				void* bptr = bCheck;
+
+				*previous = bCheck->next;
+				previous = &(bCheck->next);
+				bCheck = bCheck->next;
+
+				free(bptr);
+			}
+			else
+			{
+				previous = &(bCheck->next);
+				bCheck = bCheck->next;
+			}
+		}
+
+		return next->cpuState;
 	}
-	return cpu;
 }
 
 struct cpu_state* schedule(struct cpu_state* cpu) {
@@ -154,96 +236,15 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
             return current_thread->cpuState;
         }
 
-        save_cpu_state(cpu);
-
     	struct thread* next = current_thread;
 
-        do {
-        	next = next->next;
-			if (next == 0) {
-				next = first_thread;
-			}
+    	next = next->next;
+    	if (next == 0) {
+    		next = first_thread;
+    	}
 
-			current_thread = next;
-			vmm_activate_pagedir(next->environment->phys_pdir);
+    	return schedule_to(next, cpu);
 
-			if(next->active_rpc) {
-				if(next->active_rpc->state == RPC_STATE_RETURNED)
-				{
-					next->active_rpc->fullfills->state = FSTATE_RETURNED;
-					next->active_rpc->fullfills->returnCode = next->active_rpc->returnCode;
-
-					void* ptr = next->active_rpc;
-					next->active_rpc = next->active_rpc->next;
-
-					free(ptr);
-				}
-			}
-
-			if(next->active_rpc) {
-				if(next->active_rpc->state == RPC_STATE_AWAITING) {
-					struct cpu_state nstate = {
-							.eax = 0, .ebx = 0, .ecx = 0, .edx = 0,
-							.esi = 0, .edi = 0, .ebp = 0, .esp = next->cpuState->esp - 4,
-							.eip = (uint32_t) next->rpc_handler_address,
-
-							// Ring-3-Segmentregister
-							.cs = 0x18 | 0x03, .ss = 0x20 | 0x03,
-
-							.eflags = 0x200, };
-
-					memcpy(&(next->active_rpc->cpuState), &nstate, sizeof(struct cpu_state));
-					next->active_rpc->state = RPC_STATE_EXECUTING;
-				}
-
-				struct rpc_future* bCheck = next->active_rpc->blockedBy;
-				struct rpc_future** previous = &(next->active_rpc->blockedBy);
-
-				while(bCheck != 0) {
-					if(bCheck->state == FSTATE_RETURNED) {
-						void* bptr = bCheck;
-
-						*previous = bCheck->next;
-						previous = &(bCheck->next);
-						bCheck = bCheck->next;
-
-						free(bptr);
-					}
-					else
-					{
-						previous = &(bCheck->next);
-						bCheck = bCheck->next;
-					}
-				}
-
-				return &(next->active_rpc->cpuState);
-			}
-			else
-			{
-				struct rpc_future* bCheck = next->blockedBy;
-				struct rpc_future** previous = &(next->blockedBy);
-
-				while(bCheck != 0) {
-					if(bCheck->state == FSTATE_RETURNED) {
-						void* bptr = bCheck;
-
-						*previous = bCheck->next;
-						previous = &(bCheck->next);
-						bCheck = bCheck->next;
-
-						free(bptr);
-					}
-					else
-					{
-						previous = &(bCheck->next);
-						bCheck = bCheck->next;
-					}
-				}
-
-				return next->cpuState;
-			}
-			kprintf("[NOSCHED]");
-        } while(1);
     }
     return cpu;
 }

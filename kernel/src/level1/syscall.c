@@ -50,21 +50,21 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		uint32_t ebx = in->ebx;
 
 		struct thread* c = get_current_thread();
-		struct rpc_future* bCheck = (c->active_rpc && c->active_rpc->state != RPC_STATE_AWAITING) ? c->active_rpc->blockedBy : c->blockedBy;
+		struct rpc_future* bCheck = (c->active_rpc && c->active_rpc->state != RPC_STATE_AWAITING) ? c->active_rpc->runningFutures : c->runningFutures;
 
-		uint32_t anyBlock = 0;
+		uint32_t anyFuture = 0;
 
 		while(bCheck != 0) {
-			anyBlock |= bCheck->state;
+			if(ebx == 1337) anyFuture |= bCheck->state;
 			if((uint32_t)bCheck == ebx) {
-				anyBlock = bCheck->state;
+				anyFuture = bCheck->state;
 				break;
 			}
 
 			bCheck = bCheck->next;
 		}
 
-		new->eax = anyBlock;
+		new->eax = anyFuture;
 		break;
 
 
@@ -94,7 +94,6 @@ struct cpu_state* syscall(struct cpu_state* in) {
 	case 0x303: //DRVCall call EBX=name char* ECX=data page* EDX=callID
 	{
 		char* name = (char*)in->ebx;
-		kprintf("BLUB %s\n", name);
 		struct driver* d = fstree_driver_for_name(name);
 		if(d != 0) {
 			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_info, in->edx, vmm_resolve((void*)in->ecx));

@@ -70,30 +70,20 @@ int main(void* initrfsPtr) {
 
 	createDriver(initrfsPtr);
 
-	state = 5;
+	state = 1;
 	execpn("drivers/fifo");
+	while(state); //wait for backcall
+
+	state =1;
+	execpn("drivers/keyboard");
 	while(state); //wait for backcall
 
 	struct driver_data* dd = palloc();
 
 	strcpy(dd->data, "testfile");
 
-	FUTURE fut = fCall("fifo", CALL_CREATE, dd);
-	while(rpc_check_future(fut));
-
-	for(int i = 0; i < 100; i++) {
-		strcpy(dd->data, "INPUT");
-		dd->length = strlen(dd->data);
-		fWrite("testfile", dd);
-	}
-
-	while(rpc_check_future(0));
-
 	while(1) {
-		dd->length = 25;
-		fut = fRead("testfile", dd);
-		while(rpc_check_future(fut));
-		kprintf("Read: %s\n", dd->data);
+		//kprintf("test\n");
 	}
 
 	return 0;

@@ -3,25 +3,26 @@
 
 struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, PHYSICAL data) {
 	if(t == get_current_thread() && get_current_thread()->active_rpc != 0 && get_current_thread()->active_rpc->state != RPC_STATE_AWAITING) {
-		show_cod(get_current_thread()->cpuState, "[DEADLOCK] THREAD-RPC caused SELF-RPC.");
+		//kprintf("[DEADLOCK-CAUTION] THREAD-RPC caused SELF-RPC.\n");
 	}
 
 	struct rpc_future* future = calloc(1, sizeof(struct rpc_future));
+	struct rpc* r = calloc(1, sizeof(struct rpc));
 
-	if(get_current_thread()->active_rpc != 0 && get_current_thread()->active_rpc->state != RPC_STATE_AWAITING) {
-		future->next = get_current_thread()->active_rpc->blockedBy;
-		get_current_thread()->active_rpc->blockedBy = future;
+	if(get_current_thread()->active_rpc != 0 && get_current_thread()->active_rpc->state == RPC_STATE_EXECUTING) {
+		future->next = get_current_thread()->active_rpc->runningFutures;
+		get_current_thread()->active_rpc->runningFutures = future;
 	}
 	else
 	{
-		future->next = get_current_thread()->blockedBy;
-		get_current_thread()->blockedBy = future;
+		future->next = get_current_thread()->runningFutures;
+		get_current_thread()->runningFutures = future;
 	}
-
-	struct rpc* r = calloc(1, sizeof(struct rpc));
 
 	r->next = 0;
 	r->state = RPC_STATE_AWAITING;
+
+	int dbgN = 0;
 
 	if(t->active_rpc == 0) {
 		t->active_rpc = r;
@@ -30,6 +31,7 @@ struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, 
 	{
 		struct rpc* tr = t->active_rpc;
 		do {
+			dbgN++;
 			if(tr->next == 0) {
 				tr->next = r;
 			}
