@@ -51,6 +51,9 @@ struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, 
 	future->state = FSTATE_RUNNING;
 
 	r->fullfills = future;
+	r->creatorThread = get_current_thread();
+
+	registerForceSchedule(t);
 
 	return future;
 }
@@ -60,6 +63,8 @@ void return_rpc(int resultCode) {
 
 	get_current_thread()->active_rpc->state = RPC_STATE_RETURNED;
 	get_current_thread()->active_rpc->returnCode = resultCode;
+
+	registerForceSchedule(get_current_thread()->active_rpc->creatorThread);
 }
 
 void* rpc_map() {

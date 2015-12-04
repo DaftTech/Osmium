@@ -61,6 +61,8 @@ struct rpc {
 	uint32_t state;
 	int returnCode;
 
+	struct thread* creatorThread;
+
 	struct cpu_state cpuState;
 
 	struct rpc_future* fullfills;
@@ -85,6 +87,9 @@ struct cpu_state* 	schedule_exception(struct cpu_state* cpu);
 struct cpu_state*   schedule_to(struct thread* next, struct cpu_state* cpu);
 struct cpu_state* 	schedule(struct cpu_state* cpu);
 struct cpu_state* 	save_cpu_state(struct cpu_state* cpu);
+
+struct cpu_state*   optionForceSchedule(struct cpu_state* cpu);
+void                registerForceSchedule(struct thread* to);
 
 void              	enableScheduling(void);
 uint32_t          	isSchedulingEnabled(void);

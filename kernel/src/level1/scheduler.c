@@ -145,6 +145,21 @@ struct cpu_state* save_cpu_state(struct cpu_state* cpu) {
 	return cpu;
 }
 
+static struct thread* force = 0;
+
+struct cpu_state* optionForceSchedule(struct cpu_state* cpu) {
+	if(force) {
+		struct thread* ptr = force;
+		force = 0;
+		return schedule_to(ptr, cpu);
+	}
+	return cpu;
+}
+
+void registerForceSchedule(struct thread* to) {
+	force = to;
+}
+
 struct cpu_state* schedule_to(struct thread* next, struct cpu_state* cpu) {
 	save_cpu_state(cpu);
 
