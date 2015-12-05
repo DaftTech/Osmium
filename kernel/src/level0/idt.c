@@ -216,8 +216,8 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu) {
 		show_cod(cpu, "Unknown Interrupt!");
 	}
 
-	/*if(isSchedulingEnabled() && new_cpu == cpu) {
+	if(isSchedulingEnabled() && new_cpu == cpu) {
 		return optionForceSchedule(new_cpu);
-	}*/
+	}
 	return new_cpu;
 }
