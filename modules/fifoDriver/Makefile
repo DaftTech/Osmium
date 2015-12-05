@@ -8,7 +8,7 @@ ASFLAGS = -m32
 CFLAGS = -m32 -Wall -g -fno-stack-protector -fno-builtin -nostdinc -Iinclude -I../../lib-osmium/include
 LDFLAGS = -melf_i386 -Tlink.ld -u _start --gc-sections 
 
-../../initrfs/drivers/fifo: $(OBJS)
+../../bin/initrfs/drivers/fifo: $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $^ ../../lib-osmium/lib-osmium.a
 	objdump -dSx $@ > mod.objdump
 

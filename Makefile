@@ -7,7 +7,7 @@ all:
 	make modules || exit 1
 
 	-rm bin/initrfs.tar
-	cd initrfs; tar -cWf ../bin/initrfs.tar *
+	cd bin/initrfs; tar -cWf ../initrfs.tar *
 
 	-rm bin/kernel.objdump
 	objdump -dS bin/kernel > bin/kernel.objdump
