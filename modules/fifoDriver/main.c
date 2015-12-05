@@ -145,7 +145,7 @@ void createDriver() {
 	kprintf("FIFO registered driver %d (%d, %d, %d, %d)\n", ownDriverID, dModifyID, dCallID, dReadID, dWriteID);
 }
 
-int main(void* initrfsPtr) {
+int rmain(void* initrfsPtr) {
 	createDriver();
 
 	fCall("initrfs", 0, 0); //TELL init we are finished here

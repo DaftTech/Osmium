@@ -160,7 +160,7 @@ int irq(int irq, void* data) {
 }
 
 
-int main(void* initrfsPtr) {
+int rmain(void* initrfsPtr) {
 	dd = palloc();
 
     // Tastaturpuffer leeren

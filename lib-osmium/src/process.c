@@ -4,7 +4,7 @@
 #include "driver.h"
 #include "stdlib.h"
 
-extern int main(void* args);
+extern int rmain(void* args);
 
 static FUTURE testRPC() {
 	struct regstate state = {

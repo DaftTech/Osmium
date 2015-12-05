@@ -62,7 +62,7 @@ void createDriver(void* initrfsPtr) {
 	tar_extract(initrfsPtr, (uint32_t**)files, driverID);
 }
 
-int main(void* initrfsPtr) {
+int rmain(void* initrfsPtr) {
 	if(!initrfsPtr) {
 		kprintf("Init called without initrfsptr!\nTerminating...\n");
 		return 0;
