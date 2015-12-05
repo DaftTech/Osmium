@@ -39,7 +39,6 @@ struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, 
 
 	if(calling) {
 		struct rpc_future* future = calloc(1, sizeof(struct rpc_future));
-		kprintf("Created future %x\n", future);
 
 		if(get_current_thread()->active_rpc != 0 && get_current_thread()->active_rpc->state == RPC_STATE_EXECUTING) {
 			future->next = get_current_thread()->active_rpc->runningFutures;
@@ -73,7 +72,6 @@ void return_rpc(int resultCode) {
 	}
 
 	if(get_current_thread()->active_rpc->fullfills) {
-		kprintf("FUTURE %x was fulfilled\n", get_current_thread()->active_rpc->fullfills);
 		get_current_thread()->active_rpc->fullfills->state = FSTATE_RETURNED;
 		get_current_thread()->active_rpc->fullfills->returnCode = get_current_thread()->active_rpc->returnCode;
 	}
