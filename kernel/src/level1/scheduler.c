@@ -39,7 +39,7 @@ struct cpu_state* schedule_exception(struct cpu_state* cpu) {
         kprintf("\n~~~ Terminated thread (PID=%x) due to exception %x:%x \n", current_thread, cpu->intr, cpu->error);
         kprintf("\n");
         show_dump(cpu);
-        setclr(0x07);
+        setclr(C_DEFAULT);
 
         return terminate_current(cpu);
     }
@@ -166,6 +166,13 @@ struct cpu_state* schedule_to(struct thread* next, struct cpu_state* cpu) {
 	current_thread = next;
 	vmm_activate_pagedir(next->environment->phys_pdir);
 
+	if(next->active_rpc && next->active_rpc->state == RPC_STATE_RETURNED) {
+		void* ptr = next->active_rpc;
+		next->active_rpc = next->active_rpc->next;
+
+		free(ptr);
+	}
+
 	if(next->active_rpc) {
 		struct rpc_future* bCheck = next->active_rpc->runningFutures;
 		struct rpc_future** previous = &(next->active_rpc->runningFutures);
@@ -187,19 +194,6 @@ struct cpu_state* schedule_to(struct thread* next, struct cpu_state* cpu) {
 			}
 		}
 
-		if(next->active_rpc->state == RPC_STATE_RETURNED)
-		{
-			next->active_rpc->fullfills->state = FSTATE_RETURNED;
-			next->active_rpc->fullfills->returnCode = next->active_rpc->returnCode;
-
-			void* ptr = next->active_rpc;
-			next->active_rpc = next->active_rpc->next;
-
-			free(ptr);
-		}
-	}
-
-	if(next->active_rpc) {
 		if(next->active_rpc->state == RPC_STATE_AWAITING) {
 			struct cpu_state nstate = {
 					.eax = 0, .ebx = 0, .ecx = 0, .edx = 0,

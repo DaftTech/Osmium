@@ -149,7 +149,7 @@ int main(void* initrfsPtr) {
 	createDriver();
 
 	fCall("initrfs", 0, 0); //TELL init we are finished here
-	while(1);
+	while(1); // kprintf("FIFO Main Loop\n");
 
 	return 0;
 }

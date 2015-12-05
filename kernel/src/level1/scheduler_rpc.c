@@ -1,23 +1,9 @@
 #include "level1/scheduler.h"
 #include "level0/catofdeath.h"
 
-struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, PHYSICAL data) {
-	if(t == get_current_thread() && get_current_thread()->active_rpc != 0 && get_current_thread()->active_rpc->state != RPC_STATE_AWAITING) {
-		//kprintf("[DEADLOCK-CAUTION] THREAD-RPC caused SELF-RPC.\n");
-	}
-
-	struct rpc_future* future = calloc(1, sizeof(struct rpc_future));
+struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, PHYSICAL data, struct thread* calling) {
 	struct rpc* r = calloc(1, sizeof(struct rpc));
 
-	if(get_current_thread()->active_rpc != 0 && get_current_thread()->active_rpc->state == RPC_STATE_EXECUTING) {
-		future->next = get_current_thread()->active_rpc->runningFutures;
-		get_current_thread()->active_rpc->runningFutures = future;
-	}
-	else
-	{
-		future->next = get_current_thread()->runningFutures;
-		get_current_thread()->runningFutures = future;
-	}
 
 	r->next = 0;
 	r->state = RPC_STATE_AWAITING;
@@ -46,16 +32,32 @@ struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, 
 	r->mapped = 0;
 	r->rpcID = rpcID;
 	r->rpcARG0 = rpcARG0;
-
-	future->returnCode = 0;
-	future->state = FSTATE_RUNNING;
-
-	r->fullfills = future;
 	r->creatorThread = get_current_thread();
+	r->fullfills = 0;
 
 	registerForceSchedule(t);
 
-	return future;
+	if(calling) {
+		struct rpc_future* future = calloc(1, sizeof(struct rpc_future));
+		kprintf("Created future %x\n", future);
+
+		if(get_current_thread()->active_rpc != 0 && get_current_thread()->active_rpc->state == RPC_STATE_EXECUTING) {
+			future->next = get_current_thread()->active_rpc->runningFutures;
+			get_current_thread()->active_rpc->runningFutures = future;
+		}
+		else
+		{
+			future->next = get_current_thread()->runningFutures;
+			get_current_thread()->runningFutures = future;
+		}
+
+		future->returnCode = 0;
+		future->state = FSTATE_RUNNING;
+
+		r->fullfills = future;
+	}
+
+	return r->fullfills;
 }
 
 void return_rpc(int resultCode) {
@@ -64,7 +66,19 @@ void return_rpc(int resultCode) {
 	get_current_thread()->active_rpc->state = RPC_STATE_RETURNED;
 	get_current_thread()->active_rpc->returnCode = resultCode;
 
-	registerForceSchedule(get_current_thread()->active_rpc->creatorThread);
+	while(get_current_thread()->active_rpc->runningFutures) {
+		void* ptr = get_current_thread()->active_rpc->runningFutures;
+		get_current_thread()->active_rpc->runningFutures = get_current_thread()->active_rpc->runningFutures->next;
+		free(ptr);
+	}
+
+	if(get_current_thread()->active_rpc->fullfills) {
+		kprintf("FUTURE %x was fulfilled\n", get_current_thread()->active_rpc->fullfills);
+		get_current_thread()->active_rpc->fullfills->state = FSTATE_RETURNED;
+		get_current_thread()->active_rpc->fullfills->returnCode = get_current_thread()->active_rpc->returnCode;
+	}
+
+	registerForceSchedule(get_current_thread());
 }
 
 void* rpc_map() {

@@ -78,13 +78,5 @@ int main(void* initrfsPtr) {
 	execpn("drivers/keyboard");
 	while(state); //wait for backcall
 
-	struct driver_data* dd = palloc();
-
-	strcpy(dd->data, "testfile");
-
-	while(1) {
-		//kprintf("test\n");
-	}
-
 	return 0;
 }

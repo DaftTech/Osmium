@@ -9,7 +9,7 @@ Program Header:
     LOAD off    0x00001000 vaddr 0x20000000 paddr 0x20000000 align 2**12
          filesz 0x00001195 memsz 0x00001195 flags r-x
     LOAD off    0x00003000 vaddr 0x20002000 paddr 0x20002000 align 2**12
-         filesz 0x000010f4 memsz 0x00043014 flags rw-
+         filesz 0x000010f8 memsz 0x00043014 flags rw-
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
@@ -19,15 +19,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   2 .rodata       00000094  20003000  20003000  00004000  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .rodata.str1.1 00000060  20003094  20003094  00004094  2**0
+  3 .rodata.str1.1 00000064  20003094  20003094  00004094  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  4 .bss          00041014  20004000  20004000  000040f4  2**5
+  4 .bss          00041014  20004000  20004000  000040f8  2**5
                   ALLOC
-  5 .stab         00004050  00000000  00000000  000040f4  2**2
+  5 .stab         00004050  00000000  00000000  000040f8  2**2
                   CONTENTS, READONLY, DEBUGGING
-  6 .comment      00000090  00000000  00000000  00008144  2**0
+  6 .comment      00000090  00000000  00000000  00008148  2**0
                   CONTENTS, READONLY
-  7 .stabstr      00001a58  00000000  00000000  000081d4  2**0
+  7 .stabstr      00001a58  00000000  00000000  000081d8  2**0
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 20000000 l    d  .text	00000000 .text
@@ -91,13 +91,13 @@ SYMBOL TABLE:
 20045004 g     O .bss	00000004 first_unused
 20000d68 g     F .text	0000001c memset
 200004a2 g     F .text	0000002c main
-20000a07 g     F .text	0000004a rpc_handler
+20000a0a g     F .text	0000004a rpc_handler
 200007c2 g     F .text	0000003b kputn
 20000acc g     F .text	0000003b fCall
 2000079b g     F .text	00000027 kputs
 20045008 g     O .bss	00000004 first_used
 20000c3a g     F .text	0000003e outw
-200009c1 g     F .text	00000046 rpc_return
+200009c1 g     F .text	00000049 rpc_return
 20000bfd g     F .text	0000003d outl
 200007fd g     F .text	000000ce kprintf
 2000059b g     F .text	0000003d exit
@@ -652,7 +652,7 @@ int main(void* initrfsPtr) {
 200004bf:	68 74 30 00 20       	push   $0x20003074
 200004c4:	e8 03 06 00 00       	call   20000acc <fCall>
 200004c9:	83 c4 10             	add    $0x10,%esp
-	while(1);
+	while(1); // kprintf("FIFO Main Loop\n");
 200004cc:	eb fe                	jmp    200004cc <main+0x2a>
 	...
 
@@ -1556,8 +1556,8 @@ void* rpc_map(uint32_t* rpcID, uint32_t* rpcARG0) {
 2000097e:	c3                   	ret    
 
 2000097f <rpc_init>:
+	kprintf("RET RPC NO WORK\n");
 	while(1) {
-		kprintf("RET NO WORK\n");
 	}
 }
 
@@ -1572,7 +1572,7 @@ void rpc_init() {
 		rpcHandlers[i] = (int(*)(int, void*))0;
 20000989:	c7 04 85 04 40 04 20 	movl   $0x0,0x20044004(,%eax,4)
 20000990:	00 00 00 00 
-		kprintf("RET NO WORK\n");
+	while(1) {
 	}
 }
 
@@ -1635,77 +1635,75 @@ void rpc_return(int returnCode) {
 
 	syscall(&state);
 200009d4:	8d 45 e0             	lea    -0x20(%ebp),%eax
+200009d7:	50                   	push   %eax
 			.eax = 0x201,
 			.ebx = returnCode,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,
 			.edi = 0 };
-200009d7:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
-200009de:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
-200009e5:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
-200009ec:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+200009d8:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
+200009df:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+200009e6:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+200009ed:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
 	syscall(&state);
-200009f3:	50                   	push   %eax
 200009f4:	e8 07 fd ff ff       	call   20000700 <syscall>
 
-	while(1) {
-		kprintf("RET NO WORK\n");
+	kprintf("RET RPC NO WORK\n");
 200009f9:	c7 04 24 e7 30 00 20 	movl   $0x200030e7,(%esp)
 20000a00:	e8 f8 fd ff ff       	call   200007fd <kprintf>
-20000a05:	eb f2                	jmp    200009f9 <rpc_return+0x38>
+20000a05:	83 c4 10             	add    $0x10,%esp
+20000a08:	eb fe                	jmp    20000a08 <rpc_return+0x47>
 
-20000a07 <rpc_handler>:
+20000a0a <rpc_handler>:
 		}
 	}
 	return -1;
 }
 
 void rpc_handler() {
-20000a07:	55                   	push   %ebp
-20000a08:	89 e5                	mov    %esp,%ebp
-20000a0a:	83 ec 20             	sub    $0x20,%esp
+20000a0a:	55                   	push   %ebp
+20000a0b:	89 e5                	mov    %esp,%ebp
+20000a0d:	83 ec 20             	sub    $0x20,%esp
 	uint32_t rpcID;
 	uint32_t rpcARG0;
 	void* rpcData = rpc_map(&rpcID, &rpcARG0);
-20000a0d:	8d 45 f0             	lea    -0x10(%ebp),%eax
-20000a10:	50                   	push   %eax
-20000a11:	8d 45 f4             	lea    -0xc(%ebp),%eax
-20000a14:	50                   	push   %eax
-20000a15:	e8 17 ff ff ff       	call   20000931 <rpc_map>
+20000a10:	8d 45 f0             	lea    -0x10(%ebp),%eax
+20000a13:	50                   	push   %eax
+20000a14:	8d 45 f4             	lea    -0xc(%ebp),%eax
+20000a17:	50                   	push   %eax
+20000a18:	e8 14 ff ff ff       	call   20000931 <rpc_map>
 
 	int returnValue = -1;
 
 	if(rpcID < RPC_HANDLERS && rpcHandlers[rpcID] != 0) {
-20000a1a:	8b 55 f4             	mov    -0xc(%ebp),%edx
-20000a1d:	83 c4 10             	add    $0x10,%esp
-20000a20:	81 fa ff 03 00 00    	cmp    $0x3ff,%edx
-20000a26:	77 18                	ja     20000a40 <rpc_handler+0x39>
-20000a28:	8b 14 95 04 40 04 20 	mov    0x20044004(,%edx,4),%edx
-20000a2f:	85 d2                	test   %edx,%edx
-20000a31:	74 0d                	je     20000a40 <rpc_handler+0x39>
+20000a1d:	8b 55 f4             	mov    -0xc(%ebp),%edx
+20000a20:	83 c4 10             	add    $0x10,%esp
+20000a23:	81 fa ff 03 00 00    	cmp    $0x3ff,%edx
+20000a29:	77 18                	ja     20000a43 <rpc_handler+0x39>
+20000a2b:	8b 14 95 04 40 04 20 	mov    0x20044004(,%edx,4),%edx
+20000a32:	85 d2                	test   %edx,%edx
+20000a34:	74 0d                	je     20000a43 <rpc_handler+0x39>
 		returnValue = rpcHandlers[rpcID](rpcARG0, rpcData);
-20000a33:	51                   	push   %ecx
-20000a34:	51                   	push   %ecx
-20000a35:	50                   	push   %eax
-20000a36:	ff 75 f0             	pushl  -0x10(%ebp)
-20000a39:	ff d2                	call   *%edx
-20000a3b:	83 c4 10             	add    $0x10,%esp
-20000a3e:	eb 03                	jmp    20000a43 <rpc_handler+0x3c>
-20000a40:	83 c8 ff             	or     $0xffffffff,%eax
+20000a36:	51                   	push   %ecx
+20000a37:	51                   	push   %ecx
+20000a38:	50                   	push   %eax
+20000a39:	ff 75 f0             	pushl  -0x10(%ebp)
+20000a3c:	ff d2                	call   *%edx
+20000a3e:	83 c4 10             	add    $0x10,%esp
+20000a41:	eb 03                	jmp    20000a46 <rpc_handler+0x3c>
+20000a43:	83 c8 ff             	or     $0xffffffff,%eax
 	}
 
 	rpc_return(returnValue);
-20000a43:	83 ec 0c             	sub    $0xc,%esp
-20000a46:	50                   	push   %eax
-20000a47:	e8 75 ff ff ff       	call   200009c1 <rpc_return>
-20000a4c:	83 c4 10             	add    $0x10,%esp
+20000a46:	83 ec 0c             	sub    $0xc,%esp
+20000a49:	50                   	push   %eax
+20000a4a:	e8 72 ff ff ff       	call   200009c1 <rpc_return>
+20000a4f:	83 c4 10             	add    $0x10,%esp
 }
-20000a4f:	c9                   	leave  
-20000a50:	c3                   	ret    
-20000a51:	00 00                	add    %al,(%eax)
-	...
+20000a52:	c9                   	leave  
+20000a53:	c3                   	ret    
 
 20000a54 <fRead>:
 	syscall(&state);

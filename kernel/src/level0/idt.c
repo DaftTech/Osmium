@@ -205,7 +205,8 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu) {
 		else
 		{
 			if(registered[cpu->intr].thread != 0) {
-				init_rpc(registered[cpu->intr].thread, registered[cpu->intr].rpcID, cpu->intr, 0); //call IRQ RPC
+				kprintf("IRQ %x\n", cpu->intr);
+				init_rpc(registered[cpu->intr].thread, registered[cpu->intr].rpcID, cpu->intr, 0, 0); //call IRQ RPC
 			}
 		}
 
@@ -216,8 +217,8 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu) {
 		show_cod(cpu, "Unknown Interrupt!");
 	}
 
-	if(isSchedulingEnabled()) {
+	/*if(isSchedulingEnabled() && new_cpu == cpu) {
 		return optionForceSchedule(new_cpu);
-	}
+	}*/
 	return new_cpu;
 }

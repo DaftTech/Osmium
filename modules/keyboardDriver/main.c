@@ -89,8 +89,6 @@ uint8_t translate_scancode(int set, uint16_t scancode)
 }
 
 int irq(int irq, void* data) {
-	kprintf("IRQ!\n");
-
 	uint8_t scancode;
 	uint8_t keycode = 0;
 	int break_code = 0;
@@ -152,7 +150,7 @@ int irq(int irq, void* data) {
 		dd->length = 2;
 
 		FUTURE fut = fWrite("/dev/kbdRaw", dd);
-		while(rpc_check_future(fut));
+		while(rpc_check_future(fut));// kprintf("Waiting for future %x\n", fut);
 
 		kprintf(" >%x:%x< ", keycode, break_code);
 		return 1;

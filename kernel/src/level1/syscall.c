@@ -27,7 +27,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 	case 0x101: //FIXME: RPC test, do not use
-		new->eax = (uint32_t)init_rpc(get_current_thread(), 0, 0, 0);
+		new->eax = (uint32_t)init_rpc(get_current_thread(), 0, 0, 0, get_current_thread());
 		break;
 
 	case 0x200: //RPC Map
@@ -82,7 +82,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		struct fs_node* node = fstree_find_path(path);
 		if(node != 0) {
 			struct driver* d = node->sub;
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_modify, node->resourceID, vmm_resolve((void*)in->ecx));
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_modify, node->resourceID, vmm_resolve((void*)in->ecx), get_current_thread());
 		}
 		else
 		{
@@ -96,7 +96,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		char* name = (char*)in->ebx;
 		struct driver* d = fstree_driver_for_name(name);
 		if(d != 0) {
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_info, in->edx, vmm_resolve((void*)in->ecx));
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_info, in->edx, vmm_resolve((void*)in->ecx), get_current_thread());
 		}
 		else
 		{
@@ -111,7 +111,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		struct fs_node* node = fstree_find_path(path);
 		if(node != 0 && node->subtype == FST_DRIVER) {
 			struct driver* d = node->sub;
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_write, node->resourceID, vmm_resolve((void*)in->ecx));
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_write, node->resourceID, vmm_resolve((void*)in->ecx), get_current_thread());
 		}
 		else
 		{
@@ -126,7 +126,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		struct fs_node* node = fstree_find_path(path);
 		if(node != 0 && node->subtype == FST_DRIVER) {
 			struct driver* d = node->sub;
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_read, node->resourceID, vmm_resolve((void*)in->ecx));
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_read, node->resourceID, vmm_resolve((void*)in->ecx), get_current_thread());
 		}
 		else
 		{
