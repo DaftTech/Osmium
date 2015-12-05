@@ -89,6 +89,8 @@ uint8_t translate_scancode(int set, uint16_t scancode)
     return keycode;
 }
 
+FUTURE irqFuture = 0;
+
 int irq(int irq, void* data) {
 	uint8_t scancode;
 	uint8_t keycode = 0;
@@ -150,8 +152,8 @@ int irq(int irq, void* data) {
 		dd->data[2] = 0;
 		dd->length = 2;
 
-		FUTURE fut = fWrite("/dev/kbdRaw", dd);
-		while(rpc_check_future(fut));// kprintf("Waiting for future %x\n", fut);
+		while(rpc_check_future(irqFuture)); //Check future before issuing write, cause we reuse same dd page
+		irqFuture = fWrite("/dev/kbdRaw", dd);
 
 		kprintf(" >%x:%x< ", keycode, break_code);
 		return 1;
