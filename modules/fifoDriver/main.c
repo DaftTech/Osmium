@@ -16,7 +16,7 @@ struct file {
 };
 
 static struct file* files[FIFO_MAX_FILE_COUNT];
-static ownDriverID = -1;
+static int ownDriverID = -1;
 
 int dModify(int resourceID, void* data) {
 	struct driver_data* drvData = data;
@@ -51,7 +51,7 @@ int dCall(int callID, void* data) {
 
 		if(fileID == -1) return 0;
 		kprintf("Created FIFO %s...\n", drvData->data);
-		int r = register_path(drvData->data, ownDriverID, fileID);
+		int r = register_path((char*)drvData->data, ownDriverID, fileID);
 		drvData->result = r ? E_ERROR : S_OK;
 		break;
 

@@ -4,6 +4,7 @@
 #include "stdlib.h"
 #include "rpc.h"
 #include "driver.h"
+#include "string.h"
 #include "stdint.h"
 
 struct driver_data* dd;
