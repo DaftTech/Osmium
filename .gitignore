@@ -1,3 +1,5 @@
 *.o
+*.objdump
+*.a
 *~
-bin
+/bin
