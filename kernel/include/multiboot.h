@@ -38,7 +38,7 @@
 #define MULTIBOOT_H
 
 #include "stdint.h"
-#include "types.h"
+#include "stddef.h"
 
 /* --------------------------------------------------------------------- */
 
@@ -57,11 +57,11 @@ struct multiboot_header {
     uint32_t mh_checksum;
 
     /* Valid if mh_flags sets MULTIBOOT_HEADER_HAS_ADDR. */
-    paddr_t mh_header_addr;
-    paddr_t mh_load_addr;
-    paddr_t mh_load_end_addr;
-    paddr_t mh_bss_end_addr;
-    paddr_t mh_entry_addr;
+    PADDR mh_header_addr;
+    PADDR mh_load_addr;
+    PADDR mh_load_end_addr;
+    PADDR mh_bss_end_addr;
+    PADDR mh_entry_addr;
 
     /* Valid if mh_flags sets MULTIBOOT_HEADER_HAS_VBE. */
     uint32_t mh_mode_type;
@@ -112,16 +112,16 @@ struct multiboot_info {
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_{AOUT,ELF}_SYMS. */
     uint32_t mi_elfshdr_num;
     uint32_t mi_elfshdr_size;
-    vaddr_t mi_elfshdr_addr;
+    void* mi_elfshdr_addr;
     uint32_t mi_elfshdr_shndx;
 
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_MMAP. */
     uint32_t mi_mmap_length;
-    vaddr_t mi_mmap_addr;
+    void* mi_mmap_addr;
 
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_DRIVES. */
     uint32_t mi_drives_length;
-    vaddr_t mi_drives_addr;
+    void* mi_drives_addr;
 
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_CONFIG_TABLE. */
     void * unused_mi_config_table;
@@ -135,8 +135,8 @@ struct multiboot_info {
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_VBE. */
     void * unused_mi_vbe_control_info;
     void * unused_mi_vbe_mode_info;
-    paddr_t unused_mi_vbe_interface_seg;
-    paddr_t unused_mi_vbe_interface_off;
+    PADDR unused_mi_vbe_interface_seg;
+    PADDR unused_mi_vbe_interface_off;
     uint32_t unused_mi_vbe_interface_len;
 };
 
@@ -178,8 +178,8 @@ struct multiboot_mmap {
 };
 
 struct multiboot_module {
-    vaddr_t start;
-    vaddr_t end;
+	void* start;
+	void* end;
     char* cmdline;
     uint32_t reserved;
 };

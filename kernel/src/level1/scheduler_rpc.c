@@ -1,7 +1,7 @@
 #include "level1/scheduler.h"
 #include "level0/catofdeath.h"
 
-struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, PHYSICAL data, struct thread* calling) {
+struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, PADDR data, struct thread* calling) {
 	struct rpc* r = calloc(1, sizeof(struct rpc));
 
 

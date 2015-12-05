@@ -42,7 +42,7 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	setclr(C_DEFAULT);
 
 	kprintf("VMM/PAGING INIT ");
-	PHYSICAL root = vmm_init();
+	PADDR root = vmm_init();
 	setclr(C_SUCCESS);
 	kprintf("DONE! (root=%x, getRoot=%x)\n", root, vmm_get_current_physical());
 	setclr(C_DEFAULT);

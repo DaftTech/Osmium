@@ -129,7 +129,6 @@
 #define __dead2     __attribute__((__noreturn__))
 #define __pure2     __attribute__((__const__))
 #define __unused
-/* XXX Find out what to do for __packed, __aligned and __section */
 #endif
 #if __GNUC__ == 2 && __GNUC_MINOR__ >= 7 || __GNUC__ == 3
 #define __dead2     __attribute__((__noreturn__))
@@ -141,7 +140,6 @@
 #endif
 #endif
 
-/* XXX: should use `#if __STDC_VERSION__ < 199901'. */
 #if !(__GNUC__ == 2 && __GNUC_MINOR__ >= 7 || __GNUC__ >= 3)
 #define __func__    NULL
 #endif
@@ -162,17 +160,6 @@
 #else
 #define __restrict  restrict
 #endif
-#endif
-
-/*
- * We define this here since <stddef.h>, <sys/queue.h>, and <sys/types.h>
- * require it.
- */
-#define __offsetof(type, field) ((size_t)(&((type *)0)->field))
-
-// FIXME Das gehört nach stddef.h
-#ifndef offsetof
-#define offsetof(type, field) ((size_t)(&((type *)0)->field))
 #endif
 
 /*

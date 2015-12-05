@@ -2,12 +2,12 @@
 
 extern const void kernel_end;
 
-PHYSICAL kernel_pagetables[KERNEL_COMBINED_TABLES];
+PADDR kernel_pagetables[KERNEL_COMBINED_TABLES];
 
 uint32_t* active_pagetables = ACTIVE_PAGETABLES;
 
-PHYSICAL vmm_create() {
-	PHYSICAL phys_pagedir = 0;
+PADDR vmm_create() {
+	PADDR phys_pagedir = 0;
 	uint32_t* pagedir_ptr = vmm_alloc(&phys_pagedir);
 
 	pagedir_ptr[1023] = phys_pagedir | PD_PRESENT | PD_WRITE;
@@ -17,7 +17,7 @@ PHYSICAL vmm_create() {
 		if (i < KERNEL_COMBINED_TABLES) {
 			pagedir_ptr[i] = kernel_pagetables[i] | PD_PRESENT | PD_WRITE;
 		} else {
-			PHYSICAL phys = 0;
+			PADDR phys = 0;
 			uint32_t* c = vmm_alloc(&phys);
 			pagedir_ptr[i] = phys  | PD_PRESENT | PD_WRITE | PD_PUBLIC;
 			for(i2 = 0; i2 < 1024; i2++) {
@@ -29,15 +29,15 @@ PHYSICAL vmm_create() {
 	return phys_pagedir;
 }
 
-PHYSICAL vmm_get_current_physical(void) {
+PADDR vmm_get_current_physical(void) {
 	return (active_pagetables[0xFFFFF] & 0xFFFFF000);
 }
 
-PHYSICAL vmm_resolve(void* vaddr) {
+PADDR vmm_resolve(void* vaddr) {
 	return active_pagetables[(uint32_t)vaddr >> 12] & 0xFFFFF000;
 }
 
-void vmm_map_range(void* vaddr, PHYSICAL paddr, uint32_t length, uint32_t flags) {
+void vmm_map_range(void* vaddr, PADDR paddr, uint32_t length, uint32_t flags) {
 	if ((uint32_t) vaddr & 0xFFF)
 		return;
 	if (paddr & 0xFFF)
@@ -49,7 +49,7 @@ void vmm_map_range(void* vaddr, PHYSICAL paddr, uint32_t length, uint32_t flags)
 	}
 }
 
-void vmm_map_address(void* vaddrr, PHYSICAL paddr, uint32_t flags) {
+void vmm_map_address(void* vaddrr, PADDR paddr, uint32_t flags) {
 	uint32_t vaddr = (uint32_t) vaddrr;
 	active_pagetables[vaddr >> 12] = (paddr & 0xFFFFF000) | PT_PRESENT
 			| PT_WRITE | (flags & 0xFFF)
@@ -157,20 +157,20 @@ void* vmm_alloc(uint32_t* retpaddr) {
 			retpaddr, 1);
 }
 
-void vmm_activate_pagedir(PHYSICAL pdpaddr) {
+void vmm_activate_pagedir(PADDR pdpaddr) {
 	asm volatile("mov %0, %%cr3" : : "r" (pdpaddr));
 }
 
-PHYSICAL vmm_init(void) {
+PADDR vmm_init(void) {
 	//Kernelspace init
 
 	for (uint32_t i = 0; i < KERNEL_COMBINED_TABLES; i++) {
-		kernel_pagetables[i] = (PHYSICAL) pmm_alloc() | PD_PRESENT | PD_WRITE;
+		kernel_pagetables[i] = (PADDR) pmm_alloc() | PD_PRESENT | PD_WRITE;
 		uint32_t* kptAccess = (void*) (kernel_pagetables[i] & 0xFFFFF000);
 
 		for (uint32_t i2 = 0; i2 < 1023; i2++) {
-			PHYSICAL addr = (i << 22) + (i2 << 12);
-			PHYSICAL written_addr = 0;
+			PADDR addr = (i << 22) + (i2 << 12);
+			PADDR written_addr = 0;
 			uint32_t flags = PT_WRITE;
 
 			if (addr < (uint32_t) &kernel_end && addr != 0) {
@@ -184,7 +184,7 @@ PHYSICAL vmm_init(void) {
 
 	//VMM_CREATE
 	uint32_t* pagedir_ptr = pmm_alloc();
-	PHYSICAL phys_pagedir = (PHYSICAL) pagedir_ptr;
+	PADDR phys_pagedir = (PADDR) pagedir_ptr;
 
 	pagedir_ptr[1023] = phys_pagedir | PD_PRESENT | PD_WRITE;
 	uint32_t paddr, i, i2;
@@ -193,7 +193,7 @@ PHYSICAL vmm_init(void) {
 		if (i < KERNEL_COMBINED_TABLES) {
 			pagedir_ptr[i] = kernel_pagetables[i] | PD_PRESENT | PD_WRITE;
 		} else {
-			pagedir_ptr[i] = (PHYSICAL) pmm_alloc() | PD_PRESENT | PD_WRITE | PD_PUBLIC;
+			pagedir_ptr[i] = (PADDR) pmm_alloc() | PD_PRESENT | PD_WRITE | PD_PUBLIC;
 			for(i2 = 0; i2 < 1024; i2++) {
 				((uint32_t*)pagedir_ptr[i])[i2] = PD_WRITE | PD_PUBLIC;
 			}

@@ -24,10 +24,6 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		setclr(C_DEFAULT);
 		break;
 
-	case 0x101: //FIXME: RPC test, do not use
-		new->eax = (uint32_t)init_rpc(get_current_thread(), 0, 0, 0, get_current_thread());
-		break;
-
 	case 0x200: //RPC Map
 		new->eax = (uint32_t)rpc_map();
 		new->ebx = get_current_thread()->active_rpc->rpcID;

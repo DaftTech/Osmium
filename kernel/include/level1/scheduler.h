@@ -25,7 +25,7 @@
 typedef uint32_t FUTURE_STATE;
 
 struct environment {
-	PHYSICAL phys_pdir;
+	PADDR phys_pdir;
 	ADDRESS currentNewStackBottom;
 };
 
@@ -55,7 +55,7 @@ struct rpc_future {
 struct rpc {
 	uint32_t rpcID;
 	uint32_t rpcARG0;
-	PHYSICAL data;
+	PADDR data;
 	void* mapped;
 
 	uint32_t state;
@@ -71,11 +71,11 @@ struct rpc {
 	struct rpc* next;
 };
 
-struct rpc_future*  init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, PHYSICAL data, struct thread* calling);
+struct rpc_future*  init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, PADDR data, struct thread* calling);
 void 				return_rpc(int resultCode);
 void*               rpc_map(void);
 
-struct environment* create_env(PHYSICAL root);
+struct environment* create_env(PADDR root);
 struct thread* 		create_thread(struct environment* environment, void* entry);
 struct thread*    	get_current_thread(void);
 struct thread*    	get_task_by_pid(int pid);

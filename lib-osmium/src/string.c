@@ -34,7 +34,7 @@ char* sp = NULL; /* the start position of the string */
 void* fr = NULL;
 
 char* strtok(char* str, const char* delimiters) {
-    if(str != 0) { //TODO better but if you call strtok and after that strtoknc will still be a memory leak. -> Don't use strtoknc
+    if(str != 0) {
         if(fr != 0) {
             free(fr);
         }

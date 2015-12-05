@@ -87,7 +87,7 @@ void setargsptr(struct thread* t, void* value) {
     t->argsptr = value;
 }
 
-struct environment* create_env(PHYSICAL root) {
+struct environment* create_env(PADDR root) {
 	struct environment* rootEnv = malloc(sizeof(struct environment));
 	rootEnv->phys_pdir = root;
 	rootEnv->currentNewStackBottom = 0xFFC00000 - THREAD_STACK_SIZE;
@@ -112,10 +112,10 @@ struct thread* create_thread(struct environment* environment, void* entry) {
 
     first_thread = nthread;
 
-    PHYSICAL rest_pdir = vmm_get_current_physical();
+    PADDR rest_pdir = vmm_get_current_physical();
     vmm_activate_pagedir(environment->phys_pdir);
 
-    for(ADDRESS addr = nthread->user_stack_bottom; (uint32_t)addr < nthread->user_stack_bottom + THREAD_STACK_SIZE; addr += 0x1000) {
+    for(ADDRESS addr = nthread->user_stack_bottom; addr < nthread->user_stack_bottom + THREAD_STACK_SIZE; addr += 0x1000) {
         vmm_alloc_addr((void*)addr, 0);
     }
 

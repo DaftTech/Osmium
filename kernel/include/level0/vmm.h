@@ -5,6 +5,7 @@
 #include "multiboot.h"
 #include "pmm.h"
 #include "console.h"
+#include "stddef.h"
 #include "stdmem.h"
 
 #define PD_PRESENT (1 << 0)
@@ -39,18 +40,16 @@
 
 #define ACTIVE_PAGETABLES (void*)0xFFC00000
 
-typedef uint32_t PHYSICAL;
-
-PHYSICAL vmm_init(void);
-PHYSICAL vmm_create(void);
-void     vmm_destroy(void);
+PADDR vmm_init(void);
+PADDR vmm_create(void);
+void  vmm_destroy(void);
 
 void vmm_activate_pagedir(uint32_t context);
 
 void vmm_free(void* vaddr);
 void vmm_unmap(void* vaddr);
 
-void vmm_map_range(void* vaddr, PHYSICAL paddr, uint32_t length, uint32_t flags);
+void vmm_map_range(void* vaddr, PADDR paddr, uint32_t length, uint32_t flags);
 void vmm_map_address(void* vaddr, uint32_t paddr, uint32_t flags);
 
 void* vmm_alloc(uint32_t* retpaddr);

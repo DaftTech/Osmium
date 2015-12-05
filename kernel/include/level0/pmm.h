@@ -4,7 +4,6 @@
 #include "stdmem.h"
 #include "stdint.h"
 #include "multiboot.h"
-#include "types.h"
 #include "stddef.h"
 #include "console.h"
 
