@@ -23,7 +23,7 @@ static FUTURE testRPC() {
 void _start() {
 	rpc_init();
 
-	int result = main(getargsptr());
+	int result = rmain(getargsptr());
 
 	exit(result);
 }
