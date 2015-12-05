@@ -8,6 +8,7 @@ typedef uint32_t THREAD;
 void     _start();
 void     exit(int returncode);
 void*    getargsptr();
+void     yield();
 
 THREAD   thread(void* function, void* args);
 THREAD   exec(void* elf, uint32_t elfSize, void* data, uint32_t dataSize);

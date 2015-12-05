@@ -18,6 +18,10 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		new->eax = (uint32_t)get_current_thread()->argsptr;
 		break;
 
+	case 0x3: //yield
+		new = schedule(in);
+		break;
+
 	case 0x100: //FIXME: kputc
 		setclr(COLOR(SCLR_BLACK, SCLR_LCYAN));
 		kputc((char)in->ebx);

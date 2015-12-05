@@ -185,6 +185,7 @@ int rmain(void* initrfsPtr) {
 
 	fCall("initrfs", 0, 0); //TELL init we are finished here
 	while(1) {
+		yield();
 	}
 
 	return 0;

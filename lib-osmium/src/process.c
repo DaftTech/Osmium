@@ -6,9 +6,9 @@
 
 extern int rmain(void* args);
 
-static FUTURE testRPC() {
+void yield() {
 	struct regstate state = {
-			.eax = 0x101,
+			.eax = 0x3,
 			.ebx = 0,
 			.ecx = 0,
 			.edx = 0,
@@ -16,8 +16,6 @@ static FUTURE testRPC() {
 			.edi = 0 };
 
 	syscall(&state);
-
-	return state.eax;
 }
 
 void _start() {
