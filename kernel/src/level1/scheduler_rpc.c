@@ -32,7 +32,7 @@ struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, 
 	r->mapped = 0;
 	r->rpcID = rpcID;
 	r->rpcARG0 = rpcARG0;
-	r->creatorThread = get_current_thread();
+	r->creatorThread = calling;
 	r->fullfills = 0;
 
 	registerForceSchedule(t);
@@ -60,6 +60,8 @@ struct rpc_future* init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, 
 }
 
 void return_rpc(int resultCode) {
+	struct thread* creator = get_current_thread()->active_rpc->creatorThread;
+
 	if(get_current_thread()->active_rpc->mapped != 0) vmm_unmap(get_current_thread()->active_rpc->mapped);
 
 	get_current_thread()->active_rpc->state = RPC_STATE_RETURNED;
@@ -76,7 +78,8 @@ void return_rpc(int resultCode) {
 		get_current_thread()->active_rpc->fullfills->returnCode = get_current_thread()->active_rpc->returnCode;
 	}
 
-	registerForceSchedule(get_current_thread());
+	if(!creator) creator = get_current_thread();
+	registerForceSchedule(creator); //FIXME could crash if thread exits before rpc exits
 }
 
 void* rpc_map() {
