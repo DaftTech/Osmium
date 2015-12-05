@@ -37,25 +37,27 @@ PADDR vmm_resolve(void* vaddr) {
 	return active_pagetables[(uint32_t)vaddr >> 12] & 0xFFFFF000;
 }
 
-void vmm_map_range(void* vaddr, PADDR paddr, uint32_t length, uint32_t flags) {
-	if ((uint32_t) vaddr & 0xFFF)
+void vmm_map_range(void* ivaddr, PADDR paddr, uint32_t length, uint32_t flags) {
+	ADDRESS vaddr = (ADDRESS)ivaddr;
+
+	if (vaddr & 0xFFF)
 		return;
 	if (paddr & 0xFFF)
 		return;
 
 	for (uint32_t i = 0; i < length; i += 0x1000) {
-		vmm_map_address((void*) ((uint32_t) vaddr + i), (uint32_t) paddr + i,
-				flags);
+		vmm_map_address((void*) (vaddr + i), paddr + i, flags);
 	}
 }
 
-void vmm_map_address(void* vaddrr, PADDR paddr, uint32_t flags) {
-	uint32_t vaddr = (uint32_t) vaddrr;
+void vmm_map_address(void* ivaddr, PADDR paddr, uint32_t flags) {
+	ADDRESS vaddr = (ADDRESS)ivaddr;
+
 	active_pagetables[vaddr >> 12] = (paddr & 0xFFFFF000) | PT_PRESENT
 			| PT_WRITE | (flags & 0xFFF)
 			| (active_pagetables[vaddr >> 12] & (PT_PUBLIC | PT_ALLOCATED));
 
-	asm volatile("invlpg %0" : : "m" ((char*)vaddr));
+	asm volatile("invlpg %0" : : "m" (*(char*)vaddr));
 }
 
 void vmm_destroy(void) {
@@ -64,8 +66,8 @@ void vmm_destroy(void) {
 	}
 }
 
-void vmm_free(void* p_vaddr) {
-	uint32_t vaddr = (uint32_t) p_vaddr;
+void vmm_free(void* ivaddr) {
+	ADDRESS vaddr = (ADDRESS) ivaddr;
 
 	if ((active_pagetables[vaddr >> 12] & (PT_ALLOCATED | PT_PRESENT))
 			== (PT_ALLOCATED | PT_PRESENT)) {
@@ -87,28 +89,30 @@ void vmm_unmap(void* p_vaddr) { //USE ONLY IF YOU KNOW WHAT YOU DO. POTENTIAL ME
 	}
 }
 
-void* vmm_alloc_addr(void* reqvaddr, uint32_t* retpaddr) {
-	if (reqvaddr == 0) {
+void* vmm_alloc_addr(void* ivaddr, uint32_t* retpaddr) {
+	ADDRESS vaddr = (ADDRESS)ivaddr;
+
+	if (vaddr == 0) {
 		kprintf(
 				"Denied vmm_alloc_addr at %x (Flags: %x) ... this is a potential mm-fault \n",
-				reqvaddr, 0);
+				vaddr, 0);
 		return 0;
 	}
 
-	if ((active_pagetables[(uint32_t) reqvaddr >> 12] & PT_PRESENT) == PT_PRESENT) {
+	if ((active_pagetables[vaddr >> 12] & PT_PRESENT) == PT_PRESENT) {
 		kprintf(
 				"Denied vmm_alloc_addr at %x (Flags: %x) ... this is a potential mm-fault \n",
-				reqvaddr, active_pagetables[(uint32_t) reqvaddr >> 12]);
+				vaddr, active_pagetables[vaddr >> 12]);
 		return 0;
 	}
 
 	uint32_t paddr = (uint32_t) pmm_alloc();
-	vmm_map_address(reqvaddr, paddr, PT_PUBLIC | PT_ALLOCATED);
+	vmm_map_address(ivaddr, paddr, PT_PUBLIC | PT_ALLOCATED);
 
 	if (retpaddr != 0)
 		*retpaddr = paddr;
 
-	return reqvaddr;
+	return ivaddr;
 }
 
 static void* vmm_alloc_in_range(uint32_t low, uint32_t high, uint32_t* retpaddr,
@@ -143,7 +147,7 @@ void* vmm_alloc_ucont(uint32_t cont) {
 	return vmm_alloc_in_range(USERSPACE_BOTTOM, 0xFFC00000, 0, cont);
 }
 
-void* vmm_alloc_user(uint32_t* retpaddr) {
+void* vmm_alloc_user(PADDR* retpaddr) {
 	return vmm_alloc_in_range(USERSPACE_BOTTOM, 0xFFC00000, retpaddr, 1);
 }
 
@@ -152,7 +156,7 @@ void* vmm_alloc_cont(uint32_t cont) {
 			cont);
 }
 
-void* vmm_alloc(uint32_t* retpaddr) {
+void* vmm_alloc(PADDR* retpaddr) {
 	return vmm_alloc_in_range(KERNELSPACE_ALLOC_BOTTOM, USERSPACE_BOTTOM,
 			retpaddr, 1);
 }
