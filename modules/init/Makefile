@@ -1,8 +1,8 @@
 SRCS = $(shell find -name '*.c')
 OBJS = $(addsuffix .o,$(basename $(SRCS)))
 
-CC = i586-elf-gcc -std=gnu99 -fno-leading-underscore
-LD = i586-elf-ld
+CC = gcc -std=gnu99 -fno-leading-underscore
+LD = ld
 
 ASFLAGS = -m32
 CFLAGS = -m32 -Wall -g -fno-stack-protector -fno-builtin -nostdinc -Iinclude -I../../lib-osmium/include

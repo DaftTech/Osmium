@@ -147,12 +147,13 @@ int irq(int irq, void* data) {
 	}
 
 	if(keycode != 0) {
+		while(rpc_check_future(irqFuture)); //Check future before issuing write, cause we reuse same dd page
+
 		dd->data[0] = keycode;
 		dd->data[1] = break_code;
 		dd->data[2] = 0;
 		dd->length = 2;
 
-		while(rpc_check_future(irqFuture)); //Check future before issuing write, cause we reuse same dd page
 		irqFuture = fWrite("/dev/kbdRaw", dd);
 
 		kprintf(" >%x:%x< ", keycode, break_code);
