@@ -1,4 +1,6 @@
 #include "level0/console.h"
+#include "level1/fstree.h"
+#include "level0/catofdeath.h"
 
 static int x = 0;
 static int y = 0;
@@ -8,7 +10,10 @@ static char color = 0x07;
 static char* video = (char*) 0xb8000;
 
 void kputc(char c) {
-	//TODO: Insert userspace/logfile writing here
+	if(fstree_find_path("/dev/kernelLog") && !in_cod()) {
+		//TODO: write to kernel log
+		return;
+	}
 
     if ((c == '\n') || (x > 79)) {
         x = 0;

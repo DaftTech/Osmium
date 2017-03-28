@@ -4,6 +4,7 @@
 
 static struct driver* registeredDrivers[DRIVER_COUNT];
 static struct fs_node fsRoot;
+static int initialized = 0;
 
 void fstree_init() {
 	for(int i = 0; i < DRIVER_COUNT; i++) {
@@ -14,9 +15,13 @@ void fstree_init() {
 	fsRoot.next = (void*)0;
 	fsRoot.sub = (void*)0;
 	fsRoot.subtype = FST_SUBNODE;
+
+	initialized = 1;
 }
 
 struct fs_node* fstree_find_path(const char* path) {
+	if(!initialized) return (void*) 0;
+
 	char* cloned = strclone(path);
 
 	struct fs_node* current = &fsRoot;
