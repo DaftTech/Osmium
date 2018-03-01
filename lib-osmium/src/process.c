@@ -81,7 +81,7 @@ THREAD execp(char* path, void* data, uint32_t datasize) {
 	kprintf("Reading init...\n");
 
 	do {
-		FUTURE f = fRead(path, driverData);
+		FUTURE f = fCall(path, CALL_READ, driverData);
 		while(rpc_check_future(f));
 
 		if(driverData->pos + driverData->bytesDone >= elfsize) {

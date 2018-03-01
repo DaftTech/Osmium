@@ -1,3 +1,4 @@
+#include "include/level1/rpc.h"
 #include "level0/console.h"
 #include "level0/gdt.h"
 #include "level0/pmm.h"
@@ -8,8 +9,6 @@
 #include "level1/scheduler.h"
 #include "level1/tar.h"
 #include "level1/elf.h"
-#include "level1/fstree.h"
-
 #include "stdlib.h"
 #include "multiboot.h"
 

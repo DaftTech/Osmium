@@ -51,32 +51,11 @@ int dRead(int resourceID, void* data) {
 	return 0;
 }
 
-void createDriver(void* initrfsPtr) {
-	int dModifyID = rpc_register_handler(&dModify);
-	int dCallID = rpc_register_handler(&dCall);
-	int dReadID = rpc_register_handler(&dRead);
-	int dWriteID = rpc_register_handler(&dWrite);
-
-	int driverID = register_driver(dModifyID, dCallID, dReadID, dWriteID, "initrfs");
-
-	tar_extract(initrfsPtr, (uint32_t**)files, driverID);
-}
-
 int rmain(void* initrfsPtr) {
 	if(!initrfsPtr) {
 		kprintf("Init called without initrfsptr!\nTerminating...\n");
 		return 0;
 	}
-
-	createDriver(initrfsPtr);
-
-	state = 1;
-	execpn("drivers/fifo");
-	while(state); //wait for backcall
-
-	state =1;
-	execpn("drivers/keyboard");
-	while(state); //wait for backcall
 
 	return 0;
 }

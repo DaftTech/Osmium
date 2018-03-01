@@ -2,13 +2,13 @@
 #include "syscall.h"
 #include "memory.h"
 
-int register_driver(int dModifyID, int dInfoID, int dReadID, int dWriteID, char* drvName) {
+int register_driver(int dCallID, char* drvName) {
 	struct regstate state = {
 			.eax = 0x300,
-			.ebx = dModifyID,
-			.ecx = dInfoID,
-			.edx = dReadID,
-			.esi = dWriteID,
+			.ebx = dCallID,
+			.ecx = 0,
+			.edx = 0,
+			.esi = 0,
 			.edi = (uint32_t)drvName };
 
 	syscall(&state);
@@ -16,12 +16,12 @@ int register_driver(int dModifyID, int dInfoID, int dReadID, int dWriteID, char*
 	return state.eax;
 }
 
-int register_path(char* path, int driverID, int resourceID) {
+FUTURE fCall(char* driverName, int callID, struct driver_data* drvData) {
 	struct regstate state = {
-			.eax = 0x301,
-			.ebx = (uint32_t)path,
-			.ecx = driverID,
-			.edx = resourceID,
+			.eax = 0x303,
+			.ebx = (uint32_t)driverName,
+			.ecx = (uint32_t)drvData,
+			.edx = callID,
 			.esi = 0,
 			.edi = 0 };
 
@@ -29,6 +29,7 @@ int register_path(char* path, int driverID, int resourceID) {
 
 	return state.eax;
 }
+
 
 int register_irq_rpc(uint32_t irqID, int rpcID) {
 	struct regstate state = {
@@ -121,60 +122,3 @@ uint32_t inl(uint16_t port) {
 
 	return state.eax;
 }
-
-FUTURE fModify(char* path, struct driver_data* drvData) {
-	struct regstate state = {
-			.eax = 0x302,
-			.ebx = (uint32_t)path,
-			.ecx = (uint32_t)drvData,
-			.edx = 0,
-			.esi = 0,
-			.edi = 0 };
-
-	syscall(&state);
-
-	return state.eax;
-}
-
-FUTURE fCall(char* driverName, int callID, struct driver_data* drvData) {
-	struct regstate state = {
-			.eax = 0x303,
-			.ebx = (uint32_t)driverName,
-			.ecx = (uint32_t)drvData,
-			.edx = callID,
-			.esi = 0,
-			.edi = 0 };
-
-	syscall(&state);
-
-	return state.eax;
-}
-
-FUTURE fWrite(char* path, struct driver_data* drvData) {
-	struct regstate state = {
-			.eax = 0x304,
-			.ebx = (uint32_t)path,
-			.ecx = (uint32_t)drvData,
-			.edx = 0,
-			.esi = 0,
-			.edi = 0 };
-
-	syscall(&state);
-
-	return state.eax;
-}
-
-FUTURE fRead(char* path, struct driver_data* drvData) {
-	struct regstate state = {
-			.eax = 0x305,
-			.ebx = (uint32_t)path,
-			.ecx = (uint32_t)drvData,
-			.edx = 0,
-			.esi = 0,
-			.edi = 0 };
-
-	syscall(&state);
-
-	return state.eax;
-}
-

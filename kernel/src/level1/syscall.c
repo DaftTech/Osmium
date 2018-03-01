@@ -1,10 +1,12 @@
 #include "level1/syscall.h"
+
+#include "../../include/level1/rpc.h"
 #include "level0/console.h"
 #include "level0/catofdeath.h"
 #include "level0/ports.h"
 #include "level1/scheduler.h"
-#include "level1/fstree.h"
 #include "level1/elf.h"
+#include "string.h"
 
 struct cpu_state* syscall(struct cpu_state* in) {
 	struct cpu_state* new = in;
@@ -66,65 +68,18 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 
-	case 0x300: //Register driver EBX=modify ECX=info EDX=read ESI=write
-		new->eax = fstree_register_driver(in->ebx, in->ecx, in->edx, in->esi, (char*)in->edi);
-		break;
-
-	case 0x301: //Register path EBX=path char* ECX=driverID EDX=resourceID
-		new->eax = fstree_register_path((char*)in->ebx, in->ecx, in->edx);
-		break;
-
-	case 0x302: //DRVCall modify EBX=path char* ECX=data page*
-	{
-		char* path = (char*)in->ebx;
-		struct fs_node* node = fstree_find_path(path);
-		if(node != 0) {
-			struct driver* d = node->sub;
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_modify, node->resourceID, vmm_resolve((void*)in->ecx), get_current_thread());
-		}
-		else
-		{
-			new->eax = 0;
-		}
-	}
+	case 0x300: //Register driver EBX=call
+		new->eax = fstree_register_driver(in->ebx, (char*)in->edi);
 		break;
 
 	case 0x303: //DRVCall call EBX=name char* ECX=data page* EDX=callID
 	{
-		char* name = (char*)in->ebx;
+		char* name = strtoknc((char*)in->ebx, ":");
+		char* file = strtoknc((char*)in->ebx, ":");
+
 		struct driver* d = fstree_driver_for_name(name);
 		if(d != 0) {
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_info, in->edx, vmm_resolve((void*)in->ecx), get_current_thread());
-		}
-		else
-		{
-			new->eax = 0;
-		}
-	}
-		break;
-
-	case 0x304: //DRVCall write EBX=path char* ECX=data page*
-	{
-		char* path = (char*)in->ebx;
-		struct fs_node* node = fstree_find_path(path);
-		if(node != 0 && node->subtype == FST_DRIVER) {
-			struct driver* d = node->sub;
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_write, node->resourceID, vmm_resolve((void*)in->ecx), get_current_thread());
-		}
-		else
-		{
-			new->eax = 0;
-		}
-	}
-		break;
-
-	case 0x305: //DRVCall read EBX=path char* ECX=data page*
-	{
-		char* path = (char*)in->ebx;
-		struct fs_node* node = fstree_find_path(path);
-		if(node != 0 && node->subtype == FST_DRIVER) {
-			struct driver* d = node->sub;
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_read, node->resourceID, vmm_resolve((void*)in->ecx), get_current_thread());
+			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_call, in->edx, vmm_resolve((void*)in->ecx), get_current_thread());
 		}
 		else
 		{

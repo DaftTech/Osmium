@@ -5,8 +5,10 @@
 #include "rpc.h"
 
 #define CALL_CREATE 0x100
+#define CALL_READ   0x000
+#define CALL_WRITE  0x001
 
-int  register_driver(int dModifyID, int dInfoID, int dReadID, int dWriteID, char* drvName);
+int  register_driver(int dCallID, char* drvName);
 int  register_path(char* path, int driverID, int resourceID);
 int  register_irq_rpc(uint32_t irqID, int rpcID);
 
@@ -51,9 +53,6 @@ struct driver_data {
 	uint8_t data[MAX_IO_BUFFER];
 };
 
-FUTURE fCall  (char* driverName, int callID, struct driver_data* drvData);
-FUTURE fModify(char* path, struct driver_data* drvData);
-FUTURE fWrite (char* path, struct driver_data* drvData);
-FUTURE fRead  (char* path, struct driver_data* drvData);
+FUTURE fCall(char* driverName, int callID, struct driver_data* drvData);
 
 #endif
