@@ -29,20 +29,16 @@ struct environment {
 	ADDRESS currentNewStackBottom;
 };
 
-struct thread {
-	struct cpu_state* cpuState;
+struct module {
 	struct environment* environment;
 
-	void* argsptr;
-
-	ADDRESS user_stack_bottom;
 	ADDRESS rpc_handler_address;
 
 	struct rpc* active_rpc;
 	struct rpc_future* runningFutures;
 
-	struct thread* next; //Threads are organized as a double linked list
-	struct thread* prev;
+	struct module* next; //Threads are organized as a double linked list
+	struct module* prev;
 };
 
 struct rpc_future {
@@ -61,7 +57,7 @@ struct rpc {
 	uint32_t state;
 	int returnCode;
 
-	struct thread* creatorThread;
+	struct module* creatorModule;
 
 	struct cpu_state cpuState;
 
@@ -71,25 +67,23 @@ struct rpc {
 	struct rpc* next;
 };
 
-struct rpc_future*  init_rpc(struct thread* t, uint32_t rpcID, uint32_t rpcARG0, PADDR data, struct thread* calling);
-void 				return_rpc(int resultCode);
+struct rpc_future*  init_rpc(struct module* t, uint32_t rpcID, uint32_t rpcARG0, PADDR data, struct module* calling);
+void            	return_rpc(int resultCode);
 void*               rpc_map(void);
 
 struct environment* create_env(PADDR root);
-struct thread* 		create_thread(struct environment* environment, void* entry);
-struct thread*    	get_current_thread(void);
-struct thread*    	get_task_by_pid(int pid);
-
-void				setargsptr(struct thread* t, void* value);
+struct module* 		register_module(struct environment* environment, ADDRESS entry);
+struct module*    	get_current_thread(void);
+struct module*    	get_task_by_pid(int pid);
 
 struct cpu_state* 	terminate_current(struct cpu_state* cpu);
 struct cpu_state* 	schedule_exception(struct cpu_state* cpu);
-struct cpu_state*   schedule_to(struct thread* next, struct cpu_state* cpu);
+struct cpu_state*   schedule_to(struct module* next, struct cpu_state* cpu);
 struct cpu_state* 	schedule(struct cpu_state* cpu);
 struct cpu_state* 	save_cpu_state(struct cpu_state* cpu);
 
 struct cpu_state*   optionForceSchedule(struct cpu_state* cpu);
-void                registerForceSchedule(struct thread* to);
+void                registerForceSchedule(struct module* to);
 
 void              	enableScheduling(void);
 uint32_t          	isSchedulingEnabled(void);

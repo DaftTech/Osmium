@@ -3,7 +3,7 @@
 #include "level0/console.h"
 #include "level0/vmm.h"
 
-void* unpack_elf(void* elf) {
+ADDRESS unpack_elf(void* elf) {
 	struct elf_header* header = elf;
     struct elf_program_header* ph;
 
@@ -13,7 +13,7 @@ void* unpack_elf(void* elf) {
         return 0;
     }
 
-    void* elf_mod_entry = (void*) (header->entry);
+    ADDRESS elf_mod_entry = header->entry;
 
     ph = (struct elf_program_header*) (((char*) header) + header->ph_offset);
 
@@ -27,7 +27,7 @@ void* unpack_elf(void* elf) {
         }
 
         for (uint32_t offset = 0; offset < ph->mem_size; offset += 0x1000) {
-            vmm_free(dest + offset);
+            vmm_free(dest + offset); //FIXME: ELF kann Kernel Memory unloaden.
             vmm_alloc_addr(dest + offset, 0);
         }
 

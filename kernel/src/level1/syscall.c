@@ -16,10 +16,6 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		new = terminate_current(in);
 		break;
 
-	case 0x2: //get argsptr
-		new->eax = (uint32_t)get_current_thread()->argsptr;
-		break;
-
 	case 0x3: //yield
 		new = schedule(in);
 		break;
@@ -41,15 +37,11 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		new = schedule(in);
 		break;
 
-	case 0x202: //RPC Register Handler EBX=handler function*
-		get_current_thread()->rpc_handler_address = in->ebx;
-		break;
-
 	case 0x203: //RPC rpc_check_future EBX=future
 		;
 		uint32_t ebx = in->ebx;
 
-		struct thread* c = get_current_thread();
+		struct module* c = get_current_thread();
 		struct rpc_future* bCheck = (c->active_rpc && c->active_rpc->state != RPC_STATE_AWAITING) ? c->active_rpc->runningFutures : c->runningFutures;
 
 		uint32_t anyFuture = 0;
@@ -67,12 +59,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		new->eax = anyFuture;
 		break;
 
-
-	case 0x300: //Register driver EBX=call
-		new->eax = fstree_register_driver(in->ebx, (char*)in->edi);
-		break;
-
-	case 0x303: //DRVCall call EBX=name char* ECX=data page* EDX=callID
+	/*case 0x303: //DRVCall call EBX=name char* ECX=data page* EDX=callID
 	{
 		char* name = strtoknc((char*)in->ebx, ":");
 		char* file = strtoknc((char*)in->ebx, ":");
@@ -86,7 +73,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 			new->eax = 0;
 		}
 	}
-		break;
+		break;*/
 
 
 	case 0x400: //VMM ucont alloc EBX=pages
@@ -96,11 +83,6 @@ struct cpu_state* syscall(struct cpu_state* in) {
 	case 0x401: //VMM free EBX=address
 		if(in->ebx < USERSPACE_BOTTOM) show_cod(in, "Userspace program tried to free kernel memory.");
 		vmm_free((void*)in->ebx);
-		break;
-
-	case 0x500: //THREAD create EBX=entry_point* ECX=args*
-		new->eax = (uint32_t) create_thread(get_current_thread()->environment, (void*)in->ebx);
-		setargsptr((struct thread*)new->eax, (void*)in->ecx);
 		break;
 
 	case 0x501: //THREAD createNewContext EBX=data source* ECX=data size EDX=elf source* ESI=elf size
@@ -121,7 +103,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		struct environment* oldEnv = get_current_thread()->environment;
 		vmm_activate_pagedir(newEnv->phys_pdir);
 
-		void* entryPoint = unpack_elf(elfKernel);
+		ADDRESS entryPoint = unpack_elf(elfKernel);
 		if(entryPoint == 0) goto noLoad;
 
 		void* dataUserspace = 0;
@@ -130,8 +112,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 			memcpy(dataUserspace, dataKernel, in->ecx);
 		}
 
-		struct thread* t = create_thread(newEnv, entryPoint);
-		setargsptr(t, dataUserspace);
+		struct module* t = register_module(newEnv, entryPoint);
 
 		new->eax = (uint32_t)t;
 

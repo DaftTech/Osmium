@@ -5,6 +5,9 @@
 #define RPC_HANDLERS 1024
 
 static int(*rpcHandlers[RPC_HANDLERS])(int, void*);
+int rpc_initialized = 0;
+
+extern int rmain(int arg0, void* argPtr);
 
 void rpc_return(int returnCode) {
 	struct regstate state = {
@@ -17,25 +20,9 @@ void rpc_return(int returnCode) {
 
 	syscall(&state);
 
-	kprintf("RET RPC NO WORK\n");
+	kprintf("RET RPC DIDNT WORK\n");
 	while(1) {
 	}
-}
-
-void rpc_init() {
-	for(int i = 0; i < RPC_HANDLERS; i++) {
-		rpcHandlers[i] = (int(*)(int, void*))0;
-	}
-
-	struct regstate state = {
-			.eax = 0x202,
-			.ebx = (uint32_t)&rpc_handler,
-			.ecx = 0,
-			.edx = 0,
-			.esi = 0,
-			.edi = 0 };
-
-	syscall(&state);
 }
 
 void* rpc_map(uint32_t* rpcID, uint32_t* rpcARG0) {
@@ -79,7 +66,19 @@ int rpc_register_handler(int(*fptr)(int, void*)) {
 	return -1;
 }
 
-void rpc_handler() {
+
+
+void _start() {
+	if(!rpc_initialized) {
+		for(int i = 0; i < RPC_HANDLERS; i++) {
+			rpcHandlers[i] = (int(*)(int, void*))0;
+		}
+
+		rpcHandlers[0] = rmain;
+
+		rpc_initialized = 1;
+	}
+
 	uint32_t rpcID;
 	uint32_t rpcARG0;
 	void* rpcData = rpc_map(&rpcID, &rpcARG0);

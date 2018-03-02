@@ -5,7 +5,6 @@
 
 typedef uint32_t THREAD;
 
-void     _start();
 void     exit(int returncode);
 void*    getargsptr();
 void     yield();

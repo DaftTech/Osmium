@@ -2,6 +2,7 @@
 #define ELF_H_
 
 #include "stdint.h"
+#include "stddef.h"
 
 #define ELF_MAGIC 0x464C457F
 
@@ -33,6 +34,6 @@ struct elf_program_header {
     uint32_t alignment;
 }__attribute__((packed));
 
-void* unpack_elf(void* elf);
+ADDRESS unpack_elf(void* elf);
 
 #endif

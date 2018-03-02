@@ -14,7 +14,7 @@ static uint32_t tss[32] = { 0, (uint32_t) &interrupt_stack, 0x10 };
 
 static uint64_t idt[IDT_ENTRIES];
 static struct rpc_destination {
-	struct thread* thread;
+	struct module* thread;
 	uint32_t rpcID;
 } registered[IDT_ENTRIES];
 
@@ -216,8 +216,8 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu) {
 		show_cod(cpu, "Unknown Interrupt!");
 	}
 
-	if(isSchedulingEnabled() && new_cpu == cpu) {
-		return optionForceSchedule(new_cpu);
-	}
+	/*if(isSchedulingEnabled() && new_cpu == cpu) {
+		return schedule(new_cpu);
+	}*/
 	return new_cpu;
 }

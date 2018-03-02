@@ -50,11 +50,8 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	kprintf("LEVEL1 ENTRY\n");
 	setclr(C_DEFAULT);
 
-	kprintf("Creating environment...\n");
+	kprintf("Creating root environment...\n");
 	struct environment* rootEnv = create_env(root);
-
-	kprintf("Initializing fstree...\n");
-	fstree_init();
 
 	kprintf("Mapping multiboot...\n");
 
@@ -79,21 +76,17 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	}
 
 	kprintf("Unpacking ELF...\n");
-	void* entryPoint = unpack_elf(&initELF[1]);
+	ADDRESS entryPoint = unpack_elf(&initELF[1]);
 
-	if(entryPoint == (void*)0) {
+	if(entryPoint == 0) {
 		show_cod(0, "init was not a valid ELF...\n");
 	}
 
-	kprintf("Copying initrfs BLOB into userspace (for init)...\n");
-	void* dest = vmm_alloc_ucont(((initrfsSize - 1) / 0x1000) + 1);
-    memcpy(dest, initrfs, initrfsSize);
+	kprintf("Registering init module...\n");
+	struct module* zero = register_module(rootEnv, entryPoint);
 
-	kprintf("Creating thread zero...\n");
-	struct thread* zero = create_thread(rootEnv, entryPoint);
-
-	kprintf("Push userspace address of initrfs BLOB...\n");
-	setargsptr(zero, dest);
+	kprintf("Informing init about its birth...\n");
+	init_rpc(zero, 0, 0, 0, 0);
 
 	kprintf("Setting PIT interval...\n");
 
@@ -104,4 +97,8 @@ void clevel_entry(struct multiboot_info* mb_info) {
 
 	kprintf("Enabling scheduler...\n");
 	enableScheduling();
+
+	while(1) {
+		//kprintf(".");
+	}
 }
