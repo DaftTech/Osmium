@@ -2,8 +2,6 @@
 #include "level0/catofdeath.h"
 
 struct rpc_future* init_rpc(struct module* t, uint32_t rpcID, uint32_t rpcARG0, PADDR data, struct module* calling) {
-	kprintf("init_rpc(%d) for %x\n", rpcID, t);
-
 	struct rpc* r = calloc(1, sizeof(struct rpc));
 
 	r->next = 0;

@@ -13,8 +13,13 @@ struct file {
 	uint8_t content;
 };
 
-int rmain() {
-	kprintf("test\n");
+int processEvent(int arg0, void* argPtr) {
+	switch(arg0) {
+	case 0x00: //Module Initialized
+		kprintf("initialized");
+		break;
 
-	return 0;
+	case 0x1D7E: //IDLE
+		break;
+	}
 }

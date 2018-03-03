@@ -7,8 +7,6 @@
 static int(*rpcHandlers[RPC_HANDLERS])(int, void*);
 int rpc_initialized = 0;
 
-extern int rmain(int arg0, void* argPtr);
-
 void rpc_return(int returnCode) {
 	struct regstate state = {
 			.eax = 0x201,
@@ -66,7 +64,7 @@ int rpc_register_handler(int(*fptr)(int, void*)) {
 	return -1;
 }
 
-
+extern int processEvent(int arg0, void* argPtr);
 
 void _start() {
 	if(!rpc_initialized) {
@@ -74,7 +72,7 @@ void _start() {
 			rpcHandlers[i] = (int(*)(int, void*))0;
 		}
 
-		rpcHandlers[0] = rmain;
+		rpcHandlers[0] = processEvent;
 
 		rpc_initialized = 1;
 	}

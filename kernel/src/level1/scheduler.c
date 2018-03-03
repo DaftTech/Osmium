@@ -5,11 +5,9 @@
 #include "level0/catofdeath.h"
 
 uint32_t schedulingEnabled = 0;
-uint32_t idleInitialized = 0;
-
-struct cpu_state idleState;
 
 struct module* first_module = 0;
+struct module* root_module = 0;
 struct module* current_module = 0;
 
 void enableScheduling(void) {
@@ -25,14 +23,6 @@ struct module* get_current_thread(void) {
 }
 
 struct cpu_state* schedule_exception(struct cpu_state* cpu) {
-	if (current_module == 0) {
-        kprintf("\n~~~ Kernel exception %x:%x \n", cpu->intr, cpu->error);
-        kprintf("\n");
-        show_cod(cpu, "Kernel panic...");
-
-        return 0;
-	}
-
     if (current_module == first_module && current_module->next == 0) {
         //Only one process is running, which just crashed. Stop system.
         setclr(0x04);
@@ -58,12 +48,6 @@ struct cpu_state* schedule_exception(struct cpu_state* cpu) {
 }
 
 struct cpu_state* terminate_current(struct cpu_state* cpu) {
-	if(current_module == 0) {
-		kprintf("kernel fault");
-
-		return cpu;
-	}
-
     struct module* next = current_module->next;
     struct module* prev = current_module->prev;
     struct module* old = current_module;
@@ -109,21 +93,25 @@ struct environment* create_env(PADDR root) {
 }
 
 struct module* register_module(struct environment* environment, ADDRESS entry) {
-    struct module* nthread = calloc(1, sizeof(struct module));
-    nthread->rpc_handler_address = entry;
+    struct module* rModule = calloc(1, sizeof(struct module));
+    rModule->rpc_handler_address = entry;
 
-    nthread->environment = environment;
+    rModule->environment = environment;
 
-    nthread->next = (void*) first_module;
-    nthread->prev = (void*) 0;
+    rModule->next = (void*) first_module;
+    rModule->prev = (void*) 0;
 
     if (first_module != 0) {
-        first_module->prev = nthread;
+        first_module->prev = rModule;
     }
 
-    first_module = nthread;
+    if(root_module == 0) {
+    	root_module = rModule;
+    }
 
-    return nthread;
+    first_module = rModule;
+
+    return rModule;
 }
 
 struct cpu_state* schedule_to(struct module* next, struct cpu_state* cpu) {
@@ -157,27 +145,21 @@ struct cpu_state* schedule_to(struct module* next, struct cpu_state* cpu) {
 	return &(next->active_rpc->cpuState);
 }
 
-void idleThread() {
-	while(1) {
-	}
-}
-
 struct cpu_state* schedule(struct cpu_state* cpu) {
     if (first_module != 0 && schedulingEnabled) {
     	if(current_module && current_module->active_rpc && current_module->active_rpc->state == RPC_STATE_EXECUTING) {
     		memcpy(&current_module->active_rpc->cpuState, cpu, sizeof(struct cpu_state));
     	}
 
-        if (current_module == 0) {
-        	if(idleInitialized) {
-        		memcpy(&idleState, cpu, sizeof(struct cpu_state));
-        	}
-        }
-        else if(current_module->active_rpc == 0) {
-        	current_module = 0;
-        }
+    	if(current_module && current_module->active_rpc == 0) {
+    		current_module = 0;
+    	}
 
     	struct module* next = first_module;
+
+		if(current_module && current_module->next) {
+			next = current_module->next;
+		}
 
     	while(next != 0) {
 			if(next->active_rpc) {
@@ -187,23 +169,9 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 			next = next->next;
     	}
 
-    	if(!idleInitialized) {
-    	    struct cpu_state nstate = { .eax = 0, .ebx = 0, .ecx = 0, .edx = 0,
-    	            .esi = 0, .edi = 0, .ebp = 0, .esp = (uint32_t) vmm_alloc_cont(1) + 0x1000,
-    				.eip = (uint32_t) idleThread,
+    	init_rpc(root_module, 0, 0x1D7E, 0, 0);
 
-    	            // Ring-0-Segmentregister
-    	            .cs = 0x08 | 0x00, .ss = 0x00 | 0x00,
-
-    	            .eflags = 0x200,
-    	    };
-
-    	    memcpy(&idleState, &nstate, sizeof(struct cpu_state));
-
-    	    idleInitialized = 1;
-    	}
-
-    	return &idleState;
+    	return schedule_to(root_module, cpu);
     }
 
     return cpu;
