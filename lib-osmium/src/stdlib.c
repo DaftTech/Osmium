@@ -1,5 +1,6 @@
 #include "stdlib.h"
 #include "memory.h"
+#include "stdmem.h"
 #include "stddef.h"
 
 struct memory_node* first_unused = 0;

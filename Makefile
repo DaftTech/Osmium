@@ -16,6 +16,7 @@ all:
 	
 .PHONY: kernel
 kernel:
+	make -C lib-common/ -B || exit 1
 	make -C kernel/ -B || exit 1
 	make -C lib-osmium/ -B || exit 1
 	

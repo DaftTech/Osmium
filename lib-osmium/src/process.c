@@ -3,6 +3,7 @@
 #include "console.h"
 #include "driver.h"
 #include "stdlib.h"
+#include "stdmem.h"
 #include "rpc.h"
 
 void yield() {

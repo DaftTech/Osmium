@@ -6,11 +6,11 @@ CC = gcc -std=gnu99 -fno-leading-underscore -O1
 LD = ld
 
 ASFLAGS = -m32
-CFLAGS = -m32 -Wall -Wextra -Wno-unused-parameter -Wno-unused-variable -Werror -g -fno-stack-protector -nostdinc -I ./include
+CFLAGS = -m32 -Wall -Wextra -Wno-unused-parameter -Wno-unused-variable -Werror -g -fno-stack-protector -nostdinc -I ./include -I ../lib-common/include
 LDFLAGS = -melf_i386 -T kernel.ld
 
 ../bin/kernel: $(OBJS)
-	$(LD) $(LDFLAGS) -o $@ $^
+	$(LD) $(LDFLAGS) -o $@ $^ ../lib-common/lib-common.a
 	
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $^

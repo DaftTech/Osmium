@@ -18,7 +18,7 @@ void* pmm_alloc() {
 			}
 		}
 	}
-	return NULL ;
+	return 0;
 }
 
 void pmm_print_stats() {
