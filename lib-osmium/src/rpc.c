@@ -4,7 +4,7 @@
 
 #define RPC_HANDLERS 1024
 
-static int(*rpcHandlers[RPC_HANDLERS])(int, void*);
+static int(*rpcHandlers[RPC_HANDLERS])(int);
 int rpc_initialized = 0;
 
 void rpc_return(int returnCode) {
@@ -23,7 +23,7 @@ void rpc_return(int returnCode) {
 	}
 }
 
-void* rpc_map(uint32_t* rpcID, uint32_t* rpcARG0) {
+void rpc_map(uint32_t* rpcID, uint32_t* rpcARG0) {
 	struct regstate state = {
 			.eax = 0x200,
 			.ebx = 0,
@@ -36,7 +36,6 @@ void* rpc_map(uint32_t* rpcID, uint32_t* rpcARG0) {
 
 	*rpcID = state.ebx;
 	*rpcARG0 = state.ecx;
-	return (void*) state.eax;
 }
 
 
@@ -54,9 +53,9 @@ int rpc_check_future(FUTURE fut) {
 	return state.eax;
 }
 
-int rpc_register_handler(int(*fptr)(int, void*)) {
+int rpc_register_handler(int(*fptr)(int)) {
 	for(int i = 0; i < RPC_HANDLERS; i++) {
-		if(rpcHandlers[i] == (int(*)(int, void*))0) {
+		if(rpcHandlers[i] == (int(*)(int))0) {
 			rpcHandlers[i] = fptr;
 			return i;
 		}
@@ -64,12 +63,12 @@ int rpc_register_handler(int(*fptr)(int, void*)) {
 	return -1;
 }
 
-extern int processEvent(int arg0, void* argPtr);
+extern int processEvent(int arg0);
 
 void _start() {
 	if(!rpc_initialized) {
 		for(int i = 0; i < RPC_HANDLERS; i++) {
-			rpcHandlers[i] = (int(*)(int, void*))0;
+			rpcHandlers[i] = (int(*)(int))0;
 		}
 
 		rpcHandlers[0] = processEvent;
@@ -79,12 +78,13 @@ void _start() {
 
 	uint32_t rpcID;
 	uint32_t rpcARG0;
-	void* rpcData = rpc_map(&rpcID, &rpcARG0);
+
+	rpc_map(&rpcID, &rpcARG0);
 
 	int returnValue = -1;
 
 	if(rpcID < RPC_HANDLERS && rpcHandlers[rpcID] != 0) {
-		returnValue = rpcHandlers[rpcID](rpcARG0, rpcData);
+		returnValue = rpcHandlers[rpcID](rpcARG0);
 	}
 
 	rpc_return(returnValue);

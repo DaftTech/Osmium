@@ -39,10 +39,6 @@ struct cpu_state* schedule_exception(struct cpu_state* cpu) {
         show_dump(cpu);
         setclr(C_DEFAULT);
 
-        while(1) {
-
-        };
-
         return terminate_current(cpu);
     }
 }
@@ -111,32 +107,14 @@ struct module* register_module(struct environment* environment, ADDRESS entry) {
 
     first_module = rModule;
 
+	remoteCall(rModule, 0, 0);
+
     return rModule;
 }
 
 struct cpu_state* schedule_to(struct module* next, struct cpu_state* cpu) {
 	current_module = next;
 	vmm_activate_pagedir(next->environment->phys_pdir);
-
-	struct rpc_future* bCheck = next->active_rpc->runningFutures;
-	struct rpc_future** previous = &(next->active_rpc->runningFutures);
-
-	while(bCheck != 0) {
-		if(bCheck->state == FSTATE_RETURNED) {
-			void* bptr = bCheck;
-
-			*previous = bCheck->next;
-			previous = &(bCheck->next);
-			bCheck = bCheck->next;
-
-			free(bptr);
-		}
-		else
-		{
-			previous = &(bCheck->next);
-			bCheck = bCheck->next;
-		}
-	}
 
 	if(next->active_rpc->state == RPC_STATE_AWAITING) {
 		next->active_rpc->state = RPC_STATE_EXECUTING;
@@ -169,7 +147,7 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 			next = next->next;
     	}
 
-    	init_rpc(root_module, 0, 0x1D7E, 0, 0);
+    	remoteCall(root_module, 0, 0x1D7E);
 
     	return schedule_to(root_module, cpu);
     }

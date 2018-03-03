@@ -13,7 +13,6 @@ SECTIONS
     . = 0x20000000;
 
     .text : {
-        *(_start)
         *(.text)
     }
     .data ALIGN(4096) : {

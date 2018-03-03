@@ -1,4 +1,3 @@
-#include "include/level1/rpc.h"
 #include "level0/console.h"
 #include "level0/gdt.h"
 #include "level0/pmm.h"
@@ -85,9 +84,6 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	kprintf("Registering init module...\n");
 	struct module* zero = register_module(rootEnv, entryPoint);
 
-	kprintf("Informing init about its birth...\n");
-	init_rpc(zero, 0, 0, 0, 0);
-
 	kprintf("Setting PIT interval...\n");
 
 	int counter = 1193182 / 100;
@@ -99,6 +95,5 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	enableScheduling();
 
 	while(1) {
-		//kprintf(".");
 	}
 }

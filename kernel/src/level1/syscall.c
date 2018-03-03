@@ -1,6 +1,5 @@
 #include "level1/syscall.h"
 
-#include "../../include/level1/rpc.h"
 #include "level0/console.h"
 #include "level0/catofdeath.h"
 #include "level0/ports.h"
@@ -27,7 +26,6 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 	case 0x200: //RPC Map
-		new->eax = (uint32_t)rpc_map();
 		new->ebx = get_current_thread()->active_rpc->rpcID;
 		new->ecx = get_current_thread()->active_rpc->rpcARG0;
 		break;
@@ -36,45 +34,6 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		return_rpc(in->ebx);
 		new = schedule(in);
 		break;
-
-	case 0x203: //RPC rpc_check_future EBX=future
-		;
-		uint32_t ebx = in->ebx;
-
-		struct module* c = get_current_thread();
-		struct rpc_future* bCheck = (c->active_rpc && c->active_rpc->state != RPC_STATE_AWAITING) ? c->active_rpc->runningFutures : c->runningFutures;
-
-		uint32_t anyFuture = 0;
-
-		while(bCheck != 0) {
-			if(ebx == 1337) anyFuture |= bCheck->state;
-			if((uint32_t)bCheck == ebx) {
-				anyFuture = bCheck->state;
-				break;
-			}
-
-			bCheck = bCheck->next;
-		}
-
-		new->eax = anyFuture;
-		break;
-
-	/*case 0x303: //DRVCall call EBX=name char* ECX=data page* EDX=callID
-	{
-		char* name = strtoknc((char*)in->ebx, ":");
-		char* file = strtoknc((char*)in->ebx, ":");
-
-		struct driver* d = fstree_driver_for_name(name);
-		if(d != 0) {
-			new->eax = (uint32_t)init_rpc(d->driverThread, d->rpc_call, in->edx, vmm_resolve((void*)in->ecx), get_current_thread());
-		}
-		else
-		{
-			new->eax = 0;
-		}
-	}
-		break;*/
-
 
 	case 0x400: //VMM ucont alloc EBX=pages
 		new->eax = (uint32_t) vmm_alloc_ucont(in->ebx);
@@ -124,31 +83,6 @@ struct cpu_state* syscall(struct cpu_state* in) {
 
 	case 0x600: //Register IRQ-RPC EBX=irqID ECX=rpcID
 		new->eax = register_irq_rpc(in->ebx, in->ecx);
-		break;
-
-		//FIXME: PORT RESTRICTIONS!
-	case 0x601: //OUTB EBX=port ECX=value
-		outb(in->ebx, in->ecx);
-		break;
-
-	case 0x602: //OUTW EBX=port ECX=value
-		outw(in->ebx, in->ecx);
-		break;
-
-	case 0x603: //OUTL EBX=port ECX=value
-		outl(in->ebx, in->ecx);
-		break;
-
-	case 0x604: //INB EBX=port
-		new->eax = inb(in->ebx);
-		break;
-
-	case 0x605: //INW EBX=port
-		new->eax = inw(in->ebx);
-		break;
-
-	case 0x606: //INL EBX=port
-		new->eax = inl(in->ebx);
 		break;
 
 	default:

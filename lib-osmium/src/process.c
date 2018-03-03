@@ -17,20 +17,6 @@ void yield() {
 	syscall(&state);
 }
 
-THREAD thread(void* function, void* args) {
-	struct regstate state = {
-			.eax = 0x500,
-			.ebx = (uint32_t)function,
-			.ecx = (uint32_t)args,
-			.edx = 0,
-			.esi = 0,
-			.edi = 0 };
-
-	syscall(&state);
-
-	return state.eax;
-}
-
 THREAD execp(char* path, void* data, uint32_t datasize) {
 	/*struct driver_data* driverData = palloc();
 

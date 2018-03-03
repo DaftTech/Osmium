@@ -205,7 +205,7 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu) {
 		else
 		{
 			if(registered[cpu->intr].thread != 0) {
-				init_rpc(registered[cpu->intr].thread, registered[cpu->intr].rpcID, cpu->intr, 0, 0); //call IRQ RPC
+				remoteCall(registered[cpu->intr].thread, registered[cpu->intr].rpcID, cpu->intr); //call IRQ RPC
 			}
 		}
 
