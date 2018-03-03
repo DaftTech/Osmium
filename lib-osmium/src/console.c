@@ -1,8 +1,6 @@
 #include "console.h"
 #include "syscall.h"
 
-static int x = 0;
-static int y = 0;
 static int kprintf_res = 0;
 static char color = 0x07;
 

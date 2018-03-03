@@ -9,9 +9,9 @@ static void remove_from_list(struct memory_node** root, struct memory_node* elem
 	struct memory_node* last = 0;
 	struct memory_node* cur = *root;
 
-	while (cur != NULL) {
+	while (cur != 0) {
 		if (cur == element) {
-			if (last == NULL) {
+			if (last == 0) {
 				*root = cur->next;
 				return;
 			} else {
@@ -30,7 +30,7 @@ static void append_to_list(struct memory_node** root, struct memory_node* elemen
 }
 
 static struct memory_node* pop_from_list(struct memory_node** root) {
-	if (*root == NULL) return NULL;
+	if (*root == 0) return 0;
 	struct memory_node* pop = *root;
 	remove_from_list(root, pop);
 	return pop;
@@ -48,7 +48,7 @@ static void allocate_unused_nodes() {
 static struct memory_node* pop_unused_node() {
 	struct memory_node* ret = pop_from_list(&first_unused);
 
-	while (ret == NULL) {
+	while (ret == 0) {
 		allocate_unused_nodes();
 		ret = pop_from_list(&first_unused);
 	}
@@ -63,7 +63,7 @@ static void merge_into_frees(struct memory_node* tf) {
 
 	editedList: cur = first_free;
 
-	while (cur != NULL) {
+	while (cur != 0) {
 		if (cur->address + cur->size == tf->address) {
 			tf->address = cur->address;
 			remove_from_list(&first_free, cur);
@@ -86,20 +86,20 @@ uint32_t malloced = 0;
 
 void* malloc(size_t size) {
 	if (size == 0)
-		return NULL;
+		return 0;
 
 	malloced += size;
 
 	struct memory_node* cur = first_free;
 
-	while (cur != NULL) {
+	while (cur != 0) {
 		if (cur->size >= size) {
 			break;
 		}
 		cur = cur->next;
 	}
 
-	if (cur == NULL) {
+	if (cur == 0) {
 		uint32_t pgs = size / PAGESIZE;
 
 		if ((size % PAGESIZE) != 0)
@@ -149,7 +149,7 @@ void* calloc(size_t num, size_t size) {
 	size_t gsize = num * size;
 	void* p = malloc(gsize);
 
-	if (p != NULL) {
+	if (p != 0) {
 		memset(p, 0, gsize);
 	}
 
@@ -159,11 +159,11 @@ void* calloc(size_t num, size_t size) {
 void* realloc(void* ptr, size_t size) {
 	struct memory_node* cur = first_used;
 
-	while (cur != NULL) {
+	while (cur != 0) {
 		if (cur->address == (uint32_t) ptr) {
 			if (size == 0) {
 				free(ptr);
-				return NULL;
+				return 0;
 			} else {
 				void* new = malloc(size);
 				memcpy(new, (void*) cur->address, cur->size);
@@ -174,13 +174,13 @@ void* realloc(void* ptr, size_t size) {
 		}
 		cur = cur->next;
 	}
-	return NULL;
+	return 0;
 }
 
 void free(void* ptr) {
 	struct memory_node* cur = first_used;
 
-	while (cur != NULL) {
+	while (cur != 0) {
 		if (cur->address == (uint32_t) ptr) {
 			malloced -= cur->size;
 

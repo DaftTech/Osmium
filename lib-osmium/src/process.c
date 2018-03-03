@@ -1,7 +1,6 @@
 #include "process.h"
 #include "rpc.h"
 #include "console.h"
-#include "driver.h"
 #include "stdlib.h"
 #include "stdmem.h"
 #include "rpc.h"
@@ -33,7 +32,7 @@ THREAD thread(void* function, void* args) {
 }
 
 THREAD execp(char* path, void* data, uint32_t datasize) {
-	struct driver_data* driverData = palloc();
+	/*struct driver_data* driverData = palloc();
 
 	uint32_t elfsize = MAX_IO_BUFFER;
 	void* elf = malloc(elfsize); //256KB for init load
@@ -62,7 +61,9 @@ THREAD execp(char* path, void* data, uint32_t datasize) {
 	pfree(driverData);
 	free(elf);
 
-	return ret;
+	return ret;*/
+
+	return 0;
 }
 
 THREAD execpn(char* path) {

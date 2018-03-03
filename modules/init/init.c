@@ -2,7 +2,6 @@
 #include "console.h"
 #include "memory.h"
 #include "rpc.h"
-#include "driver.h"
 #include "stdint.h"
 #include "string.h"
 
