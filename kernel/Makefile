@@ -8,7 +8,7 @@ CP = g++ -fno-leading-underscore -O1 -fpermissive
 LD = ld
 
 ASFLAGS = -m32
-CFLAGS = -m32 -Wall -Wextra -Wno-unused-parameter -g -fno-stack-protector -nostdinc -I ./include -I ../lib-common/include
+CFLAGS = -m32 -Wall -Wextra -Wno-write-strings -Wno-unused-parameter -g -fno-stack-protector -nostdinc -I ./include -I ../lib-common/include
 LDFLAGS = -melf_i386 -T kernel.ld
 
 ../bin/kernel: $(OBJS)

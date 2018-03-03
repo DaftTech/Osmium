@@ -24,14 +24,14 @@ char* strcpy(char* dest, const char* src) {
 }
 
 char* strclone(const char* str) {
-    char* ret = malloc(sizeof(char) * strlen(str) + 1);
+    char* ret = (char*) malloc(sizeof(char) * strlen(str) + 1);
     strcpy(ret, str);
 
     return ret;
 }
 
 char* sp = NULL; /* the start position of the string */
-void* fr = NULL;
+char* fr = NULL;
 
 char* strtok(char* str, const char* delimiters) {
     if(str != 0) {

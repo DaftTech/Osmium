@@ -10,7 +10,7 @@ int rpc_initialized = 0;
 void rpc_return(int returnCode) {
 	struct regstate state = {
 			.eax = 0x201,
-			.ebx = returnCode,
+			.ebx = (uint32_t) returnCode,
 			.ecx = 0,
 			.edx = 0,
 			.esi = 0,

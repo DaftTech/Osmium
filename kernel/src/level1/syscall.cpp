@@ -12,39 +12,54 @@ struct cpu_state* syscall(struct cpu_state* in) {
 
 	switch(in->eax) {
 	case 0x1: //exit EBX=return code
+	{
 		newCpu = terminateCurrent(in);
 		break;
+	}
 
 	case 0x3: //yield
+	{
 		newCpu = schedule(in);
 		break;
+	}
 
 	case 0x100: //FIXME: kputc
+	{
 		setclr(COLOR(SCLR_BLACK, SCLR_LCYAN));
 		kputc((char)in->ebx);
 		setclr(C_DEFAULT);
 		break;
+	}
 
 	case 0x200: //RPC Map
+	{
 		newCpu->ebx = getCurrentThread()->active_rpc->rpcID;
 		newCpu->ecx = getCurrentThread()->active_rpc->rpcARG0;
 		break;
+	}
 
 	case 0x201: //RPC Return EBX=return code
+	{
 		returnRPC(in->ebx);
 		newCpu = schedule(in);
 		break;
+	}
 
 	case 0x400: //VMM ucont alloc EBX=pages
+	{
 		newCpu->eax = (uint32_t) vmmAllocateInUserspaceCont(in->ebx);
 		break;
+	}
 
 	case 0x401: //VMM free EBX=address
+	{
 		if(in->ebx < USERSPACE_BOTTOM) showCOD(in, "Userspace program tried to free kernel memory.");
 		vmmFree((void*)in->ebx);
 		break;
+	}
 
 	case 0x501: //THREAD createNewContext EBX=data source* ECX=data size EDX=elf source* ESI=elf size
+	{
 		newCpu->eax = 0;
 		struct environment* newEnv = createEnvironment(vmmCreate());
 
@@ -65,29 +80,36 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		ADDRESS entryPoint = unpackELF(elfKernel);
 		if(entryPoint == 0) goto noLoad;
 
-		void* dataUserspace = 0;
-		if(in->ecx) {
-			dataUserspace = vmmAllocateInUserspaceCont(in->ecx / 0x1000);
-			memcpy(dataUserspace, dataKernel, in->ecx);
+		{
+			void* dataUserspace = 0;
+			if(in->ecx) {
+				dataUserspace = vmmAllocateInUserspaceCont(in->ecx / 0x1000);
+				memcpy(dataUserspace, dataKernel, in->ecx);
+			}
+
+			struct module* t = registerModule(newEnv, entryPoint);
+
+			newCpu->eax = (uint32_t)t;
 		}
-
-		struct module* t = registerModule(newEnv, entryPoint);
-
-		newCpu->eax = (uint32_t)t;
 
 		noLoad:
 		free(dataKernel);
 		free(elfKernel);
 		vmmActivate(oldEnv->phys_pdir);
 		break;
+	}
 
 	case 0x600: //Register IRQ-RPC EBX=irqID ECX=rpcID
+	{
 		newCpu->eax = registerIRQRPC(in->ebx, in->ecx);
 		break;
+	}
 
 	default:
+	{
 		kprintf("Terminated thread due to unhandled syscall...\n");
 		newCpu = scheduleException(in);
+	}
 	}
 
 	return newCpu;

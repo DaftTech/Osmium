@@ -8,7 +8,7 @@ uint32_t* active_pagetables = ACTIVE_PAGETABLES;
 
 PADDR vmmCreate() {
 	PADDR phys_pagedir = 0;
-	uint32_t* pagedir_ptr = vmmAllocate(&phys_pagedir);
+	uint32_t* pagedir_ptr = (uint32_t*) vmmAllocate(&phys_pagedir);
 
 	pagedir_ptr[1023] = phys_pagedir | PD_PRESENT | PD_WRITE;
 	uint32_t i, i2;
@@ -18,7 +18,7 @@ PADDR vmmCreate() {
 			pagedir_ptr[i] = kernel_pagetables[i] | PD_PRESENT | PD_WRITE;
 		} else {
 			PADDR phys = 0;
-			uint32_t* c = vmmAllocate(&phys);
+			uint32_t* c = (uint32_t*) vmmAllocate(&phys);
 			pagedir_ptr[i] = phys  | PD_PRESENT | PD_WRITE | PD_PUBLIC;
 			for(i2 = 0; i2 < 1024; i2++) {
 				c[i2] = PD_WRITE | PD_PUBLIC;
@@ -117,14 +117,14 @@ void* vmmAllocateAddress(void* ivaddr, uint32_t* retpaddr) {
 
 static void* vmmAllocateInRange(uint32_t low, uint32_t high, uint32_t* retpaddr,
 		uint32_t cont) {
-	void* vaddr = 0;
+	uint8_t* vaddr = 0;
 	uint32_t i = 0;
 	uint32_t c = 0;
 
 	for (i = (low & 0xFFFFF000); i < high; i += 0x1000) {
 		if ((active_pagetables[i >> 12] & (PT_PRESENT)) != PT_PRESENT) {
 			if (c == 0)
-				vaddr = (void*) i;
+				vaddr = (uint8_t*) i;
 			c++;
 			if (c >= cont)
 				break;
@@ -170,7 +170,7 @@ PADDR vmmInit(void) {
 
 	for (uint32_t i = 0; i < KERNEL_COMBINED_TABLES; i++) {
 		kernel_pagetables[i] = (PADDR) pmmAllocate() | PD_PRESENT | PD_WRITE;
-		uint32_t* kptAccess = (void*) (kernel_pagetables[i] & 0xFFFFF000);
+		uint32_t* kptAccess = (uint32_t*) (kernel_pagetables[i] & 0xFFFFF000);
 
 		for (uint32_t i2 = 0; i2 < 1023; i2++) {
 			PADDR addr = (i << 22) + (i2 << 12);
@@ -187,7 +187,7 @@ PADDR vmmInit(void) {
 	}
 
 	//VMM_CREATE
-	uint32_t* pagedir_ptr = pmmAllocate();
+	uint32_t* pagedir_ptr = (uint32_t*) pmmAllocate();
 	PADDR phys_pagedir = (PADDR) pagedir_ptr;
 
 	pagedir_ptr[1023] = phys_pagedir | PD_PRESENT | PD_WRITE;

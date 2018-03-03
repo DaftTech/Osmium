@@ -4,7 +4,7 @@
 #include "level0/vmm.h"
 
 ADDRESS unpackELF(void* elf) {
-	struct elf_header* header = elf;
+	struct elf_header* header = (struct elf_header*) elf;
     struct elf_program_header* ph;
 
     /* Ist es ueberhaupt eine ELF-Datei? */
@@ -18,8 +18,8 @@ ADDRESS unpackELF(void* elf) {
     ph = (struct elf_program_header*) (((char*) header) + header->ph_offset);
 
     for (uint32_t n = 0; n < header->ph_entry_count; n++, ph++) {
-        void* dest = (void*) ph->virt_addr;
-        void* src = ((char*) header) + ph->offset;
+        uint8_t* dest = (uint8_t*) ph->virt_addr;
+        uint8_t* src = ((uint8_t*) header) + ph->offset;
 
         /* Nur Program Header vom Typ LOAD laden */
         if (ph->type != 1) {

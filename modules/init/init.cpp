@@ -21,4 +21,6 @@ int processEvent(int arg0) {
 	case 0x1D7E: //IDLE
 		break;
 	}
+
+	return 0;
 }

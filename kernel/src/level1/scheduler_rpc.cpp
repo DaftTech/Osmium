@@ -2,7 +2,7 @@
 #include "level0/catofdeath.h"
 
 void remoteCall(struct module* t, uint32_t rpcID, uint32_t rpcARG0) {
-	struct rpc* r = calloc(1, sizeof(struct rpc));
+	struct rpc* r = (struct rpc*) calloc(1, sizeof(struct rpc));
 
 	r->next = 0;
 	r->state = RPC_STATE_AWAITING;

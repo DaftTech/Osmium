@@ -68,7 +68,7 @@ extern "C" void clevel_entry(struct multiboot_info* mb_info) {
 
 	kprintf("Assuming mbmod[0] is a tarball (%d bytes)... \n", initrfsSize);
 
-	uint32_t* initELF = tarExtract(mb_info->mi_mods_addr[0].start, "init");
+	uint32_t* initELF = (uint32_t*) tarExtract(mb_info->mi_mods_addr[0].start, "init");
 
 	if(initELF == (void*)0) {
 		showCOD(0, "initrfs damaged or didn't contain \"/init\".\n");

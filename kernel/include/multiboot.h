@@ -117,7 +117,7 @@ struct multiboot_info {
 
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_MMAP. */
     uint32_t mi_mmap_length;
-    void* mi_mmap_addr;
+    struct multiboot_mmap* mi_mmap_addr;
 
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_DRIVES. */
     uint32_t mi_drives_length;

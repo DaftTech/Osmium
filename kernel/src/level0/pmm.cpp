@@ -60,8 +60,7 @@ void pmmMarkUsed(void* addr) {
 
 void pmmInit(struct multiboot_info* mb_info) {
 	struct multiboot_mmap* mmap = mb_info->mi_mmap_addr;
-	struct multiboot_mmap* mmap_end = (void*) ((uintptr_t) mb_info->mi_mmap_addr
-			+ mb_info->mi_mmap_length);
+	struct multiboot_mmap* mmap_end = (struct multiboot_mmap*) ((uintptr_t) mb_info->mi_mmap_addr + mb_info->mi_mmap_length);
 
 	memset(allocatable, 0, sizeof(allocatable));
 

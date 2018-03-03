@@ -17,7 +17,7 @@ static uint32_t tarParseNumber(const char *in)
 }
 
 void* tarExtract(void* tarball, const char* path) {
-    void* address = tarball;
+	uint8_t* address = (uint8_t*) tarball;
 
     uint32_t i;
 
@@ -37,7 +37,7 @@ void* tarExtract(void* tarball, const char* path) {
         if(size != 0 && !strcmp(header->name, path)) {
             kprintf("FOUND! Extracting %s (%d bytes)\n", header->name, size);
 
-            uint32_t* dest = malloc(size + 4);
+            uint32_t* dest = (uint32_t*) malloc(size + 4);
             dest[0] = size;
             memcpy(&dest[1], address, size);
             return dest;

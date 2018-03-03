@@ -7,7 +7,7 @@ CP = g++ -fno-leading-underscore -O1 -fpermissive
 AR = ar
 
 ASFLAGS = -m32
-CFLAGS = -m32 -Wall -Wno-unused -g -fno-builtin -fno-stack-protector -nostdinc -I include -Os
+CFLAGS = -m32 -Wall -Wno-unused -Wno-write-strings -g -fno-builtin -fno-stack-protector -nostdinc -I include -Os
 ARFLAGS = rcs
 
 lib-common.a: $(OBJS)
