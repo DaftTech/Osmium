@@ -18,31 +18,31 @@ void clevel_entry(struct multiboot_info* mb_info) {
 
 	setclr(C_DEFAULT);
 	kprintf("GDT INIT ");
-	init_gdt();
+	initGDT();
 	setclr(C_SUCCESS);
 	kprintf("DONE!\n");
 	setclr(C_DEFAULT);
 
 	kprintf("IDT INIT ");
-	init_idt();
+	initIDT();
 	setclr(C_SUCCESS);
 	kprintf("DONE!\n");
 	setclr(C_DEFAULT);
 
 	kprintf("PMM INIT ");
-	pmm_init(mb_info);
+	pmmInit(mb_info);
 	setclr(C_SUCCESS);
 	kprintf("DONE!\n");
 	setclr(C_DEFAULT);
 
 	setclr(COLOR(SCLR_BLACK, SCLR_YELLOW));
-	pmm_print_stats();
+	pmmPrintStats();
 	setclr(C_DEFAULT);
 
 	kprintf("VMM/PAGING INIT ");
-	PADDR root = vmm_init();
+	PADDR root = vmmInit();
 	setclr(C_SUCCESS);
-	kprintf("DONE! (root=%x, getRoot=%x)\n", root, vmm_get_current_physical());
+	kprintf("DONE! (root=%x, getRoot=%x)\n", root, vmmGetActivePhysical());
 	setclr(C_DEFAULT);
 
 	setclr(COLOR(SCLR_BLACK, SCLR_CYAN));
@@ -50,39 +50,39 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	setclr(C_DEFAULT);
 
 	kprintf("Creating root environment...\n");
-	struct environment* rootEnv = create_env(root);
+	struct environment* rootEnv = createEnvironment(root);
 
 	kprintf("Mapping multiboot...\n");
 
-	vmm_map_address(mb_info, (uint32_t) mb_info, 0);
-	vmm_map_address(mb_info->mi_mods_addr, (uint32_t) mb_info->mi_mods_addr, 0);
+	vmmMapAddress(mb_info, (uint32_t) mb_info, 0);
+	vmmMapAddress(mb_info->mi_mods_addr, (uint32_t) mb_info->mi_mods_addr, 0);
 
 	if (!(mb_info->mi_flags & MULTIBOOT_INFO_HAS_MODS)) {
-		show_cod(0, "No multiboot module (initrfs?) available.\n");
+		showCOD(0, "No multiboot module (initrfs?) available.\n");
 	}
 
 	void* initrfs = mb_info->mi_mods_addr[0].start;
 	size_t initrfsSize = mb_info->mi_mods_addr[0].end - mb_info->mi_mods_addr[0].start;
 
-	vmm_map_range(initrfs, (uint32_t) initrfs, initrfsSize,	0);
+	vmmMapRange(initrfs, (uint32_t) initrfs, initrfsSize,	0);
 
 	kprintf("Assuming mbmod[0] is a tarball (%d bytes)... \n", initrfsSize);
 
-	uint32_t* initELF = tar_extract(mb_info->mi_mods_addr[0].start, "init");
+	uint32_t* initELF = tarExtract(mb_info->mi_mods_addr[0].start, "init");
 
 	if(initELF == (void*)0) {
-		show_cod(0, "initrfs damaged or didn't contain \"/init\".\n");
+		showCOD(0, "initrfs damaged or didn't contain \"/init\".\n");
 	}
 
 	kprintf("Unpacking ELF...\n");
-	ADDRESS entryPoint = unpack_elf(&initELF[1]);
+	ADDRESS entryPoint = unpackELF(&initELF[1]);
 
 	if(entryPoint == 0) {
-		show_cod(0, "init was not a valid ELF...\n");
+		showCOD(0, "init was not a valid ELF...\n");
 	}
 
 	kprintf("Registering init module...\n");
-	struct module* zero = register_module(rootEnv, entryPoint);
+	struct module* zero = registerModule(rootEnv, entryPoint);
 
 	kprintf("Setting PIT interval...\n");
 

@@ -34,6 +34,6 @@ struct elf_program_header {
     uint32_t alignment;
 }__attribute__((packed));
 
-ADDRESS unpack_elf(void* elf);
+ADDRESS unpackELF(void* elf);
 
 #endif

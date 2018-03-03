@@ -40,26 +40,26 @@
 
 #define ACTIVE_PAGETABLES (void*)0xFFC00000
 
-PADDR vmm_init(void);
-PADDR vmm_create(void);
-void  vmm_destroy(void);
+PADDR vmmInit(void);
+PADDR vmmCreate(void);
+void  vmmTruncate(void);
 
-void vmm_activate_pagedir(uint32_t context);
+void vmmActivate(uint32_t context);
 
-void vmm_free(void* vaddr);
-void vmm_unmap(void* vaddr);
+void vmmFree(void* vaddr);
+void vmmUnmap(void* vaddr);
 
-void vmm_map_range(void* vaddr, PADDR paddr, uint32_t length, uint32_t flags);
-void vmm_map_address(void* vaddr, uint32_t paddr, uint32_t flags);
+void vmmMapRange(void* vaddr, PADDR paddr, uint32_t length, uint32_t flags);
+void vmmMapAddress(void* vaddr, uint32_t paddr, uint32_t flags);
 
-void* vmm_alloc(uint32_t* retpaddr);
-void* vmm_alloc_cont(uint32_t cont);
-void* vmm_alloc_user(uint32_t* retpaddr);
-void* vmm_alloc_ucont(uint32_t cont);
-void* vmm_alloc_addr(void* vaddr, uint32_t* paddr);
+void* vmmAllocate(uint32_t* retpaddr);
+void* vmmAllocateCont(uint32_t cont);
+void* vmmAllocateInUserspace(uint32_t* retpaddr);
+void* vmmAllocateInUserspaceCont(uint32_t cont);
+void* vmmAllocateAddress(void* vaddr, uint32_t* paddr);
 
-uint32_t vmm_resolve(void* vaddr);
+uint32_t vmmResolve(void* vaddr);
 
-uint32_t vmm_get_current_physical(void);
+uint32_t vmmGetActivePhysical(void);
 
 #endif

@@ -13,15 +13,15 @@ void remoteCall(struct module* t, uint32_t rpcID, uint32_t rpcARG0) {
 	r->cpuState.eflags = 0x200;
 	r->cpuState.eip = (uint32_t) t->rpc_handler_address;
 
-    PADDR rest_pdir = vmm_get_current_physical();
-    vmm_activate_pagedir(t->environment->phys_pdir);
+    PADDR rest_pdir = vmmGetActivePhysical();
+    vmmActivate(t->environment->phys_pdir);
 
     for(ADDRESS addr = t->environment->currentNewStackBottom; addr < t->environment->currentNewStackBottom + THREAD_STACK_SIZE;	addr += 0x1000) {
-        vmm_alloc_addr((void*)addr, 0);
+        vmmAllocateAddress((void*)addr, 0);
     }
     t->environment->currentNewStackBottom -= THREAD_STACK_SIZE;
 
-    vmm_activate_pagedir(rest_pdir);
+    vmmActivate(rest_pdir);
 
 	if(t->active_rpc == 0) {
 		t->active_rpc = r;
@@ -44,9 +44,9 @@ void remoteCall(struct module* t, uint32_t rpcID, uint32_t rpcARG0) {
 	r->rpcARG0 = rpcARG0;
 }
 
-void return_rpc(int resultCode) {
-	void* ptr = get_current_thread()->active_rpc;
-	get_current_thread()->active_rpc = get_current_thread()->active_rpc->next;
+void returnRPC(int resultCode) {
+	void* ptr = getCurrentThread()->active_rpc;
+	getCurrentThread()->active_rpc = getCurrentThread()->active_rpc->next;
 
 	free(ptr);
 }

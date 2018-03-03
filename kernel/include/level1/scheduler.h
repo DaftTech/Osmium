@@ -52,16 +52,16 @@ struct rpc {
 };
 
 void                remoteCall(struct module* t, uint32_t rpcID, uint32_t rpcARG0);
-void            	return_rpc(int resultCode);
+void            	returnRPC(int resultCode);
 void*               rpc_map(void);
 
-struct environment* create_env(PADDR root);
-struct module* 		register_module(struct environment* environment, ADDRESS entry);
-struct module*    	get_current_thread(void);
+struct environment* createEnvironment(PADDR root);
+struct module* 		registerModule(struct environment* environment, ADDRESS entry);
+struct module*    	getCurrentThread(void);
 
-struct cpu_state* 	terminate_current(struct cpu_state* cpu);
-struct cpu_state* 	schedule_exception(struct cpu_state* cpu);
-struct cpu_state*   schedule_to(struct module* next, struct cpu_state* cpu);
+struct cpu_state* 	terminateCurrent(struct cpu_state* cpu);
+struct cpu_state* 	scheduleException(struct cpu_state* cpu);
+struct cpu_state*   scheduleToModule(struct module* next, struct cpu_state* cpu);
 struct cpu_state* 	schedule(struct cpu_state* cpu);
 
 void              	enableScheduling(void);

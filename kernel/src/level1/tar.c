@@ -4,7 +4,7 @@
 #include "stdlib.h"
 #include "string.h"
 
-static uint32_t tar_parse_number(const char *in)
+static uint32_t tarParseNumber(const char *in)
 {
     unsigned int size = 0;
     unsigned int j;
@@ -16,7 +16,7 @@ static uint32_t tar_parse_number(const char *in)
     return size;
 }
 
-void* tar_extract(void* tarball, const char* path) {
+void* tarExtract(void* tarball, const char* path) {
     void* address = tarball;
 
     uint32_t i;
@@ -31,7 +31,7 @@ void* tar_extract(void* tarball, const char* path) {
         if (header->name[0] == '\0')
             break;
 
-        uint32_t size = tar_parse_number(header->size);
+        uint32_t size = tarParseNumber(header->size);
         address += 512;
 
         if(size != 0 && !strcmp(header->name, path)) {

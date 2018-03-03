@@ -5,7 +5,7 @@
 uint32_t allocatable[BITMAP_SIZE];
 uint32_t upper_limit = 0;
 
-void* pmm_alloc() {
+void* pmmAllocate() {
 	int i;
 	for (i = 0; i < BITMAP_SIZE; i++) {
 		if (allocatable[i]) {
@@ -21,13 +21,13 @@ void* pmm_alloc() {
 	return 0;
 }
 
-void pmm_print_stats() {
+void pmmPrintStats() {
 	kprintf("Running Osmium with %dMB/%dMB (%dkB/%dkB) available memory!\n",
-			pmm_get_free_space(1024 * 1024), upper_limit / (1024 * 1024),
-			pmm_get_free_space(1024), upper_limit / 1024);
+			pmmGetFreeSpace(1024 * 1024), upper_limit / (1024 * 1024),
+			pmmGetFreeSpace(1024), upper_limit / 1024);
 }
 
-uint32_t pmm_get_free_space(uint32_t div) {
+uint32_t pmmGetFreeSpace(uint32_t div) {
 	uint32_t free = 0;
 
 	for (uint32_t i = 0; i < BITMAP_SIZE; i++) {
@@ -40,7 +40,7 @@ uint32_t pmm_get_free_space(uint32_t div) {
 	return free / div;
 }
 
-void pmm_free(void* addr) {
+void pmmFree(void* addr) {
 	uintptr_t ptr = ((uintptr_t) addr) / 4096;
 
 	uintptr_t s = ptr % 32;
@@ -49,7 +49,7 @@ void pmm_free(void* addr) {
 	allocatable[i] |= (1 << s);
 }
 
-void pmm_mark_used(void* addr) {
+void pmmMarkUsed(void* addr) {
 	uintptr_t ptr = ((uintptr_t) addr) / 4096;
 
 	uintptr_t s = ptr % 32;
@@ -58,7 +58,7 @@ void pmm_mark_used(void* addr) {
 	allocatable[i] &= ~(1 << s);
 }
 
-void pmm_init(struct multiboot_info* mb_info) {
+void pmmInit(struct multiboot_info* mb_info) {
 	struct multiboot_mmap* mmap = mb_info->mi_mmap_addr;
 	struct multiboot_mmap* mmap_end = (void*) ((uintptr_t) mb_info->mi_mmap_addr
 			+ mb_info->mi_mmap_length);
@@ -73,7 +73,7 @@ void pmm_init(struct multiboot_info* mb_info) {
 			uintptr_t end_addr = addr + mmap->mm_length;
 
 			while (addr < end_addr) {
-				pmm_free((void*) addr);
+				pmmFree((void*) addr);
 				if (addr > upper_limit)
 					upper_limit = addr;
 				addr += 0x1000;
@@ -87,20 +87,20 @@ void pmm_init(struct multiboot_info* mb_info) {
 
 	uintptr_t addr = (uintptr_t) &kernel_start;
 	while (addr < (uintptr_t) &kernel_end) {
-		pmm_mark_used((void*) addr);
+		pmmMarkUsed((void*) addr);
 		addr += 0x1000;
 	}
 
 	struct multiboot_module* modules = mb_info->mi_mods_addr;
 
-	pmm_mark_used(mb_info);
-	pmm_mark_used(modules);
+	pmmMarkUsed(mb_info);
+	pmmMarkUsed(modules);
 
 	uint32_t i;
 	for (i = 0; i < mb_info->mi_mods_count; i++) {
 		addr = (uintptr_t) modules[i].start;
 		while (addr < (uintptr_t) modules[i].end) {
-			pmm_mark_used((void*) addr);
+			pmmMarkUsed((void*) addr);
 			addr += 0x1000;
 		}
 	}

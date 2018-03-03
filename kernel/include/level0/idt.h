@@ -28,7 +28,7 @@ struct cpu_state {
     uint32_t ss;
 };
 
-void init_idt();
-int  register_irq_rpc(uint32_t irqID, uint32_t rpcID);
+void initIDT();
+int  registerIRQRPC(uint32_t irqID, uint32_t rpcID);
 
 #endif

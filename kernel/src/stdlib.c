@@ -37,7 +37,7 @@ static struct memory_node* pop_from_list(struct memory_node** root) {
 }
 
 static void allocate_unused_nodes() {
-	struct memory_node* new_nodes = vmm_alloc_cont(1);
+	struct memory_node* new_nodes = vmmAllocateCont(1);
 	memset(new_nodes, 0, PAGESIZE);
 
 	for (uint32_t i = 1; i < (PAGESIZE / sizeof(struct memory_node)); i++) {
@@ -105,7 +105,7 @@ void* malloc(size_t size) {
 		if ((size % PAGESIZE) != 0)
 			pgs++;
 
-		void* addr = vmm_alloc_cont(pgs);
+		void* addr = vmmAllocateCont(pgs);
 
 		struct memory_node* fill = pop_unused_node();
 

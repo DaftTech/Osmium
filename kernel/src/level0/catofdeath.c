@@ -6,7 +6,7 @@ uint32_t in_cod() {
     return icod;
 }
 
-void show_cod(struct cpu_state* cpu, char* fstr) {
+void showCOD(struct cpu_state* cpu, char* fstr) {
     icod = 1;
 #ifdef SCREEN_COD
     clrscr();
@@ -32,7 +32,7 @@ void show_cod(struct cpu_state* cpu, char* fstr) {
     kprintf(fstr);
     if(cpu != 0) {
     	kprintf("\n\nException I:%x E:%x, Kernel halt!\n", cpu->intr, cpu->error);
-    	show_dump(cpu);
+    	showDump(cpu);
     }
 
     while (1) {
@@ -40,7 +40,7 @@ void show_cod(struct cpu_state* cpu, char* fstr) {
     }
 }
 
-void show_dump(struct cpu_state* cpu) {
+void showDump(struct cpu_state* cpu) {
     kprintf("EAX: %x EBX: %x ECX: %x EDX: %x\n", cpu->eax, cpu->ebx, cpu->ecx,
             cpu->edx);
     kprintf("ESI: %x EDI: %x EBP: %x EIP: %x\n", cpu->esi, cpu->edi, cpu->ebp,

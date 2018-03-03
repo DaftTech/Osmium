@@ -7,7 +7,7 @@
 #include "idt.h"
 
 uint32_t in_cod();
-void show_cod(struct cpu_state* cpu, char* fstr);
-void show_dump(struct cpu_state* cpu);
+void showCOD(struct cpu_state* cpu, char* fstr);
+void showDump(struct cpu_state* cpu);
 
 #endif
