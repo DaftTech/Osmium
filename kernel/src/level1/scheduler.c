@@ -81,7 +81,7 @@ struct cpu_state* terminateCurrent(struct cpu_state* cpu) {
 
 
 struct environment* createEnvironment(PADDR root) {
-	struct environment* rootEnv = malloc(sizeof(struct environment));
+	struct environment* rootEnv = (struct environment*) malloc(sizeof(struct environment));
 	rootEnv->phys_pdir = root;
 	rootEnv->currentNewStackBottom = 0xFFC00000 - THREAD_STACK_SIZE;
 
@@ -89,13 +89,13 @@ struct environment* createEnvironment(PADDR root) {
 }
 
 struct module* registerModule(struct environment* environment, ADDRESS entry) {
-    struct module* rModule = calloc(1, sizeof(struct module));
+    struct module* rModule = (struct module*) calloc(1, sizeof(struct module));
     rModule->rpc_handler_address = entry;
 
     rModule->environment = environment;
 
-    rModule->next = (void*) first_module;
-    rModule->prev = (void*) 0;
+    rModule->next = first_module;
+    rModule->prev = (struct module*) 0;
 
     if (first_module != 0) {
         first_module->prev = rModule;

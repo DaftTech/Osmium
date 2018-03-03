@@ -1,19 +1,24 @@
 SRCS  = $(shell find -name '*.S')
 SRCS += $(shell find -name '*.c')
+SRCS += $(shell find -name '*.cpp')
 OBJS = $(addsuffix .o,$(basename $(SRCS)))
 
 CC = gcc -std=gnu99 -fno-leading-underscore -O1
+CP = g++ -fno-leading-underscore -O1 -fpermissive
 LD = ld
 
 ASFLAGS = -m32
-CFLAGS = -m32 -Wall -Wextra -Wno-unused-parameter -Wno-unused-variable -Werror -g -fno-stack-protector -nostdinc -I ./include -I ../lib-common/include
+CFLAGS = -m32 -Wall -Wextra -Wno-unused-parameter -g -fno-stack-protector -nostdinc -I ./include -I ../lib-common/include
 LDFLAGS = -melf_i386 -T kernel.ld
 
 ../bin/kernel: $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $^ ../lib-common/lib-common.a
 	
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $^
+	$(CP) $(CFLAGS) -c -o $@ $^
+	
+%.o: %.cpp
+	$(CP) $(CFLAGS) -c -o $@ $^
 
 %.o: %.S
 	$(CC) $(ASFLAGS) -c -o $@ $^

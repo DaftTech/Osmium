@@ -82,8 +82,8 @@ void pmmInit(struct multiboot_info* mb_info) {
 		mmap++;
 	}
 
-	extern const void kernel_start;
-	extern const void kernel_end;
+	extern const void* kernel_start;
+	extern const void* kernel_end;
 
 	uintptr_t addr = (uintptr_t) &kernel_start;
 	while (addr < (uintptr_t) &kernel_end) {

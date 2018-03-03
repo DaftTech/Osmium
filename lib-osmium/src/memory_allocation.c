@@ -167,11 +167,11 @@ void* realloc(void* ptr, size_t size) {
 				free(ptr);
 				return NULL;
 			} else {
-				void* new = malloc(size);
-				memcpy(new, (void*) cur->address, cur->size);
+				void* newPtr = malloc(size);
+				memcpy(newPtr, (void*) cur->address, cur->size);
 				free((void*) cur->address);
 
-				return new;
+				return newPtr;
 			}
 		}
 		cur = cur->next;

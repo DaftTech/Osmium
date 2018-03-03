@@ -11,7 +11,7 @@
 #include "stdlib.h"
 #include "multiboot.h"
 
-void clevel_entry(struct multiboot_info* mb_info) {
+extern "C" void clevel_entry(struct multiboot_info* mb_info) {
 	clrscr();
 	setclr(COLOR(SCLR_BLACK, SCLR_CYAN));
 	kprintf("LEVEL0 ENTRY\n");
@@ -62,7 +62,7 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	}
 
 	void* initrfs = mb_info->mi_mods_addr[0].start;
-	size_t initrfsSize = mb_info->mi_mods_addr[0].end - mb_info->mi_mods_addr[0].start;
+	size_t initrfsSize = (size_t)mb_info->mi_mods_addr[0].end - (size_t)mb_info->mi_mods_addr[0].start;
 
 	vmmMapRange(initrfs, (uint32_t) initrfs, initrfsSize,	0);
 
@@ -82,7 +82,7 @@ void clevel_entry(struct multiboot_info* mb_info) {
 	}
 
 	kprintf("Registering init module...\n");
-	struct module* zero = registerModule(rootEnv, entryPoint);
+	registerModule(rootEnv, entryPoint);
 
 	kprintf("Setting PIT interval...\n");
 

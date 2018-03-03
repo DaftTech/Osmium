@@ -1,6 +1,6 @@
 #include "level0/vmm.h"
 
-extern const void kernel_end;
+extern const void* kernel_end;
 
 PADDR kernel_pagetables[KERNEL_COMBINED_TABLES];
 
@@ -11,7 +11,7 @@ PADDR vmmCreate() {
 	uint32_t* pagedir_ptr = vmmAllocate(&phys_pagedir);
 
 	pagedir_ptr[1023] = phys_pagedir | PD_PRESENT | PD_WRITE;
-	uint32_t paddr, i, i2;
+	uint32_t i, i2;
 
 	for (i = 0; i < 1023; i++) {
 		if (i < KERNEL_COMBINED_TABLES) {
@@ -191,7 +191,7 @@ PADDR vmmInit(void) {
 	PADDR phys_pagedir = (PADDR) pagedir_ptr;
 
 	pagedir_ptr[1023] = phys_pagedir | PD_PRESENT | PD_WRITE;
-	uint32_t paddr, i, i2;
+	uint32_t i, i2;
 
 	for (i = 0; i < 1023; i++) {
 		if (i < KERNEL_COMBINED_TABLES) {

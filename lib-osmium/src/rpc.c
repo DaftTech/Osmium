@@ -65,7 +65,7 @@ int rpc_register_handler(int(*fptr)(int)) {
 
 extern int processEvent(int arg0);
 
-void _start() {
+extern "C" void _start() {
 	if(!rpc_initialized) {
 		for(int i = 0; i < RPC_HANDLERS; i++) {
 			rpcHandlers[i] = (int(*)(int))0;

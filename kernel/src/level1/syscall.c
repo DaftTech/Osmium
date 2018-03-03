@@ -8,15 +8,15 @@
 #include "string.h"
 
 struct cpu_state* syscall(struct cpu_state* in) {
-	struct cpu_state* new = in;
+	struct cpu_state* newCpu = in;
 
 	switch(in->eax) {
 	case 0x1: //exit EBX=return code
-		new = terminateCurrent(in);
+		newCpu = terminateCurrent(in);
 		break;
 
 	case 0x3: //yield
-		new = schedule(in);
+		newCpu = schedule(in);
 		break;
 
 	case 0x100: //FIXME: kputc
@@ -26,17 +26,17 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 	case 0x200: //RPC Map
-		new->ebx = getCurrentThread()->active_rpc->rpcID;
-		new->ecx = getCurrentThread()->active_rpc->rpcARG0;
+		newCpu->ebx = getCurrentThread()->active_rpc->rpcID;
+		newCpu->ecx = getCurrentThread()->active_rpc->rpcARG0;
 		break;
 
 	case 0x201: //RPC Return EBX=return code
 		returnRPC(in->ebx);
-		new = schedule(in);
+		newCpu = schedule(in);
 		break;
 
 	case 0x400: //VMM ucont alloc EBX=pages
-		new->eax = (uint32_t) vmmAllocateInUserspaceCont(in->ebx);
+		newCpu->eax = (uint32_t) vmmAllocateInUserspaceCont(in->ebx);
 		break;
 
 	case 0x401: //VMM free EBX=address
@@ -45,7 +45,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 	case 0x501: //THREAD createNewContext EBX=data source* ECX=data size EDX=elf source* ESI=elf size
-		new->eax = 0;
+		newCpu->eax = 0;
 		struct environment* newEnv = createEnvironment(vmmCreate());
 
 		if(in->edx == 0) break;
@@ -73,7 +73,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 
 		struct module* t = registerModule(newEnv, entryPoint);
 
-		new->eax = (uint32_t)t;
+		newCpu->eax = (uint32_t)t;
 
 		noLoad:
 		free(dataKernel);
@@ -82,13 +82,13 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		break;
 
 	case 0x600: //Register IRQ-RPC EBX=irqID ECX=rpcID
-		new->eax = registerIRQRPC(in->ebx, in->ecx);
+		newCpu->eax = registerIRQRPC(in->ebx, in->ecx);
 		break;
 
 	default:
 		kprintf("Terminated thread due to unhandled syscall...\n");
-		new = scheduleException(in);
+		newCpu = scheduleException(in);
 	}
 
-	return new;
+	return newCpu;
 }

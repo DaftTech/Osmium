@@ -12,7 +12,7 @@ struct file {
 	uint8_t content;
 };
 
-int processEvent(int arg0, void* argPtr) {
+int processEvent(int arg0) {
 	switch(arg0) {
 	case 0x00: //Module Initialized
 		kprintf("initialized");
