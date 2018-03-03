@@ -71,7 +71,7 @@ intr_common_handler:
     mov %ax, %ds
     mov %ax, %es
 
-    call handle_interrupt
+    call handleInterrupt
     mov %eax, %esp
 
     mov $0x23, %ax
