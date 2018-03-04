@@ -3,13 +3,13 @@
 #include "stdmem.h"
 #include "stddef.h"
 
-struct memory_node* first_unused = 0;
-struct memory_node* first_used = 0;
-struct memory_node* first_free = 0;
+MemoryNode* first_unused = 0;
+MemoryNode* first_used = 0;
+MemoryNode* first_free = 0;
 
-static void remove_from_list(struct memory_node** root, struct memory_node* element) {
-	struct memory_node* last = 0;
-	struct memory_node* cur = *root;
+static void remove_from_list(MemoryNode** root, MemoryNode* element) {
+	MemoryNode* last = 0;
+	MemoryNode* cur = *root;
 
 	while (cur != NULL) {
 		if (cur == element) {
@@ -26,29 +26,29 @@ static void remove_from_list(struct memory_node** root, struct memory_node* elem
 	}
 }
 
-static void append_to_list(struct memory_node** root, struct memory_node* element) {
+static void append_to_list(MemoryNode** root, MemoryNode* element) {
 	element->next = *root;
 	*root = element;
 }
 
-static struct memory_node* pop_from_list(struct memory_node** root) {
+static MemoryNode* pop_from_list(MemoryNode** root) {
 	if (*root == NULL) return NULL;
-	struct memory_node* pop = *root;
+	MemoryNode* pop = *root;
 	remove_from_list(root, pop);
 	return pop;
 }
 
 static void allocate_unused_nodes() {
-	struct memory_node* new_nodes = (struct memory_node*) pcalloc(1);
+	MemoryNode* new_nodes = (MemoryNode*) pcalloc(1);
 	memset(new_nodes, 0, PAGESIZE);
 
-	for (uint32_t i = 1; i < (PAGESIZE / sizeof(struct memory_node)); i++) {
+	for (uint32_t i = 1; i < (PAGESIZE / sizeof(MemoryNode)); i++) {
 		append_to_list(&first_unused, &(new_nodes[i]));
 	}
 }
 
-static struct memory_node* pop_unused_node() {
-	struct memory_node* ret = pop_from_list(&first_unused);
+static MemoryNode* pop_unused_node() {
+	MemoryNode* ret = pop_from_list(&first_unused);
 
 	while (ret == NULL) {
 		allocate_unused_nodes();
@@ -58,10 +58,10 @@ static struct memory_node* pop_unused_node() {
 	return ret;
 }
 
-static void merge_into_frees(struct memory_node* tf) {
+static void merge_into_frees(MemoryNode* tf) {
 	remove_from_list(&first_used, tf);
 
-	struct memory_node* cur;
+	MemoryNode* cur;
 
 	editedList: cur = first_free;
 
@@ -92,7 +92,7 @@ void* malloc(size_t size) {
 
 	malloced += size;
 
-	struct memory_node* cur = first_free;
+	MemoryNode* cur = first_free;
 
 	while (cur != NULL) {
 		if (cur->size >= size) {
@@ -109,13 +109,13 @@ void* malloc(size_t size) {
 
 		void* addr = pcalloc(pgs);
 
-		struct memory_node* fill = pop_unused_node();
+		MemoryNode* fill = pop_unused_node();
 
 		fill->address = (uint32_t) addr;
 		fill->size = (uint32_t) size;
 
 		if (pgs * PAGESIZE > size) {
-			struct memory_node* free = pop_unused_node();
+			MemoryNode* free = pop_unused_node();
 
 			free->address = fill->address + fill->size;
 			free->size = pgs * PAGESIZE - size;
@@ -135,7 +135,7 @@ void* malloc(size_t size) {
 		append_to_list(&first_used, cur);
 
 		if (freesize > 0) {
-			struct memory_node* free = pop_unused_node();
+			MemoryNode* free = pop_unused_node();
 
 			free->address = cur->address + cur->size;
 			free->size = freesize;
@@ -159,7 +159,7 @@ void* calloc(size_t num, size_t size) {
 }
 
 void* realloc(void* ptr, size_t size) {
-	struct memory_node* cur = first_used;
+	MemoryNode* cur = first_used;
 
 	while (cur != NULL) {
 		if (cur->address == (uint32_t) ptr) {
@@ -180,7 +180,7 @@ void* realloc(void* ptr, size_t size) {
 }
 
 void free(void* ptr) {
-	struct memory_node* cur = first_used;
+	MemoryNode* cur = first_used;
 
 	while (cur != NULL) {
 		if (cur->address == (uint32_t) ptr) {

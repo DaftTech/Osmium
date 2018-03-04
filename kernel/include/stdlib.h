@@ -5,10 +5,10 @@
 
 #define PAGESIZE 4096
 
-struct memory_node {
+struct MemoryNode {
     uint32_t size;
     uint32_t address;
-    struct memory_node* next;
+    MemoryNode* next;
 };
 
 void* malloc(size_t size);

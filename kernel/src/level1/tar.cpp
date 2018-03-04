@@ -27,7 +27,7 @@ void* tarExtract(void* tarball, const char* path) {
     for (i = 0; ; i++)
     {
 
-        struct TARHeader *header = (struct TARHeader*)address;
+        TARHeader *header = (TARHeader*)address;
 
         if (header->name[0] == '\0')
             break;

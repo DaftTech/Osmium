@@ -58,9 +58,9 @@ void pmmMarkUsed(void* addr) {
 	allocatable[i] &= ~(1 << s);
 }
 
-void pmmInit(struct MultibootInfo* mb_info) {
+void pmmInit(MultibootInfo* mb_info) {
 	MultibootMMap* mmap = mb_info->mi_mmap_addr;
-	MultibootMMap* mmap_end = (struct MultibootMMap*) ((uintptr_t) mb_info->mi_mmap_addr + mb_info->mi_mmap_length);
+	MultibootMMap* mmap_end = (MultibootMMap*) ((uintptr_t) mb_info->mi_mmap_addr + mb_info->mi_mmap_length);
 
 	memset(allocatable, 0, sizeof(allocatable));
 

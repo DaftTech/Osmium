@@ -1,6 +1,6 @@
 #include "syscall.h"
 
-void syscall(struct regstate* state) {
+void syscall(RegState* state) {
 	asm("int $0x30"
 
 			: "=a" (state->eax),

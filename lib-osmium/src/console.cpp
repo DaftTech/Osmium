@@ -5,7 +5,7 @@ static int kprintf_res = 0;
 static char color = 0x07;
 
 void kputc(char c) {
-	struct regstate state = {
+	RegState state = {
 			.eax = 0x100,
 			.ebx = (uint32_t) c,
 			.ecx = 0,

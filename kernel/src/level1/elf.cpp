@@ -4,7 +4,7 @@
 #include "level0/vmm.h"
 
 ADDRESS unpackELF(void* elf) {
-	ELFHeader* header = (struct ELFHeader*) elf;
+	ELFHeader* header = (ELFHeader*) elf;
     ELFProgramHeader* ph;
 
     /* Ist es ueberhaupt eine ELF-Datei? */

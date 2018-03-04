@@ -8,7 +8,7 @@ static int(*rpcHandlers[RPC_HANDLERS])(int);
 int rpc_initialized = 0;
 
 void rpc_return(int returnCode) {
-	struct regstate state = {
+	RegState state = {
 			.eax = 0x201,
 			.ebx = (uint32_t) returnCode,
 			.ecx = 0,
@@ -24,7 +24,7 @@ void rpc_return(int returnCode) {
 }
 
 void rpc_map(uint32_t* rpcID, uint32_t* rpcARG0) {
-	struct regstate state = {
+	RegState state = {
 			.eax = 0x200,
 			.ebx = 0,
 			.ecx = 0,
@@ -40,7 +40,7 @@ void rpc_map(uint32_t* rpcID, uint32_t* rpcARG0) {
 
 
 int rpc_check_future(FUTURE fut) {
-	struct regstate state = {
+	RegState state = {
 			.eax = 0x203,
 			.ebx = fut,
 			.ecx = 0,

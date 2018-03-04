@@ -1,7 +1,7 @@
 #include "level1/scheduler.h"
 #include "level0/catofdeath.h"
 
-void remoteCall(struct Module* t, uint32_t rpcID, uint32_t rpcARG0) {
+void remoteCall(Module* t, uint32_t rpcID, uint32_t rpcARG0) {
 	RPC* r = new RPC();
 
 	r->next = 0;

@@ -87,7 +87,7 @@ CPUState* syscall(CPUState* in) {
 				memcpy(dataUserspace, dataKernel, in->ecx);
 			}
 
-			struct Module* t = registerModule(newEnv, entryPoint);
+			Module* t = registerModule(newEnv, entryPoint);
 
 			newCpu->eax = (uint32_t)t;
 		}

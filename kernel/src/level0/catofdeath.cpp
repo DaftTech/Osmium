@@ -6,7 +6,7 @@ uint32_t in_cod() {
     return icod;
 }
 
-void showCOD(struct CPUState* cpu, char* fstr) {
+void showCOD(CPUState* cpu, char* fstr) {
     icod = 1;
 #ifdef SCREEN_COD
     clrscr();
@@ -40,7 +40,7 @@ void showCOD(struct CPUState* cpu, char* fstr) {
     }
 }
 
-void showDump(struct CPUState* cpu) {
+void showDump(CPUState* cpu) {
     kprintf("EAX: %x EBX: %x ECX: %x EDX: %x\n", cpu->eax, cpu->ebx, cpu->ecx,
             cpu->edx);
     kprintf("ESI: %x EDI: %x EBP: %x EIP: %x\n", cpu->esi, cpu->edi, cpu->ebp,

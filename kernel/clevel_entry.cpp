@@ -11,7 +11,7 @@
 #include "stdlib.h"
 #include "multiboot.h"
 
-extern "C" void clevel_entry(struct MultibootInfo* mb_info) {
+extern "C" void clevel_entry(MultibootInfo* mb_info) {
 	clrscr();
 	setclr(COLOR(SCLR_BLACK, SCLR_CYAN));
 	kprintf("LEVEL0 ENTRY\n");
@@ -50,7 +50,7 @@ extern "C" void clevel_entry(struct MultibootInfo* mb_info) {
 	setclr(C_DEFAULT);
 
 	kprintf("Creating root environment...\n");
-	struct Environment* rootEnv = createEnvironment(root);
+	Environment* rootEnv = createEnvironment(root);
 
 	kprintf("Mapping multiboot...\n");
 

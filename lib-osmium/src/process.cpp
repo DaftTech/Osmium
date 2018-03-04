@@ -6,7 +6,7 @@
 #include "rpc.h"
 
 void yield() {
-	struct regstate state = {
+	RegState state = {
 			.eax = 0x3,
 			.ebx = 0,
 			.ecx = 0,
@@ -18,7 +18,7 @@ void yield() {
 }
 
 THREAD execp(char* path, void* data, uint32_t datasize) {
-	/*struct driver_data* driverData = palloc();
+	/*driver_data* driverData = palloc();
 
 	uint32_t elfsize = MAX_IO_BUFFER;
 	void* elf = malloc(elfsize); //256KB for init load
@@ -61,7 +61,7 @@ THREAD execn(void* elf, uint32_t elfSize) {
 }
 
 THREAD exec(void* elf, uint32_t elfSize, void* data, uint32_t dataSize) {
-	struct regstate state = {
+	RegState state = {
 			.eax = 0x501,
 			.ebx = (uint32_t)data,
 			.ecx = (uint32_t)dataSize,

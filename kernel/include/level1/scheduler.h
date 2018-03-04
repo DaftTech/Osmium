@@ -61,7 +61,7 @@ Module*    		getCurrentThread(void);
 
 CPUState* 		terminateCurrent(CPUState* cpu);
 CPUState* 		scheduleException(CPUState* cpu);
-CPUState*   	scheduleToModule(struct Module* next, struct CPUState* cpu);
+CPUState*   	scheduleToModule(Module* next, CPUState* cpu);
 CPUState* 		schedule(struct CPUState* cpu);
 
 void            enableScheduling(void);

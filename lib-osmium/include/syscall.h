@@ -3,7 +3,7 @@
 
 #include "stdint.h"
 
-struct regstate {
+struct RegState {
 	uint32_t eax;
 	uint32_t ebx;
 	uint32_t ecx;
@@ -12,6 +12,6 @@ struct regstate {
 	uint32_t edi;
 };
 
-void syscall(struct regstate* state);
+void syscall(RegState* state);
 
 #endif

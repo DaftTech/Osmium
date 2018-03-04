@@ -22,7 +22,7 @@ Module* getCurrentThread(void) {
     return current_module;
 }
 
-CPUState* scheduleException(struct CPUState* cpu) {
+CPUState* scheduleException(CPUState* cpu) {
     if (current_module == first_module && current_module->next == 0) {
         //Only one process is running, which just crashed. Stop system.
         setclr(0x04);
@@ -43,7 +43,7 @@ CPUState* scheduleException(struct CPUState* cpu) {
     }
 }
 
-CPUState* terminateCurrent(struct CPUState* cpu) {
+CPUState* terminateCurrent(CPUState* cpu) {
     Module* next = current_module->next;
     Module* prev = current_module->prev;
     Module* old = current_module;
@@ -88,14 +88,14 @@ Environment* createEnvironment(PADDR root) {
 	return rootEnv;
 }
 
-Module* registerModule(struct Environment* environment, ADDRESS entry) {
+Module* registerModule(Environment* environment, ADDRESS entry) {
     Module* rModule = new Module();
     rModule->rpc_handler_address = entry;
 
     rModule->environment = environment;
 
     rModule->next = first_module;
-    rModule->prev = (struct Module*) 0;
+    rModule->prev = nullptr;
 
     if (first_module != 0) {
         first_module->prev = rModule;
@@ -112,7 +112,7 @@ Module* registerModule(struct Environment* environment, ADDRESS entry) {
     return rModule;
 }
 
-CPUState* scheduleToModule(struct Module* next, struct CPUState* cpu) {
+CPUState* scheduleToModule(Module* next, CPUState* cpu) {
 	current_module = next;
 	vmmActivate(next->environment->phys_pdir);
 
@@ -123,10 +123,10 @@ CPUState* scheduleToModule(struct Module* next, struct CPUState* cpu) {
 	return &(next->active_rpc->cpuState);
 }
 
-CPUState* schedule(struct CPUState* cpu) {
+CPUState* schedule(CPUState* cpu) {
     if (first_module != 0 && schedulingEnabled) {
     	if(current_module && current_module->active_rpc && current_module->active_rpc->state == RPC_STATE_EXECUTING) {
-    		memcpy(&current_module->active_rpc->cpuState, cpu, sizeof(struct CPUState));
+    		memcpy(&current_module->active_rpc->cpuState, cpu, sizeof(CPUState));
     	}
 
     	if(current_module && current_module->active_rpc == 0) {

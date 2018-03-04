@@ -7,7 +7,7 @@ void* palloc() {
 }
 
 void* pcalloc(uint32_t pages) {
-	struct regstate state = {
+	RegState state = {
 			.eax = 0x400,
 			.ebx = pages,
 			.ecx = 0,
@@ -23,7 +23,7 @@ void* pcalloc(uint32_t pages) {
 }
 
 void pfree(void* page) {
-	struct regstate state = {
+	RegState state = {
 			.eax = 0x401,
 			.ebx = (uint32_t)page,
 			.ecx = 0,
