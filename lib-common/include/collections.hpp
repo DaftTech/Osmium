@@ -13,6 +13,31 @@ template <typename T> struct Node {
 	Node<T>* next;
 };
 
+template <typename T> class Iterator {
+private:
+	Node<T>* current;
+	Node<T>* tail;
+public:
+	bool hasNext() {
+		return current->next != tail;
+	}
+
+	T pop() {
+		if(current != tail) {
+			T c = current->data;
+			current = current->next;
+			return c;
+		}
+
+		return 0;
+	}
+
+	Iterator(Node<T>* h, Node<T>* t) {
+		current = h;
+		tail = t;
+	}
+};
+
 template <typename T> class List {
 private:
 	Node<T>* head;
@@ -53,6 +78,10 @@ public:
 		}
 
 		return current->data;
+	}
+
+	Iterator<T>* iterator() {
+		return new Iterator<T>(head, tail);
 	}
 
 	List() {

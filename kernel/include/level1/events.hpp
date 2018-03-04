@@ -16,13 +16,23 @@ struct EventListener {
 };
 
 class Event {
+private:
 	List<EventListener>* listeners;
+
+public:
 	char eventName[256];
 
-	Event(char* name) {
-		listeners = new List<EventListener>();
+	Event(char* name, bool kernelEvent) {
+		listeners = nullptr;
+		if(!kernelEvent) {
+			listeners = new List<EventListener>();
+		}
 		strcpy(eventName, name);
 	}
 };
+
+void	registerEvent(char* name, bool kernelEvent);
+void	callEvent(Event* event);
+void	callEvent(char* name);
 
 #endif /* KERNEL_INCLUDE_LEVEL1_EVENTS_HPP_ */
