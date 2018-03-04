@@ -14,7 +14,7 @@ static uint32_t tss[32] = { 0, (uint32_t) &interrupt_stack, 0x10 };
 
 static uint64_t idt[IDT_ENTRIES];
 static struct rpc_destination {
-	struct module* thread;
+	struct Module* thread;
 	uint32_t rpcID;
 } registered[IDT_ENTRIES];
 
@@ -147,8 +147,8 @@ void initIDT() {
 	asm volatile("sti");
 }
 
-extern "C" struct cpu_state* handleInterrupt(struct cpu_state* cpu) {
-	struct cpu_state* new_cpu = cpu;
+extern "C" struct CPUState* handleInterrupt(struct CPUState* cpu) {
+	struct CPUState* new_cpu = cpu;
 
 	if (cpu->intr <= 0x1f) {
 		if(isSchedulingEnabled()) {

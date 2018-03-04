@@ -1,8 +1,8 @@
 #include "level1/scheduler.h"
 #include "level0/catofdeath.h"
 
-void remoteCall(struct module* t, uint32_t rpcID, uint32_t rpcARG0) {
-	struct rpc* r = (struct rpc*) calloc(1, sizeof(struct rpc));
+void remoteCall(struct Module* t, uint32_t rpcID, uint32_t rpcARG0) {
+	RPC* r = new RPC();
 
 	r->next = 0;
 	r->state = RPC_STATE_AWAITING;
@@ -28,7 +28,7 @@ void remoteCall(struct module* t, uint32_t rpcID, uint32_t rpcARG0) {
 	}
 	else
 	{
-		struct rpc* tr = t->active_rpc;
+		RPC* tr = t->active_rpc;
 		do {
 			if(tr->next == 0) {
 				tr->next = r;

@@ -6,9 +6,9 @@
 
 uint32_t schedulingEnabled = 0;
 
-struct module* first_module = 0;
-struct module* root_module = 0;
-struct module* current_module = 0;
+Module* first_module = 0;
+Module* root_module = 0;
+Module* current_module = 0;
 
 void enableScheduling(void) {
     schedulingEnabled = 1;
@@ -18,11 +18,11 @@ uint32_t isSchedulingEnabled(void) {
     return schedulingEnabled;
 }
 
-struct module* getCurrentThread(void) {
+Module* getCurrentThread(void) {
     return current_module;
 }
 
-struct cpu_state* scheduleException(struct cpu_state* cpu) {
+CPUState* scheduleException(struct CPUState* cpu) {
     if (current_module == first_module && current_module->next == 0) {
         //Only one process is running, which just crashed. Stop system.
         setclr(0x04);
@@ -43,10 +43,10 @@ struct cpu_state* scheduleException(struct cpu_state* cpu) {
     }
 }
 
-struct cpu_state* terminateCurrent(struct cpu_state* cpu) {
-    struct module* next = current_module->next;
-    struct module* prev = current_module->prev;
-    struct module* old = current_module;
+CPUState* terminateCurrent(struct CPUState* cpu) {
+    Module* next = current_module->next;
+    Module* prev = current_module->prev;
+    Module* old = current_module;
 
     //vmm_destroy();
     //FIXME: Destroy environment if it has no more threads.
@@ -80,22 +80,22 @@ struct cpu_state* terminateCurrent(struct cpu_state* cpu) {
 }
 
 
-struct environment* createEnvironment(PADDR root) {
-	struct environment* rootEnv = (struct environment*) malloc(sizeof(struct environment));
+Environment* createEnvironment(PADDR root) {
+	Environment* rootEnv = new Environment();
 	rootEnv->phys_pdir = root;
 	rootEnv->currentNewStackBottom = 0xFFC00000 - THREAD_STACK_SIZE;
 
 	return rootEnv;
 }
 
-struct module* registerModule(struct environment* environment, ADDRESS entry) {
-    struct module* rModule = (struct module*) calloc(1, sizeof(struct module));
+Module* registerModule(struct Environment* environment, ADDRESS entry) {
+    Module* rModule = new Module();
     rModule->rpc_handler_address = entry;
 
     rModule->environment = environment;
 
     rModule->next = first_module;
-    rModule->prev = (struct module*) 0;
+    rModule->prev = (struct Module*) 0;
 
     if (first_module != 0) {
         first_module->prev = rModule;
@@ -112,7 +112,7 @@ struct module* registerModule(struct environment* environment, ADDRESS entry) {
     return rModule;
 }
 
-struct cpu_state* scheduleToModule(struct module* next, struct cpu_state* cpu) {
+CPUState* scheduleToModule(struct Module* next, struct CPUState* cpu) {
 	current_module = next;
 	vmmActivate(next->environment->phys_pdir);
 
@@ -123,17 +123,17 @@ struct cpu_state* scheduleToModule(struct module* next, struct cpu_state* cpu) {
 	return &(next->active_rpc->cpuState);
 }
 
-struct cpu_state* schedule(struct cpu_state* cpu) {
+CPUState* schedule(struct CPUState* cpu) {
     if (first_module != 0 && schedulingEnabled) {
     	if(current_module && current_module->active_rpc && current_module->active_rpc->state == RPC_STATE_EXECUTING) {
-    		memcpy(&current_module->active_rpc->cpuState, cpu, sizeof(struct cpu_state));
+    		memcpy(&current_module->active_rpc->cpuState, cpu, sizeof(struct CPUState));
     	}
 
     	if(current_module && current_module->active_rpc == 0) {
     		current_module = 0;
     	}
 
-    	struct module* next = first_module;
+    	Module* next = first_module;
 
 		if(current_module && current_module->next) {
 			next = current_module->next;

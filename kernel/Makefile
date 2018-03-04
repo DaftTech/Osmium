@@ -4,11 +4,11 @@ SRCS += $(shell find -name '*.cpp')
 OBJS = $(addsuffix .o,$(basename $(SRCS)))
 
 CC = gcc -std=gnu99 -fno-leading-underscore -O1
-CP = g++ -fno-leading-underscore -O1 -fpermissive
+CP = g++ -fno-leading-underscore -std=c++0x -fno-exceptions -O1 -fpermissive
 LD = ld
 
 ASFLAGS = -m32
-CFLAGS = -m32 -Wall -Werror -Wextra -Wno-write-strings -Wno-unused-parameter -g -fno-stack-protector -nostdinc -I ./include -I ../lib-common/include
+CFLAGS = -m32 -Wall -Werror -Wextra -Wno-unused-variable -include ../lib-common/include/stdc.hpp -Wno-write-strings -Wno-unused-parameter -g -fno-stack-protector -nostdinc -I ./include -I ../lib-common/include
 LDFLAGS = -melf_i386 -T kernel.ld
 
 ../bin/kernel: $(OBJS)

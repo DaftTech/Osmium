@@ -3,7 +3,7 @@ SRCS += $(shell find -name '*.cpp')
 OBJS = $(addsuffix .o,$(basename $(SRCS)))
 
 CC = gcc -std=gnu99 -fno-leading-underscore
-CP = g++ -fno-leading-underscore -O1 -fpermissive
+CP = g++ -fno-leading-underscore -std=c++0x -fno-exceptions -O1 -fpermissive
 AR = ar
 
 ASFLAGS = -m32

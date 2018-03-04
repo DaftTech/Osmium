@@ -1,9 +1,9 @@
+#include "../../lib-common/include/cstring.h"
 #include "process.h"
 #include "console.h"
 #include "memory.h"
 #include "rpc.h"
 #include "stdint.h"
-#include "string.h"
 
 #define INITRFS_MAX_FILE_COUNT 65536
 

@@ -3,7 +3,7 @@
 
 #include "stddef.h"
 
-struct tar_header
+struct TARHeader
 {
     char name[100];
     char mode[8];

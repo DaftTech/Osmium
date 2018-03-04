@@ -58,9 +58,9 @@ void pmmMarkUsed(void* addr) {
 	allocatable[i] &= ~(1 << s);
 }
 
-void pmmInit(struct multiboot_info* mb_info) {
-	struct multiboot_mmap* mmap = mb_info->mi_mmap_addr;
-	struct multiboot_mmap* mmap_end = (struct multiboot_mmap*) ((uintptr_t) mb_info->mi_mmap_addr + mb_info->mi_mmap_length);
+void pmmInit(struct MultibootInfo* mb_info) {
+	MultibootMMap* mmap = mb_info->mi_mmap_addr;
+	MultibootMMap* mmap_end = (struct MultibootMMap*) ((uintptr_t) mb_info->mi_mmap_addr + mb_info->mi_mmap_length);
 
 	memset(allocatable, 0, sizeof(allocatable));
 
@@ -90,7 +90,7 @@ void pmmInit(struct multiboot_info* mb_info) {
 		addr += 0x1000;
 	}
 
-	struct multiboot_module* modules = mb_info->mi_mods_addr;
+	MultibootModule* modules = mb_info->mi_mods_addr;
 
 	pmmMarkUsed(mb_info);
 	pmmMarkUsed(modules);

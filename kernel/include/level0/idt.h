@@ -9,7 +9,7 @@
 #define IDT_FLAG_RING0 0x00
 #define IDT_FLAG_RING3 0x60
 
-struct cpu_state {
+struct CPUState {
     uint32_t eax;
     uint32_t ebx;
     uint32_t ecx;

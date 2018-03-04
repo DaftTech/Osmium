@@ -1,14 +1,14 @@
 #include "level1/syscall.h"
 
+#include "../../../lib-common/include/cstring.h"
 #include "level0/console.h"
 #include "level0/catofdeath.h"
 #include "level0/ports.h"
 #include "level1/scheduler.h"
 #include "level1/elf.h"
-#include "string.h"
 
-struct cpu_state* syscall(struct cpu_state* in) {
-	struct cpu_state* newCpu = in;
+CPUState* syscall(CPUState* in) {
+	CPUState* newCpu = in;
 
 	switch(in->eax) {
 	case 0x1: //exit EBX=return code
@@ -61,7 +61,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 	case 0x501: //THREAD createNewContext EBX=data source* ECX=data size EDX=elf source* ESI=elf size
 	{
 		newCpu->eax = 0;
-		struct environment* newEnv = createEnvironment(vmmCreate());
+		Environment* newEnv = createEnvironment(vmmCreate());
 
 		if(in->edx == 0) break;
 		if(in->esi == 0) break;
@@ -74,7 +74,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 		if(in->ecx) memcpy(dataKernel, (void*)in->ebx, in->ecx);
 		memcpy(elfKernel, (void*)in->edx, in->esi);
 
-		struct environment* oldEnv = getCurrentThread()->environment;
+		Environment* oldEnv = getCurrentThread()->environment;
 		vmmActivate(newEnv->phys_pdir);
 
 		ADDRESS entryPoint = unpackELF(elfKernel);
@@ -87,7 +87,7 @@ struct cpu_state* syscall(struct cpu_state* in) {
 				memcpy(dataUserspace, dataKernel, in->ecx);
 			}
 
-			struct module* t = registerModule(newEnv, entryPoint);
+			struct Module* t = registerModule(newEnv, entryPoint);
 
 			newCpu->eax = (uint32_t)t;
 		}

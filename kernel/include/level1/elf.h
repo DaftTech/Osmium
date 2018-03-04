@@ -6,7 +6,7 @@
 
 #define ELF_MAGIC 0x464C457F
 
-struct elf_header {
+struct ELFHeader {
     uint32_t magic;
     uint32_t version;
     uint64_t reserved;
@@ -23,7 +23,7 @@ struct elf_header {
     uint16_t sh_str_table_index;
 }__attribute__((packed));
 
-struct elf_program_header {
+struct ELFProgramHeader {
     uint32_t type;
     uint32_t offset;
     uint32_t virt_addr;

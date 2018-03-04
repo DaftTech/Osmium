@@ -51,7 +51,7 @@
 #define MULTIBOOT_HEADER_HAS_VBE	    0x00000004
 #define MULTIBOOT_HEADER_HAS_ADDR   	0x00010000
 
-struct multiboot_header {
+struct MultibootHeader {
     uint32_t mh_magic;
     uint32_t mh_flags;
     uint32_t mh_checksum;
@@ -89,7 +89,34 @@ struct multiboot_header {
 #define MULTIBOOT_INFO_HAS_APM_TABLE	0x00000400
 #define MULTIBOOT_INFO_HAS_VBE		    0x00000800
 
-struct multiboot_info {
+
+struct MultibootDrive {
+    uint32_t md_length;
+    uint8_t md_number;
+    uint8_t md_mode;
+    uint16_t md_cylinders;
+    uint8_t md_heads;
+    uint8_t md_sectors;
+
+/* The variable-sized 'ports' field comes here, so this structure
+ * can be longer. */
+};
+
+struct MultibootMMap {
+    uint32_t mm_size;
+    uint64_t mm_base_addr;
+    uint64_t mm_length;
+    uint32_t mm_type;
+};
+
+struct MultibootModule {
+	void* start;
+	void* end;
+    char* cmdline;
+    uint32_t reserved;
+};
+
+struct MultibootInfo {
     uint32_t mi_flags;
 
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_MEMORY. */
@@ -107,7 +134,7 @@ struct multiboot_info {
 
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_MODS. */
     uint32_t mi_mods_count;
-    struct multiboot_module * mi_mods_addr;
+    MultibootModule* mi_mods_addr;
 
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_{AOUT,ELF}_SYMS. */
     uint32_t mi_elfshdr_num;
@@ -117,7 +144,7 @@ struct multiboot_info {
 
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_MMAP. */
     uint32_t mi_mmap_length;
-    struct multiboot_mmap* mi_mmap_addr;
+    MultibootMMap* mi_mmap_addr;
 
     /* Valid if mi_flags sets MULTIBOOT_INFO_HAS_DRIVES. */
     uint32_t mi_drives_length;
@@ -140,48 +167,6 @@ struct multiboot_info {
     uint32_t unused_mi_vbe_interface_len;
 };
 
-extern struct multiboot_info multiboot_info;
-
-/* --------------------------------------------------------------------- */
-
-/*
- * Drive information.  This describes an entry in the drives table as
- * pointed to by mi_drives_addr.
- */
-struct multiboot_drive {
-    uint32_t md_length;
-    uint8_t md_number;
-    uint8_t md_mode;
-    uint16_t md_cylinders;
-    uint8_t md_heads;
-    uint8_t md_sectors;
-
-/* The variable-sized 'ports' field comes here, so this structure
- * can be longer. */
-};
-
-/* --------------------------------------------------------------------- */
-
-/*
- * Memory mapping.  This describes an entry in the memory mappings table
- * as pointed to by mi_mmap_addr.
- *
- * Be aware that mm_size specifies the size of all other fields *except*
- * for mm_size.  In order to jump between two different entries, you
- * have to count mm_size + 4 bytes.
- */
-struct multiboot_mmap {
-    uint32_t mm_size;
-    uint64_t mm_base_addr;
-    uint64_t mm_length;
-    uint32_t mm_type;
-};
-
-struct multiboot_module {
-	void* start;
-	void* end;
-    char* cmdline;
-    uint32_t reserved;
-};
+extern struct MultibootInfo multiboot_info;
 
 #endif

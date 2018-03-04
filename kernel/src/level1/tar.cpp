@@ -1,8 +1,9 @@
 #include "level1/tar.h"
+
+#include "../../../lib-common/include/cstring.h"
 #include "level0/console.h"
 #include "level0/vmm.h"
 #include "stdlib.h"
-#include "string.h"
 
 static uint32_t tarParseNumber(const char *in)
 {
@@ -26,7 +27,7 @@ void* tarExtract(void* tarball, const char* path) {
     for (i = 0; ; i++)
     {
 
-        struct tar_header *header = (struct tar_header*)address;
+        struct TARHeader *header = (struct TARHeader*)address;
 
         if (header->name[0] == '\0')
             break;

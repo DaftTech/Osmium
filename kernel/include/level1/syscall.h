@@ -3,6 +3,6 @@
 
 #include "level0/idt.h"
 
-struct cpu_state* syscall(struct cpu_state* in);
+struct CPUState* syscall(struct CPUState* in);
 
 #endif

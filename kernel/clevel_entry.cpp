@@ -11,7 +11,7 @@
 #include "stdlib.h"
 #include "multiboot.h"
 
-extern "C" void clevel_entry(struct multiboot_info* mb_info) {
+extern "C" void clevel_entry(struct MultibootInfo* mb_info) {
 	clrscr();
 	setclr(COLOR(SCLR_BLACK, SCLR_CYAN));
 	kprintf("LEVEL0 ENTRY\n");
@@ -50,7 +50,7 @@ extern "C" void clevel_entry(struct multiboot_info* mb_info) {
 	setclr(C_DEFAULT);
 
 	kprintf("Creating root environment...\n");
-	struct environment* rootEnv = createEnvironment(root);
+	struct Environment* rootEnv = createEnvironment(root);
 
 	kprintf("Mapping multiboot...\n");
 
@@ -78,7 +78,7 @@ extern "C" void clevel_entry(struct multiboot_info* mb_info) {
 	ADDRESS entryPoint = unpackELF(&initELF[1]);
 
 	if(entryPoint == 0) {
-		showCOD(0, "init was not a valid ELF...\n");
+		showCOD(0, "init has no valid entry point...\n");
 	}
 
 	kprintf("Registering init module...\n");
