@@ -32,7 +32,6 @@ public:
 };
 
 void	registerEvent(char* name, bool kernelEvent);
-void	callEvent(Event* event);
-void	callEvent(char* name);
+Event*	getEventByName(char* name);
 
 #endif /* KERNEL_INCLUDE_LEVEL1_EVENTS_HPP_ */
