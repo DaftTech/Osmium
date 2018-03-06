@@ -32,7 +32,7 @@ public:
 		strcpy(eventName, name);
 	}
 
-	void callListeners(void* object, size_t size)) {
+	void callListeners(void* object, size_t size) {
 		if(listeners == nullptr) {
 
 		}
