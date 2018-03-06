@@ -32,13 +32,21 @@ public:
 		strcpy(eventName, name);
 	}
 
-	void callListeners() {
+	void callListeners(void* object, size_t size)) {
+		if(listeners == nullptr) {
 
+		}
 	}
 };
 
+struct EventData {
+	Event* event;
+	size_t size;
+	void* object;
+};
+
 void	registerEvent(char* name, bool kernelEvent);
-void	callEvent(Event* event);
-void	callEvent(char* name);
+Event*	getEventByName(char* name);
+void	kernelEvent(EventData* data);
 
 #endif /* KERNEL_INCLUDE_LEVEL1_EVENTS_HPP_ */
