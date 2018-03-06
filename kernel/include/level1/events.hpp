@@ -10,9 +10,11 @@
 
 #include "collections.hpp"
 #include "cstring.h"
+#include "scheduler.h"
 
 struct EventListener {
-
+	Module* assignedModule;
+	uint32_t rpcID;
 };
 
 class Event {
@@ -28,6 +30,10 @@ public:
 			listeners = new List<EventListener>();
 		}
 		strcpy(eventName, name);
+	}
+
+	void callListeners() {
+
 	}
 };
 
