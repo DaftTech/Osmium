@@ -30,3 +30,7 @@ Event* getEventByName(char* name) {
 
 	return nullptr;
 }
+
+void kernelEvent(EventData* data) {
+
+}
