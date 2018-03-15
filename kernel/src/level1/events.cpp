@@ -11,10 +11,12 @@
 
 static List<Event*>* eventList = new List<Event*>();
 
-void registerEvent(char* name, bool kernelEvent) {
+Event* registerEvent(char* name, bool kernelEvent) {
 	Event* event = new Event(name, kernelEvent);
 
 	eventList->add(event);
+
+	return event;
 }
 
 Event* getEventByName(char* name) {
@@ -31,6 +33,6 @@ Event* getEventByName(char* name) {
 	return nullptr;
 }
 
-void kernelEvent(EventData* data) {
+void kernelEvent(Event* e, void* data, size_t size) {
 
 }

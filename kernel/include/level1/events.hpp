@@ -34,19 +34,13 @@ public:
 
 	void callListeners(void* object, size_t size) {
 		if(listeners == nullptr) {
-
+			kernelEvent(this, object, size);
 		}
 	}
 };
 
-struct EventData {
-	Event* event;
-	size_t size;
-	void* object;
-};
-
-void	registerEvent(char* name, bool kernelEvent);
+Event*	registerEvent(char* name, bool kernelEvent);
 Event*	getEventByName(char* name);
-void	kernelEvent(EventData* data);
+void 	kernelEvent(Event* e, void* data, size_t size);
 
 #endif /* KERNEL_INCLUDE_LEVEL1_EVENTS_HPP_ */
