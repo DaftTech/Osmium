@@ -1,10 +1,11 @@
+#include <syscall.h>
 #include "rpc.h"
 #include "syscall.h"
 #include "console.h"
 
 #define RPC_HANDLERS 1024
 
-static int(*rpcHandlers[RPC_HANDLERS])(int);
+static int(*rpcHandlers[RPC_HANDLERS*2])(int);
 int rpc_initialized = 0;
 
 void rpc_return(int returnCode) {
@@ -68,7 +69,7 @@ extern int processEvent(int arg0);
 extern "C" void _start() {
 	if(!rpc_initialized) {
 		for(int i = 0; i < RPC_HANDLERS; i++) {
-			rpcHandlers[i] = (int(*)(int))0;
+			rpcHandlers[i] = (int(*)(int))nullptr;
 		}
 
 		rpcHandlers[0] = processEvent;

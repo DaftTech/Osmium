@@ -35,6 +35,33 @@ void showCOD(CPUState* cpu, char* fstr) {
     	showDump(cpu);
     }
 
+    uint32_t cr2 = 0;
+    asm volatile("mov %%cr2, %0" : "=r" (cr2));
+
+    switch(cpu->intr) {
+        case 0x00:
+            kprintf("\n DIVIDE BY ZERO");
+            break;
+        case 0x0D:
+            kprintf("\n GENERAL PROTECTION FAULT");
+            break;
+        case 0x0E:
+            kprintf("\n PAGE FAULT");
+
+            if(cr2 == 0x00) {
+                kprintf("\n refNull @ 0x%x", cpu->eip);
+            }
+            else
+            {
+
+            }
+
+            break;
+        default:
+            kprintf("\n Description needs to be added.");
+            break;
+    }
+
     while (1) {
         asm volatile("cli; hlt");
     }
