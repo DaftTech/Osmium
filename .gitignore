@@ -4,3 +4,5 @@
 *~
 /bin
 /qemu
+/cmake-build-debug
+/.idea
