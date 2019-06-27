@@ -23,7 +23,14 @@ CPUState* syscall(CPUState* in) {
 		break;
 	}
 
-	case 0x100: //FIXME: kputc
+    case 0x4: //throwEvent
+    {
+
+
+        break;
+    }
+
+        case 0x100: //FIXME: kputc
 	{
 		setclr(COLOR(SCLR_BLACK, SCLR_LCYAN));
 		kputc((char)in->ebx);
