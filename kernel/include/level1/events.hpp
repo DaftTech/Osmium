@@ -12,27 +12,21 @@
 #include "cstring.h"
 #include "scheduler.h"
 
-struct EventListener {
-	Module* assignedModule;
-	uint32_t rpcID;
-};
-
 class Event;
 
-Event*	registerEvent(char* name, bool kernelEvent);
+Event*  registerEvent(char* name, bool kernelEvent);
 void    registerKernelEvents();
-Event*	getEventByName(char* name);
-void 	  kernelEvent(Event* e, void* data, size_t size);
+Event*  getEventByName(char* name);
+void    kernelEvent(Event* e, void* data, size_t size);
 
 class Event {
-private:
-	List<EventListener>* listeners;
-
 public:
-	char eventName[256];
+  List<Module*>* listeners;
 
-	Event(char* name, bool kernelEvent);
-	void callListeners(void* object, size_t size);
+  char eventName[256];
+
+  Event(char* name, bool kernelEvent);
+  void callListeners(void* object, size_t size);
 };
 
 #endif /* KERNEL_INCLUDE_LEVEL1_EVENTS_HPP_ */

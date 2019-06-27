@@ -12,7 +12,8 @@
 Event* evt_KERNEL_DEBUG;
 
 void registerKernelEvents() {
-	evt_KERNEL_DEBUG = registerEvent("kernelDebug", true);
+  evt_KERNEL_DEBUG = registerEvent("kernelDebug", true);
+  
 }
 
 void kernelEvent(Event* e, void* data, size_t size) {

@@ -25,46 +25,46 @@
 typedef uint32_t FUTURE_STATE;
 
 struct Environment {
-	PADDR phys_pdir;
-	ADDRESS currentNewStackBottom;
+  PADDR phys_pdir;
+  ADDRESS currentNewStackBottom;
 };
 
 struct RPC {
-	uint32_t rpcID;
-	uint32_t rpcARG0;
+  uint32_t rpcID;
+  uint32_t rpcARG0;
 
-	uint32_t state;
+  uint32_t state;
 
 
-	struct CPUState cpuState;
+  struct CPUState cpuState;
 
-	struct RPC* next;
+  struct RPC* next;
 };
 
 struct Module {
-	Environment* environment;
-	ADDRESS rpc_handler_address;
+  Environment* environment;
+  ADDRESS rpc_handler_address;
 
-	RPC* active_rpc;
+  RPC* active_rpc;
 
-	Module* next;
-	Module* prev;
+  Module* next;
+  Module* prev;
 };
 
-void         	remoteCall(struct Module* t, uint32_t rpcID, uint32_t rpcARG0);
-void         	returnRPC(int resultCode);
-void*        	rpc_map(void);
+void          remoteCall(struct Module* t, uint32_t rpcID, uint32_t rpcARG0);
+void          returnRPC(int resultCode);
+void*         rpc_map(void);
 
-Environment*	createEnvironment(PADDR root);
-Module* 		registerModule(Environment* environment, ADDRESS entry);
-Module*    		getCurrentThread(void);
+Environment*  createEnvironment(PADDR root);
+Module*       registerModule(Environment* environment, ADDRESS entry);
+Module*       getCurrentThread(void);
 
-CPUState* 		terminateCurrent(CPUState* cpu);
-CPUState* 		scheduleException(CPUState* cpu);
-CPUState*   	scheduleToModule(Module* next, CPUState* cpu);
-CPUState* 		schedule(struct CPUState* cpu);
+CPUState*     terminateCurrent(CPUState* cpu);
+CPUState*     scheduleException(CPUState* cpu);
+CPUState*     scheduleToModule(Module* next, CPUState* cpu);
+CPUState*     schedule(struct CPUState* cpu);
 
-void            enableScheduling(void);
-uint32_t        isSchedulingEnabled(void);
+void          enableScheduling(void);
+uint32_t      isSchedulingEnabled(void);
 
 #endif

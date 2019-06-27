@@ -8,20 +8,20 @@
 #define INITRFS_MAX_FILE_COUNT 65536
 
 struct file {
-	uint32_t size;
-	uint8_t content;
+  uint32_t size;
+  uint8_t content;
 };
 
 int processEvent(int arg0) {
-	switch(arg0) {
-	case 0x00: //Module Initialized
-		kprintf("initialized");
-		throwEventByName("kernelTest");
-		break;
+  switch(arg0) {
+  case 0x00: //Module Initialized
+    kprintf("initialized\n");
+    throwEventByName("kernelTest");
+    break;
 
-	case 0x1D7E: //IDLE
-		break;
-	}
+  case 0x1D7E: //IDLE
+    break;
+  }
 
-	return 0;
+  return 0;
 }
