@@ -19,7 +19,7 @@ private:
 	Node<T>* tail;
 public:
 	bool hasNext() {
-		return current->next != tail;
+		return current != tail;
 	}
 
 	T pop() {
@@ -85,7 +85,7 @@ public:
 	}
 
 	List() {
-		head = new Node<T>;
+		head = new Node<T>();
 		tail = head;
 	}
 

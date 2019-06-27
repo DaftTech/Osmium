@@ -16,6 +16,7 @@ int processEvent(int arg0) {
 	switch(arg0) {
 	case 0x00: //Module Initialized
 		kprintf("initialized");
+		throwEventByName("kernelTest");
 		break;
 
 	case 0x1D7E: //IDLE

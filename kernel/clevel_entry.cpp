@@ -6,6 +6,7 @@
 #include "level0/ports.h"
 #include "level0/catofdeath.h"
 #include "level1/scheduler.h"
+#include "level1/events.hpp"
 #include "level1/tar.h"
 #include "level1/elf.h"
 #include "stdlib.h"
@@ -90,6 +91,9 @@ extern "C" void clevel_entry(MultibootInfo* mb_info) {
 	outb(0x43, 0x34);
 	outb(0x40,counter & 0xFF);
 	outb(0x40,counter >> 8);
+
+	kprintf("Registering kernel events...\n");
+	registerKernelEvents();
 
 	kprintf("Enabling scheduler...\n");
 	enableScheduling();

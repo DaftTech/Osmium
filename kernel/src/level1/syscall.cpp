@@ -5,6 +5,7 @@
 #include "level0/catofdeath.h"
 #include "level0/ports.h"
 #include "level1/scheduler.h"
+#include "level1/events.hpp"
 #include "level1/elf.h"
 
 CPUState* syscall(CPUState* in) {
@@ -23,12 +24,18 @@ CPUState* syscall(CPUState* in) {
 		break;
 	}
 
-    case 0x4: //throwEvent
-    {
+	case 0x4: //throwEventByName
+	{
+		char* name = (char*)in->ebx;
 
+		Event* event = getEventByName(name);
 
-        break;
-    }
+		if(event != nullptr) {
+			event->callListeners(nullptr, 0);
+		}
+
+    break;
+	}
 
         case 0x100: //FIXME: kputc
 	{

@@ -9,9 +9,27 @@
 
 #include "../../../lib-common/include/collections.hpp"
 
-static List<Event*>* eventList = new List<Event*>();
+Event::Event(char* name, bool kernelEvent) {
+	listeners = nullptr;
+	if(!kernelEvent) {
+		listeners = new List<EventListener>();
+	}
+	strcpy(eventName, name);
+}
+
+void Event::callListeners(void* object, size_t size) {
+	if(listeners == nullptr) {
+		kernelEvent(this, object, size);
+	}
+
+	//TODO: Implement listeners
+}
+
+static List<Event*>* eventList;
 
 Event* registerEvent(char* name, bool kernelEvent) {
+	if(eventList == nullptr) eventList = new List<Event*>();
+
 	Event* event = new Event(name, kernelEvent);
 
 	eventList->add(event);
@@ -30,9 +48,7 @@ Event* getEventByName(char* name) {
 		}
 	}
 
+	kprintf("returned 0 event...\n");
+
 	return nullptr;
-}
-
-void kernelEvent(Event* e, void* data, size_t size) {
-
 }

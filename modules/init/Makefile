@@ -7,7 +7,7 @@ CP = g++ -fno-leading-underscore -std=c++0x -fno-exceptions -O1 -fpermissive
 LD = ld
 
 ASFLAGS = -m32
-CFLAGS = -m32 -Wall -Werror  -g -Wno-write-strings -fno-stack-protector -fno-builtin -nostdinc -Iinclude -I../../lib-osmium/include -I../../lib-common/include
+CFLAGS = -m32 -Wall -Werror  -g -Wno-write-strings -fno-omit-frame-pointer -fno-stack-protector -fno-builtin -nostdinc -Iinclude -I../../lib-osmium/include -I../../lib-common/include
 LDFLAGS = -melf_i386 -Tlink.ld -u _start --gc-sections
 
 ../../bin/initrfs/init: $(OBJS)
@@ -16,7 +16,7 @@ LDFLAGS = -melf_i386 -Tlink.ld -u _start --gc-sections
 
 %.o: %.c
 	$(CP) $(CFLAGS) -c -o $@ $^
-	
+
 %.o: %.cpp
 	$(CP) $(CFLAGS) -c -o $@ $^
 

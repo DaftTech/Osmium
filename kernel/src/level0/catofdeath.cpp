@@ -67,6 +67,23 @@ void showCOD(CPUState* cpu, char* fstr) {
     }
 }
 
+struct stackframe {
+  struct stackframe* ebp;
+  uint32_t eip;
+};
+
+void trace(unsigned int maxFrames, struct stackframe* ebp)
+{
+    struct stackframe *stk = ebp;
+    kprintf("Stack trace:\n");
+    for(unsigned int frame = 0; stk && frame < maxFrames; ++frame)
+    {
+        // Unwind to previous stack frame
+        kprintf(" 0x%x \n", stk->eip);
+        stk = stk->ebp;
+    }
+}
+
 void showDump(CPUState* cpu) {
     kprintf("EAX: %x EBX: %x ECX: %x EDX: %x\n", cpu->eax, cpu->ebx, cpu->ecx,
             cpu->edx);
@@ -80,6 +97,8 @@ void showDump(CPUState* cpu) {
     asm volatile("mov %%cr2, %0" : "=r" (cr2));
 
     kprintf("CR2: %x \n", cr2);
+
+    trace(4, (struct stackframe*) cpu->ebp);
 
 //    uint32_t* stack = (uint32_t*)cpu->esp;
 

@@ -17,10 +17,10 @@ void yield() {
 	syscall(&state);
 }
 
-void throwEvent() {
+void throwEventByName(char* name) {
     RegState state = {
             .eax = 0x4,
-            .ebx = 0,
+            .ebx = (uint32_t)name,
             .ecx = 0,
             .edx = 0,
             .esi = 0,

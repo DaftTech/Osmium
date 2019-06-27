@@ -20,8 +20,9 @@ struct EventListener {
 class Event;
 
 Event*	registerEvent(char* name, bool kernelEvent);
+void    registerKernelEvents();
 Event*	getEventByName(char* name);
-void 	kernelEvent(Event* e, void* data, size_t size);
+void 	  kernelEvent(Event* e, void* data, size_t size);
 
 class Event {
 private:
@@ -30,19 +31,8 @@ private:
 public:
 	char eventName[256];
 
-	Event(char* name, bool kernelEvent) {
-		listeners = nullptr;
-		if(!kernelEvent) {
-			listeners = new List<EventListener>();
-		}
-		strcpy(eventName, name);
-	}
-
-	void callListeners(void* object, size_t size) {
-		if(listeners == nullptr) {
-			kernelEvent(this, object, size);
-		}
-	}
+	Event(char* name, bool kernelEvent);
+	void callListeners(void* object, size_t size);
 };
 
 #endif /* KERNEL_INCLUDE_LEVEL1_EVENTS_HPP_ */
