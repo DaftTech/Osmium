@@ -3,6 +3,8 @@
 
 #include "stddef.h"
 
+extern void* globTarball;
+
 struct TARHeader
 {
     char name[100];
@@ -15,6 +17,7 @@ struct TARHeader
     char typeflag[1];
 };
 
+void tarThrowEvents();
 void* tarExtract(void* tarball, const char* name);
 
 #endif /* TAR_H_ */
