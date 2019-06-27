@@ -6,6 +6,11 @@
 
 #define ELF_MAGIC 0x464C457F
 
+struct LoadedELF {
+  ADDRESS entry;
+  char* stringTable;
+};
+
 struct ELFHeader {
     uint32_t magic;
     uint32_t version;
@@ -34,6 +39,29 @@ struct ELFProgramHeader {
     uint32_t alignment;
 }__attribute__((packed));
 
+struct ELFSectionHeader {
+  uint32_t sh_name;
+  uint32_t sh_type;
+  uint32_t sh_flags;
+  uint32_t sh_addr;
+  uint32_t sh_offset;
+  uint32_t sh_size;
+  uint32_t sh_link;
+  uint32_t sh_info;
+  uint32_t sh_addralign;
+  uint32_t sh_entsize;
+}__attribute__((packed));
+
+struct ELFSymbol {
+  uint32_t st_name;
+  uint32_t st_value;
+  uint32_t st_size;
+  uint8_t st_info;
+  uint8_t st_other;
+  uint16_t st_shndx;
+}__attribute__((packed));
+
+void unpackELFSymbolTable(ELFSectionHeader* sh, uint32_t num);
 ADDRESS unpackELF(void* elf);
 
 #endif

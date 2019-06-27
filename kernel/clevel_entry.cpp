@@ -98,6 +98,8 @@ extern "C" void clevel_entry(MultibootInfo* mb_info) {
   kprintf("Registering kernel events...\n");
   registerKernelEvents();
 
+  unpackELFSymbolTable((ELFSectionHeader*)mb_info->mi_elfshdr_addr, mb_info->mi_elfshdr_num);
+
   kprintf("Enabling scheduler...\n");
   enableScheduling();
 

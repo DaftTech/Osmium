@@ -47,6 +47,8 @@ struct Module {
 
   RPC* active_rpc;
 
+  char* stringTable;
+
   Module* next;
   Module* prev;
 };

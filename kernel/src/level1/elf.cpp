@@ -2,10 +2,36 @@
 #include "level0/catofdeath.h"
 #include "level0/console.h"
 #include "level0/vmm.h"
+#include "level1/scheduler.h"
+
+void unpackELFSymbolTable(ELFSectionHeader* sh, uint32_t num) {
+  //(((char*) header) + header->sh_offset)
+
+  char* str_raw = nullptr;
+  ELFSymbol* symbols = nullptr;
+  int symbolCount = 0;
+
+  for(uint32_t n = 0; n < num; n++, sh++) {
+    if(sh->sh_type == 0x03) {
+      str_raw = (((char*) header) + sh->sh_offset);
+      break;
+    }
+    if(sh->sh_type == 0x02) {
+      symbols = (ELFSymbol*)(((char*) header) + sh->sh_offset);
+      symbolCount = sh->sh_size / sh->sh_entsize;
+
+    }
+  }
+
+  for(int i = 0; i < symbolCount; i++) {
+    kprintf("%s\n", str_raw + symbols[i].st_name);
+  }
+}
 
 ADDRESS unpackELF(void* elf) {
 	ELFHeader* header = (ELFHeader*) elf;
     ELFProgramHeader* ph;
+    ELFSectionHeader* sh;
 
     /* Ist es ueberhaupt eine ELF-Datei? */
     if (header->magic != ELF_MAGIC) {
@@ -16,6 +42,8 @@ ADDRESS unpackELF(void* elf) {
     ADDRESS elf_mod_entry = header->entry;
 
     ph = (ELFProgramHeader*) (((char*) header) + header->ph_offset);
+
+    kprintf("ELF loading program headers...\n");
 
     for (uint32_t n = 0; n < header->ph_entry_count; n++, ph++) {
         uint8_t* dest = (uint8_t*) ph->virt_addr;
