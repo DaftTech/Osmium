@@ -1,7 +1,7 @@
 #include "level1/scheduler.h"
 #include "level0/catofdeath.h"
 
-void remoteCall(Module* t, uint32_t rpcID, uint32_t rpcARG0) {
+void remoteCall(Module* t, uint32_t rpcID, void* data, size_t size) {
   RPC* r = new RPC();
 
   r->next = 0;
@@ -13,15 +13,25 @@ void remoteCall(Module* t, uint32_t rpcID, uint32_t rpcARG0) {
   r->cpuState.eflags = 0x200;
   r->cpuState.eip = (uint32_t) t->rpc_handler_address;
 
-    PADDR rest_pdir = vmmGetActivePhysical();
-    vmmActivate(t->environment->phys_pdir);
+  PADDR rest_pdir = vmmGetActivePhysical();
+  vmmActivate(t->environment->phys_pdir);
 
-    for(ADDRESS addr = t->environment->currentNewStackBottom; addr < t->environment->currentNewStackBottom + THREAD_STACK_SIZE;  addr += 0x1000) {
-        vmmAllocateAddress((void*)addr, 0);
-    }
-    t->environment->currentNewStackBottom -= THREAD_STACK_SIZE;
+  for(ADDRESS addr = t->environment->currentNewStackBottom; addr < t->environment->currentNewStackBottom + THREAD_STACK_SIZE;  addr += 0x1000) {
+    vmmAllocateAddress((void*)addr, 0);
+  }
+  t->environment->currentNewStackBottom -= THREAD_STACK_SIZE;
 
-    vmmActivate(rest_pdir);
+  if(size != 0) {
+    r->rpcData = vmmAllocateInUserspaceCont((size-1)/4096 + 1);
+    memcpy(r->rpcData, data, size);
+    r->rpcSize = size;
+  }
+  else {
+    r->rpcData = nullptr;
+    r->rpcSize = 0;
+  }
+
+  vmmActivate(rest_pdir);
 
   if(t->active_rpc == 0) {
     t->active_rpc = r;
@@ -41,7 +51,8 @@ void remoteCall(Module* t, uint32_t rpcID, uint32_t rpcARG0) {
   }
 
   r->rpcID = rpcID;
-  r->rpcARG0 = rpcARG0;
+
+
 }
 
 void returnRPC(int resultCode) {

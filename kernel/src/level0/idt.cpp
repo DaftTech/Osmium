@@ -169,7 +169,7 @@ extern "C" CPUState* handleInterrupt(CPUState* cpu) {
 		else
 		{
 			if(registered[cpu->intr].thread != 0) {
-				remoteCall(registered[cpu->intr].thread, registered[cpu->intr].rpcID, cpu->intr); //call IRQ RPC
+				//TODO: remoteCall(registered[cpu->intr].thread, registered[cpu->intr].rpcID, cpu->intr); //call IRQ RPC
 			}
 		}
 

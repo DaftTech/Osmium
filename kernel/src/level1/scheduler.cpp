@@ -107,7 +107,7 @@ Module* registerModule(Environment* environment, ADDRESS entry) {
 
   first_module = rModule;
 
-  remoteCall(rModule, 0, 0);
+  remoteCall(rModule, 0, nullptr, 0);
 
   return rModule;
 }
@@ -147,7 +147,7 @@ CPUState* schedule(CPUState* cpu) {
     next = next->next;
     }
 
-    remoteCall(root_module, 0, 0x1D7E);
+    remoteCall(root_module, 0x1D7E, nullptr, 0);
 
     return scheduleToModule(root_module, cpu);
   }

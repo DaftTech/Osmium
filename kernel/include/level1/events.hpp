@@ -26,7 +26,7 @@ public:
   char eventName[256];
 
   Event(char* name, bool kernelEvent);
-  void callListeners(void* object, size_t size);
+  void callListeners(void* data, size_t size);
 };
 
 #endif /* KERNEL_INCLUDE_LEVEL1_EVENTS_HPP_ */

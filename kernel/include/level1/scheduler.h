@@ -31,10 +31,10 @@ struct Environment {
 
 struct RPC {
   uint32_t rpcID;
-  uint32_t rpcARG0;
+  void*    rpcData;
+  size_t   rpcSize;
 
   uint32_t state;
-
 
   struct CPUState cpuState;
 
@@ -51,7 +51,7 @@ struct Module {
   Module* prev;
 };
 
-void          remoteCall(struct Module* t, uint32_t rpcID, uint32_t rpcARG0);
+void          remoteCall(struct Module* t, uint32_t rpcID, void* rpcData, uint32_t rpcSize);
 void          returnRPC(int resultCode);
 void*         rpc_map(void);
 

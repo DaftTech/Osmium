@@ -12,11 +12,13 @@ struct file {
   uint8_t content;
 };
 
-int processEvent(int arg0) {
+uint32_t evt_tarAvailable = 0;
+
+int processEvent(uint32_t arg0, void* data, uint32_t size) {
   switch(arg0) {
   case 0x00: //Module Initialized
     kprintf("initialized\n");
-    registerToEventByName("tarAvailable");
+    evt_tarAvailable = registerToEventByName("tarAvailable");
     throwEventByName("unpackInitrfs");
     break;
 
@@ -24,7 +26,17 @@ int processEvent(int arg0) {
     break;
 
   default:
-    kprintf("event: %x\n", arg0);
+    if(arg0 == evt_tarAvailable) {
+      kprintf("tarAvailable: %x\n", arg0);
+
+      char* dataUI = (char*)data;
+
+      for(int i = 0; i < 10; i++) {
+        kputc(dataUI[i]);
+      }
+      kprintf("\n");
+
+    }
     break;
   }
 

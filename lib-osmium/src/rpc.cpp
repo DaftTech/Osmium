@@ -24,7 +24,7 @@ void rpc_return(int returnCode) {
 	}
 }
 
-void rpc_map(uint32_t* rpcID, uint32_t* rpcARG0) {
+void rpc_map(uint32_t* rpcID, void** rpcData, uint32_t* rpcSize) {
 	RegState state = {
 			.eax = 0x200,
 			.ebx = 0,
@@ -36,57 +36,22 @@ void rpc_map(uint32_t* rpcID, uint32_t* rpcARG0) {
 	syscall(&state);
 
 	*rpcID = state.ebx;
-	*rpcARG0 = state.ecx;
+	*rpcData = (void*)state.ecx;
+  *rpcSize = state.edx;
 }
 
-
-int rpc_check_future(FUTURE fut) {
-	RegState state = {
-			.eax = 0x203,
-			.ebx = fut,
-			.ecx = 0,
-			.edx = 0,
-			.esi = 0,
-			.edi = 0 };
-
-	syscall(&state);
-
-	return state.eax;
-}
-
-int rpc_register_handler(int(*fptr)(int)) {
-	for(int i = 0; i < RPC_HANDLERS; i++) {
-		if(rpcHandlers[i] == (int(*)(int))0) {
-			rpcHandlers[i] = fptr;
-			return i;
-		}
-	}
-	return -1;
-}
-
-extern int processEvent(int arg0);
+extern int processEvent(uint32_t arg0, void* data, uint32_t size);
 
 extern "C" void _start() {
-	if(!rpc_initialized) {
-		for(int i = 0; i < RPC_HANDLERS; i++) {
-			rpcHandlers[i] = (int(*)(int))nullptr;
-		}
-
-		rpcHandlers[0] = processEvent;
-
-		rpc_initialized = 1;
-	}
-
 	uint32_t rpcID;
-	uint32_t rpcARG0;
+  void* rpcData;
+  uint32_t rpcSize;
 
-	rpc_map(&rpcID, &rpcARG0);
+	rpc_map(&rpcID, &rpcData, &rpcSize);
 
 	int returnValue = -1;
 
-	if(rpcID < RPC_HANDLERS && rpcHandlers[rpcID] != 0) {
-		returnValue = rpcHandlers[rpcID](rpcARG0);
-	}
+	returnValue = processEvent(rpcID, rpcData, rpcSize);
 
 	rpc_return(returnValue);
 }

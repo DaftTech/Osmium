@@ -63,7 +63,10 @@ CPUState* syscall(CPUState* in) {
   case 0x200: //RPC Map
   {
     newCpu->ebx = getCurrentThread()->active_rpc->rpcID;
-    newCpu->ecx = getCurrentThread()->active_rpc->rpcARG0;
+    newCpu->ecx = (uint32_t)getCurrentThread()->active_rpc->rpcData;
+    newCpu->edx = getCurrentThread()->active_rpc->rpcSize;
+    //TODO: map data
+
     break;
   }
 

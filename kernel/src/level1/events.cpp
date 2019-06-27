@@ -18,16 +18,16 @@ Event::Event(char* name, bool kernelEvent) {
   strcpy(eventName, name);
 }
 
-void Event::callListeners(void* object, size_t size) {
+void Event::callListeners(void* data, size_t size) {
   if(listeners == nullptr) {
-    kernelEvent(this, object, size);
+    kernelEvent(this, data, size);
   }
   else {
     Iterator<Module*>* i = listeners->iterator();
 
     while(i->hasNext()) {
       Module* e = i->pop();
-      remoteCall(e, 0, (uint32_t)(this));
+      remoteCall(e, (uint32_t)(this), data, size);
     }
   }
 
