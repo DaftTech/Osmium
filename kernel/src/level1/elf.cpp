@@ -4,14 +4,16 @@
 #include "level0/vmm.h"
 #include "level1/scheduler.h"
 
-void unpackELFSymbolTable(ELFSectionHeader* sh, uint32_t num) {
-  //(((char*) header) + header->sh_offset)
+void unpackELFSymbolTable(void* elf) {
+	ELFHeader* header = (ELFHeader*) elf;
+
+  ELFSectionHeader* sh = (ELFSectionHeader*) (((char*) header) + header->sh_offset);
 
   char* str_raw = nullptr;
   ELFSymbol* symbols = nullptr;
   int symbolCount = 0;
 
-  for(uint32_t n = 0; n < num; n++, sh++) {
+  for(uint32_t n = 0; n < header->sh_entry_count; n++, sh++) {
     if(sh->sh_type == 0x03) {
       str_raw = (((char*) header) + sh->sh_offset);
       break;
@@ -19,7 +21,6 @@ void unpackELFSymbolTable(ELFSectionHeader* sh, uint32_t num) {
     if(sh->sh_type == 0x02) {
       symbols = (ELFSymbol*)(((char*) header) + sh->sh_offset);
       symbolCount = sh->sh_size / sh->sh_entsize;
-
     }
   }
 

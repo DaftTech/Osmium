@@ -61,7 +61,7 @@ struct ELFSymbol {
   uint16_t st_shndx;
 }__attribute__((packed));
 
-void unpackELFSymbolTable(ELFSectionHeader* sh, uint32_t num);
+void unpackELFSymbolTable(void* elf);
 ADDRESS unpackELF(void* elf);
 
 #endif
