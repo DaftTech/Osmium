@@ -55,6 +55,8 @@ ADDRESS unpackELF(void* elf) {
             continue;
         }
 
+        kprintf("ELF loading section %x - %x\n", ph->virt_addr, ph->virt_addr + ph->mem_size);
+
         for (uint32_t offset = 0; offset < ph->mem_size; offset += 0x1000) {
             vmmFree(dest + offset); //FIXME: ELF kann Kernel Memory unloaden.
             vmmAllocateAddress(dest + offset, 0);
