@@ -13,6 +13,7 @@
 #include "multiboot.h"
 
 void* globTarball;
+void* kernelELF;
 
 extern "C" void clevel_entry(MultibootInfo* mb_info) {
   clrscr();
@@ -71,14 +72,22 @@ extern "C" void clevel_entry(MultibootInfo* mb_info) {
 
   kprintf("Assuming mbmod[0] is a tarball (%d bytes)... \n", initrfsSize);
 
-  uint32_t* initELF = (uint32_t*) tarExtract(mb_info->mi_mods_addr[0].start, "init");
   globTarball = (void*)mb_info->mi_mods_addr[0].start;
+
+  uint32_t* initELF = (uint32_t*) tarExtract(mb_info->mi_mods_addr[0].start, "init");
 
   if(initELF == (void*)0) {
     showCOD(0, "initrfs damaged or didn't contain \"/init\".\n");
   }
 
-  kprintf("Unpacking ELF...\n");
+  uint32_t* kELF = (uint32_t*) tarExtract(mb_info->mi_mods_addr[0].start, "kernel");
+  kernelELF = &kELF[1];
+
+  if(kernelELF == (void*)0) {
+    showCOD(0, "initrfs damaged or didn't contain \"/kernel\".\n");
+  }
+
+  kprintf("Unpacking /init ELF...\n");
   ADDRESS entryPoint = unpackELF(&initELF[1]);
 
   if(entryPoint == 0) {
@@ -97,8 +106,6 @@ extern "C" void clevel_entry(MultibootInfo* mb_info) {
 
   kprintf("Registering kernel events...\n");
   registerKernelEvents();
-
-  unpackELFSymbolTable((void*)tarExtract(mb_info->mi_mods_addr[0].start, "kernel"));
 
   kprintf("Enabling scheduler...\n");
   enableScheduling();

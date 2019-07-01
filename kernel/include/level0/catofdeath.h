@@ -5,6 +5,7 @@
 
 #include "console.h"
 #include "idt.h"
+#include "level1/elf.h"
 
 uint32_t in_cod();
 void showCOD(CPUState* cpu, char* fstr);

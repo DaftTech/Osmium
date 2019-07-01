@@ -75,11 +75,10 @@ struct stackframe {
 void trace(unsigned int maxFrames, struct stackframe* ebp)
 {
     struct stackframe *stk = ebp;
-    kprintf("Stack trace:\n");
     for(unsigned int frame = 0; stk && frame < maxFrames; ++frame)
     {
         // Unwind to previous stack frame
-        kprintf(" 0x%x \n", stk->eip);
+        kprintf(" %x: %s \n", stk->eip, unpackELFSymbolTable(kernelELF, stk->eip));
         stk = stk->ebp;
     }
 }
@@ -98,7 +97,9 @@ void showDump(CPUState* cpu) {
 
     kprintf("CR2: %x \n", cr2);
 
-    trace(4, (struct stackframe*) cpu->ebp);
+    kprintf("\nStack trace:\n");
+    kprintf(" %x: %s \n", cpu->eip, unpackELFSymbolTable(kernelELF, cpu->eip));
+    trace(16, (struct stackframe*) cpu->ebp);
 
 //    uint32_t* stack = (uint32_t*)cpu->esp;
 

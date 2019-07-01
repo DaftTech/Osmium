@@ -4,7 +4,7 @@
 #include "level0/vmm.h"
 #include "level1/scheduler.h"
 
-void unpackELFSymbolTable(void* elf) {
+char* unpackELFSymbolTable(void* elf, uint32_t eip) {
 	ELFHeader* header = (ELFHeader*) elf;
 
   ELFSectionHeader* sh = (ELFSectionHeader*) (((char*) header) + header->sh_offset);
@@ -24,9 +24,14 @@ void unpackELFSymbolTable(void* elf) {
     }
   }
 
+	uint32_t maxDiff = 0xFFFFFFFF;
+	char* ret = "n/a";
+
   for(int i = 0; i < symbolCount; i++) {
-    kprintf("%s\n", str_raw + symbols[i].st_name);
+		if(symbols[i].st_value < eip && symbols[i].st_value + symbols[i].st_size > eip) return str_raw + symbols[i].st_name;
   }
+
+	return ret;
 }
 
 ADDRESS unpackELF(void* elf) {

@@ -6,6 +6,8 @@
 
 #define ELF_MAGIC 0x464C457F
 
+extern void* kernelELF;
+
 struct LoadedELF {
   ADDRESS entry;
   char* stringTable;
@@ -61,7 +63,7 @@ struct ELFSymbol {
   uint16_t st_shndx;
 }__attribute__((packed));
 
-void unpackELFSymbolTable(void* elf);
+char* unpackELFSymbolTable(void* elf, uint32_t eip);
 ADDRESS unpackELF(void* elf);
 
 #endif
