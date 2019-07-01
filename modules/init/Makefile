@@ -8,7 +8,7 @@ LD = ld
 
 ASFLAGS = -m32
 CFLAGS = -m32 -Wall -Werror  -g -Wno-write-strings -fno-omit-frame-pointer -fno-stack-protector -fno-builtin -nostdinc -Iinclude -I../../lib-osmium/include -I../../lib-common/include
-LDFLAGS = -melf_i386 -Tlink.ld -u _start --gc-sections
+LDFLAGS = -melf_i386 -Tlink.ld -u _start --gc-sections -z noseperate-code
 
 ../../bin/initrfs/init: $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $^ ../../lib-osmium/lib-osmium.a ../../lib-common/lib-common.a

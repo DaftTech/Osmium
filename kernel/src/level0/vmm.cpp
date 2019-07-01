@@ -34,7 +34,13 @@ PADDR vmmGetActivePhysical(void) {
 }
 
 PADDR vmmResolve(void* vaddr) {
-	return active_pagetables[(uint32_t)vaddr >> 12] & 0xFFFFF000;
+	if(active_pagetables[(uint32_t)vaddr >> 12] & PT_PRESENT) {
+		return active_pagetables[(uint32_t)vaddr >> 12] & 0xFFFFF000;
+	}
+	else
+	{
+		return 0x0;
+	}
 }
 
 void vmmMapRange(void* ivaddr, PADDR paddr, uint32_t length, uint32_t flags) {

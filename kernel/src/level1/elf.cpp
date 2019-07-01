@@ -50,6 +50,9 @@ ADDRESS unpackELF(void* elf) {
         uint8_t* dest = (uint8_t*) ph->virt_addr;
         uint8_t* src = ((uint8_t*) header) + ph->offset;
 
+				uint32_t pageStart = (ph->virt_addr & 0xFFFFF000);
+				uint32_t pageEnd = ((ph->virt_addr + ph->mem_size) & 0xFFFFF000);
+
         /* Nur Program Header vom Typ LOAD laden */
         if (ph->type != 1) {
             continue;
@@ -57,9 +60,12 @@ ADDRESS unpackELF(void* elf) {
 
         kprintf("ELF loading section %x - %x\n", ph->virt_addr, ph->virt_addr + ph->mem_size);
 
-        for (uint32_t offset = 0; offset < ph->mem_size; offset += 0x1000) {
-            vmmFree(dest + offset); //FIXME: ELF kann Kernel Memory unloaden.
-            vmmAllocateAddress(dest + offset, 0);
+        for (uint32_t map = pageStart; map <= pageEnd; map += 0x1000) {
+					kprintf("vmmResolve %x\n", map);
+					if(!vmmResolve((void*)map)) {
+						kprintf("vmmAllocate %x\n", map);
+          	vmmAllocateAddress((void*)map, 0);
+					}
         }
 
         memcpy(dest, src, ph->file_size);
